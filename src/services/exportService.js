@@ -1,4 +1,4 @@
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip, Table, TableRow, TableCell, WidthType, BorderStyle } from 'docx';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip, Table, TableRow, TableCell, WidthType, BorderStyle, HorizontalPositionAlign, HorizontalPositionRelativeFrom, ThematicBreak, Shading, ExternalHyperlink } from 'docx';
 import { saveAs } from 'file-saver';
 import { marked } from 'marked';
 
@@ -84,6 +84,12 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
       case 'table':
         elements.push(createTable(token, contentSettings.paragraph));
         break;
+      case 'code':
+        elements.push(...createCodeBlock(token, contentSettings.paragraph));
+        break;
+      case 'hr':
+        elements.push(createHorizontalRule());
+        break;
       case 'space':
         elements.push(new Paragraph({}));
         break;
@@ -94,6 +100,117 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
   }
 
   return elements;
+};
+
+// 创建代码块
+const createCodeBlock = (token, settings) => {
+  const codeText = token.text || '';
+  // 按换行符分割代码文本
+  const codeLines = codeText.split('\n');
+  
+  // 创建代码块容器
+  const codeElements = [];
+  
+  // 为每一行代码创建单独的段落
+  codeLines.forEach((line, index) => {
+    codeElements.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: line,
+            font: { name: 'Courier New' }, // 使用等宽字体
+            size: Math.round(settings.fontSize * 2),
+            color: "000000"
+          })
+        ],
+        spacing: {
+          // 只有第一行需要上边距，最后一行需要下边距
+          before: index === 0 ? 240 : 0,
+          after: index === codeLines.length - 1 ? 240 : 0,
+          line: Math.round(settings.lineHeight * 240)
+        },
+        shading: {
+          type: 'solid',
+          color: 'F8F8F8', // 浅灰色背景
+          fill: 'F8F8F8'
+        },
+        border: {
+          // 只有第一行需要上边框，最后一行需要下边框
+          top: index === 0 ? { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" } : undefined,
+          bottom: index === codeLines.length - 1 ? { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" } : undefined,
+          left: { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" },
+          right: { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" }
+        },
+        indent: {
+          left: convertInchesToTwip(0.25),
+          right: convertInchesToTwip(0.25)
+        }
+      })
+    );
+  });
+  
+  // 如果代码块为空，添加一个空行
+  if (codeElements.length === 0) {
+    codeElements.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: '',
+            font: { name: 'Courier New' },
+            size: Math.round(settings.fontSize * 2),
+            color: "000000"
+          })
+        ],
+        spacing: {
+          before: 240,
+          after: 240,
+          line: Math.round(settings.lineHeight * 240)
+        },
+        shading: {
+          type: 'solid',
+          color: 'F8F8F8',
+          fill: 'F8F8F8'
+        },
+        border: {
+          top: { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" },
+          bottom: { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" },
+          left: { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" },
+          right: { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" }
+        },
+        indent: {
+          left: convertInchesToTwip(0.25),
+          right: convertInchesToTwip(0.25)
+        }
+      })
+    );
+  }
+  
+  return codeElements;
+};
+
+// 创建水平线
+const createHorizontalRule = () => {
+  return new Paragraph({
+    children: [
+      new TextRun({
+        text: "",
+      })
+    ],
+    spacing: {
+      before: 240,
+      after: 240,
+    },
+    border: {
+      bottom: {
+        color: "999999",
+        space: 1,
+        style: BorderStyle.SINGLE,
+        size: 6,
+      },
+    },
+    // 确保水平线占据整个页面宽度
+    alignment: AlignmentType.CENTER,
+  });
 };
 
 // 创建标题
@@ -126,7 +243,9 @@ const createHeading = (token, contentSettings) => {
   
   // 确保所有TextRun都设置了黑色
   textRuns.forEach(run => {
-    run.color = "000000"; // 设置为黑色
+    if (run.color === undefined) {
+      run.color = "000000"; // 设置为黑色
+    }
   });
 
   return new Paragraph({
@@ -361,6 +480,45 @@ const processTokensToTextRuns = (tokens, settings) => {
           })
         );
         break;
+      case 'del':
+        textRuns.push(
+          new TextRun({
+            text: token.text,
+            strike: true,
+            font: { name: settings.fontFamily },
+            size: Math.round(settings.fontSize * 2),
+            color: "000000" // 设置为黑色
+          })
+        );
+        break;
+      case 'link':
+        textRuns.push(
+          new ExternalHyperlink({
+            children: [
+              new TextRun({
+                text: token.text,
+                style: "Hyperlink",
+                font: { name: settings.fontFamily },
+                size: Math.round(settings.fontSize * 2),
+              })
+            ],
+            link: token.href
+          })
+        );
+        break;
+      case 'codespan':
+        textRuns.push(
+          new TextRun({
+            text: token.text,
+            font: { name: 'Courier New' },
+            size: Math.round(settings.fontSize * 2),
+            color: "000000", // 设置为黑色
+            shading: { 
+              fill: "F0F0F0" // 浅灰色背景
+            }
+          })
+        );
+        break;
       case 'text':
       default:
         if (token.text) {
@@ -398,6 +556,14 @@ const parseInlineTokens = (text, settings) => {
   const textContent = String(text || '');
   console.log('处理内联格式:', textContent);
   
+  // 使用marked解析内联标记
+  const inlineTokens = marked.lexer(textContent, { gfm: true });
+  
+  // 如果解析成功并且包含内联标记，使用processTokensToTextRuns处理
+  if (inlineTokens && inlineTokens.length > 0 && inlineTokens[0].type === 'paragraph' && inlineTokens[0].tokens) {
+    return processTokensToTextRuns(inlineTokens[0].tokens, settings);
+  }
+  
   // 简化处理方式，直接使用正则表达式查找和替换
   const textRuns = [];
   
@@ -407,8 +573,8 @@ const parseInlineTokens = (text, settings) => {
   let currentText = textContent;
   let lastIndex = 0;
   
-  // 查找所有的粗体和斜体标记
-  const regex = /(\*\*.*?\*\*)|(__.*?__)|(\*.*?\*)|(_.*?_)/g;
+  // 查找所有的格式标记
+  const regex = /(\*\*.*?\*\*)|(__.*?__)|(\*.*?\*)|(_.*?_)|(~~.*?~~)|(`.*?`)|(\[.*?\]\(.*?\))/g;
   let match;
   
   while ((match = regex.exec(currentText)) !== null) {
@@ -422,13 +588,40 @@ const parseInlineTokens = (text, settings) => {
     
     const matchedText = match[0];
     
-    // 判断是粗体还是斜体
+    // 判断格式类型
     if (matchedText.startsWith('**') || matchedText.startsWith('__')) {
       // 粗体
       const content = matchedText.substring(2, matchedText.length - 2);
       segments.push({
         type: 'bold',
         text: content
+      });
+    } else if (matchedText.startsWith('~~')) {
+      // 删除线
+      const content = matchedText.substring(2, matchedText.length - 2);
+      segments.push({
+        type: 'strike',
+        text: content
+      });
+    } else if (matchedText.startsWith('`')) {
+      // 行内代码
+      const content = matchedText.substring(1, matchedText.length - 1);
+      segments.push({
+        type: 'code',
+        text: content
+      });
+    } else if (matchedText.startsWith('[') && matchedText.includes('](')) {
+      // 链接
+      const linkTextEnd = matchedText.indexOf(']');
+      const linkText = matchedText.substring(1, linkTextEnd);
+      const linkUrlStart = matchedText.indexOf('(', linkTextEnd) + 1;
+      const linkUrlEnd = matchedText.lastIndexOf(')');
+      const linkUrl = matchedText.substring(linkUrlStart, linkUrlEnd);
+      
+      segments.push({
+        type: 'link',
+        text: linkText,
+        url: linkUrl
       });
     } else {
       // 斜体
@@ -474,6 +667,45 @@ const parseInlineTokens = (text, settings) => {
             font: { name: settings.fontFamily },
             size: Math.round(settings.fontSize * 2),
             color: "000000" // 设置为黑色
+          })
+        );
+        break;
+      case 'strike':
+        textRuns.push(
+          new TextRun({
+            text: segment.text,
+            strike: true,
+            font: { name: settings.fontFamily },
+            size: Math.round(settings.fontSize * 2),
+            color: "000000" // 设置为黑色
+          })
+        );
+        break;
+      case 'code':
+        textRuns.push(
+          new TextRun({
+            text: segment.text,
+            font: { name: 'Courier New' },
+            size: Math.round(settings.fontSize * 2),
+            color: "000000", // 设置为黑色
+            shading: { 
+              fill: "F0F0F0" // 浅灰色背景
+            }
+          })
+        );
+        break;
+      case 'link':
+        textRuns.push(
+          new ExternalHyperlink({
+            children: [
+              new TextRun({
+                text: segment.text,
+                style: "Hyperlink",
+                font: { name: settings.fontFamily },
+                size: Math.round(settings.fontSize * 2),
+              })
+            ],
+            link: segment.url
           })
         );
         break;
