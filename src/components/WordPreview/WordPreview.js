@@ -82,15 +82,67 @@ const WordDocument = styled.div`
     margin-left: 0;
     color: #666;
   }
+  
+  /* 表格样式 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-family: ${props => props.paragraph.fontFamily};
+    font-size: ${props => props.paragraph.fontSize}pt;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #cccccc;
+  }
+  
+  td {
+    padding: 8px;
+    border: 1px solid #cccccc;
+    text-align: left;
+  }
+  
+  /* 列表样式 */
+  ul, ol {
+    font-family: ${props => props.paragraph.fontFamily};
+    font-size: ${props => props.paragraph.fontSize}pt;
+    line-height: ${props => props.paragraph.lineHeight};
+    margin-bottom: 1em;
+    padding-left: 2em;
+  }
+  
+  /* 内联格式 */
+  strong {
+    font-weight: bold;
+  }
+  
+  em {
+    font-style: italic;
+  }
 `;
 
 const WordPreview = () => {
   const { markdown, formatSettings } = useDocument();
   
+  // 配置marked选项，确保表格正确渲染
+  const markedOptions = useMemo(() => {
+    return {
+      gfm: true, // 启用GitHub风格的Markdown
+      breaks: true, // 允许回车换行
+      tables: true // 启用表格支持
+    };
+  }, []);
+  
   // 使用marked将markdown转换为HTML
   const htmlContent = useMemo(() => {
+    // 设置marked选项
+    marked.setOptions(markedOptions);
     return { __html: marked(markdown) };
-  }, [markdown]);
+  }, [markdown, markedOptions]);
 
   const { content, page } = formatSettings;
   

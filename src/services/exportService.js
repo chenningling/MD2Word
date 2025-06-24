@@ -123,6 +123,11 @@ const createHeading = (token, contentSettings) => {
     ...settings,
     bold: settings.bold // 保持标题的粗体设置
   });
+  
+  // 确保所有TextRun都设置了黑色
+  textRuns.forEach(run => {
+    run.color = "000000"; // 设置为黑色
+  });
 
   return new Paragraph({
     children: textRuns,
@@ -292,7 +297,8 @@ const createTable = (token, settings) => {
             new TextRun({
               text: String(cellContent),
               font: { name: settings.fontFamily },
-              size: Math.round(settings.fontSize * 2)
+              size: Math.round(settings.fontSize * 2),
+              color: "000000" // 设置为黑色
             })
           ];
         }
@@ -339,7 +345,8 @@ const processTokensToTextRuns = (tokens, settings) => {
             text: token.text,
             bold: true,
             font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2)
+            size: Math.round(settings.fontSize * 2),
+            color: "000000" // 设置为黑色
           })
         );
         break;
@@ -349,7 +356,8 @@ const processTokensToTextRuns = (tokens, settings) => {
             text: token.text,
             italics: true,
             font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2)
+            size: Math.round(settings.fontSize * 2),
+            color: "000000" // 设置为黑色
           })
         );
         break;
@@ -360,7 +368,8 @@ const processTokensToTextRuns = (tokens, settings) => {
             new TextRun({
               text: token.text,
               font: { name: settings.fontFamily },
-              size: Math.round(settings.fontSize * 2)
+              size: Math.round(settings.fontSize * 2),
+              color: "000000" // 设置为黑色
             })
           );
         }
@@ -374,7 +383,8 @@ const processTokensToTextRuns = (tokens, settings) => {
       new TextRun({
         text: '',
         font: { name: settings.fontFamily },
-        size: Math.round(settings.fontSize * 2)
+        size: Math.round(settings.fontSize * 2),
+        color: "000000" // 设置为黑色
       })
     );
   }
@@ -451,7 +461,8 @@ const parseInlineTokens = (text, settings) => {
             text: segment.text,
             bold: true,
             font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2)
+            size: Math.round(settings.fontSize * 2),
+            color: "000000" // 设置为黑色
           })
         );
         break;
@@ -461,7 +472,8 @@ const parseInlineTokens = (text, settings) => {
             text: segment.text,
             italics: true,
             font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2)
+            size: Math.round(settings.fontSize * 2),
+            color: "000000" // 设置为黑色
           })
         );
         break;
@@ -473,7 +485,8 @@ const parseInlineTokens = (text, settings) => {
               text: segment.text,
               font: { name: settings.fontFamily },
               size: Math.round(settings.fontSize * 2),
-              bold: settings.bold
+              bold: settings.bold,
+              color: "000000" // 设置为黑色
             })
           );
         }

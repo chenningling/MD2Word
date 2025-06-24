@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import styled from 'styled-components';
@@ -54,13 +54,15 @@ const placeholderText = `# 欢迎使用 MD2Word
 
 const MarkdownEditor = () => {
   const { markdown: content, updateMarkdown } = useDocument();
+  const isInitialized = useRef(false);
 
   useEffect(() => {
-    // 如果没有内容，设置默认内容
-    if (!content) {
+    // 只在组件首次加载且内容为空时设置默认内容
+    if (!isInitialized.current && !content) {
       updateMarkdown(placeholderText);
+      isInitialized.current = true;
     }
-  }, [content, updateMarkdown]);
+  }, [updateMarkdown]);
 
   const handleChange = (value) => {
     updateMarkdown(value);
