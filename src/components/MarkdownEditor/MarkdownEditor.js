@@ -3,6 +3,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
+import { EditorView } from '@codemirror/view';
 
 const EditorContainer = styled.div`
   flex: 1;
@@ -75,7 +76,10 @@ const MarkdownEditor = () => {
         <CodeMirror
           value={content}
           height="100%"
-          extensions={[markdown()]}
+          extensions={[
+            markdown(),
+            EditorView.lineWrapping
+          ]}
           onChange={handleChange}
           theme="light"
         />
