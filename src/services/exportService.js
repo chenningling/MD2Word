@@ -1,6 +1,8 @@
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip, Table, TableRow, TableCell, WidthType, BorderStyle, HorizontalPositionAlign, HorizontalPositionRelativeFrom, ThematicBreak, Shading, ExternalHyperlink } from 'docx';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip, Table, TableRow, TableCell, WidthType, BorderStyle, HorizontalPositionAlign, HorizontalPositionRelativeFrom, ThematicBreak, Shading, ExternalHyperlink, ImageRun } from 'docx';
 import { saveAs } from 'file-saver';
 import { marked } from 'marked';
+import { renderMermaidToPng, isMermaidCode } from '../utils/mermaidUtils';
+import { dataUriToUint8Array } from '../utils/imageUtils';
 
 // 将Markdown转换为Word文档
 export const exportToWord = async (markdown, formatSettings) => {
@@ -18,8 +20,11 @@ export const exportToWord = async (markdown, formatSettings) => {
       console.log('表格内容:', JSON.stringify(tableTokes, null, 2));
     }
 
+    // 处理Mermaid流程图
+    const processedTokens = await processMermaidTokens(tokens);
+
     // 创建Word文档
-    const doc = createWordDocument(tokens, formatSettings);
+    const doc = createWordDocument(processedTokens, formatSettings);
 
     // 导出文档
     const buffer = await Packer.toBlob(doc);
@@ -29,6 +34,37 @@ export const exportToWord = async (markdown, formatSettings) => {
     console.error('导出Word文档时发生错误:', error);
     alert('导出失败，请查看控制台获取详细信息。');
   }
+};
+
+// 处理Mermaid流程图
+const processMermaidTokens = async (tokens) => {
+  const processedTokens = [];
+  
+  for (const token of tokens) {
+    if (token.type === 'code' && isMermaidCode(token.lang)) {
+      try {
+        // 渲染Mermaid图表为PNG
+        const { dataUrl, width, height } = await renderMermaidToPng(token.text);
+        
+        // 创建一个新的图片token
+        processedTokens.push({
+          type: 'mermaid',
+          dataUrl,
+          width,
+          height,
+          raw: token.raw
+        });
+      } catch (error) {
+        console.error('处理Mermaid图表失败:', error);
+        // 如果处理失败，保留原始代码块
+        processedTokens.push(token);
+      }
+    } else {
+      processedTokens.push(token);
+    }
+  }
+  
+  return processedTokens;
 };
 
 // 创建Word文档
@@ -92,6 +128,9 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
         break;
       case 'space':
         elements.push(new Paragraph({}));
+        break;
+      case 'mermaid':
+        elements.push(createMermaidDiagram(token));
         break;
       default:
         console.log('未处理的token类型:', token.type);
@@ -773,5 +812,47 @@ const convertAlignment = (align) => {
       return AlignmentType.JUSTIFIED;
     default:
       return AlignmentType.LEFT;
+  }
+};
+
+// 创建Mermaid图表
+const createMermaidDiagram = (token) => {
+  try {
+    const imageData = dataUriToUint8Array(token.dataUrl);
+    
+    return new Paragraph({
+      children: [
+        new ImageRun({
+          data: imageData,
+          transformation: {
+            width: token.width,
+            height: token.height
+          },
+          alignment: {
+            horizontal: HorizontalPositionAlign.CENTER
+          }
+        })
+      ],
+      spacing: {
+        before: 240,
+        after: 240
+      },
+      alignment: AlignmentType.CENTER
+    });
+  } catch (error) {
+    console.error('创建Mermaid图表失败:', error);
+    // 如果创建失败，返回一个错误提示段落
+    return new Paragraph({
+      children: [
+        new TextRun({
+          text: '[无法显示Mermaid图表]',
+          color: 'FF0000'
+        })
+      ],
+      spacing: {
+        before: 240,
+        after: 240
+      }
+    });
   }
 }; 

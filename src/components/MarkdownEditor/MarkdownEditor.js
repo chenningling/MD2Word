@@ -49,6 +49,24 @@ const placeholderText = `# 欢迎使用 MD2Word
 
 > 这是一段引用文本
 
+## 代码块示例
+
+\`\`\`javascript
+function hello() {
+  console.log("Hello, world!");
+}
+\`\`\`
+
+## Mermaid流程图示例
+
+\`\`\`mermaid
+graph TD
+    A[开始] --> B{是否继续?}
+    B -->|是| C[处理]
+    C --> D[结束]
+    B -->|否| D
+\`\`\`
+
 如需了解更多Markdown语法，请点击左侧的「Markdown基本语法学习」按钮。
 
 `;
