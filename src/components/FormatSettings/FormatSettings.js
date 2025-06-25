@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, Modal, Input, message } from 'antd';
-import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 
@@ -126,6 +126,79 @@ const FontOption = ({ value, children }) => {
   );
 };
 
+// 添加一个辅助函数，生成格式摘要
+const getFormatSummary = (settings, elementType) => {
+  // 获取对齐方式的标签
+  const getAlignLabel = (align) => {
+    const alignMap = {
+      'left': '左对齐',
+      'center': '居中',
+      'right': '右对齐',
+      'justify': '两端对齐'
+    };
+    return alignMap[align] || '左对齐';
+  };
+  
+  // 基本信息
+  const basicInfo = `${settings.fontFamily} ${settings.fontSize}pt ${settings.bold ? '粗体' : ''}`;
+  
+  // 对齐和行间距
+  const layoutInfo = `${getAlignLabel(settings.align)} · 行距${settings.lineHeight}`;
+  
+  // 特殊设置
+  let specialInfo = '';
+  
+  // 标题特有设置
+  if (elementType.startsWith('heading')) {
+    specialInfo = `段前${settings.spacingBefore}磅 · 段后${settings.spacingAfter}磅`;
+  }
+  
+  // 段落特有设置
+  if (elementType === 'paragraph') {
+    const indentMap = {
+      0: '无缩进',
+      2: '首行缩进2字符',
+      4: '首行缩进4字符'
+    };
+    specialInfo = `${indentMap[settings.firstLineIndent] || '无缩进'} · 段间距${settings.paragraphSpacing}磅`;
+  }
+  
+  return [basicInfo, layoutInfo, specialInfo].filter(Boolean).join(' · ');
+};
+
+// 自定义Panel标题组件
+const CustomPanelHeader = ({ title, settings, elementType }) => {
+  const summary = getFormatSummary(settings, elementType);
+  
+  return (
+    <div style={{ width: '100%' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{title}</div>
+      <div style={{ 
+        fontSize: '12px', 
+        color: '#888', 
+        marginTop: '3px',
+        lineHeight: '1.2',
+        whiteSpace: 'normal',
+        wordBreak: 'break-word'
+      }}>
+        {summary}
+      </div>
+    </div>
+  );
+};
+
+const StyledCollapse = styled(Collapse)`
+  .ant-collapse-header {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    min-height: 54px;
+  }
+  
+  .ant-collapse-arrow {
+    margin-top: 8px !important;
+  }
+`;
+
 const FormatSettings = ({ visible, toggleSettings }) => {
   const { formatSettings, updateFormatSettings, customTemplates, addCustomTemplate, deleteCustomTemplate, applyTemplate } = useDocument();
   const [form] = Form.useForm();
@@ -158,6 +231,21 @@ const FormatSettings = ({ visible, toggleSettings }) => {
       newSettings.page[field] = value;
     }
     updateFormatSettings(newSettings);
+  };
+
+  // 恢复默认页面边距
+  const resetDefaultMargins = () => {
+    const defaultMargins = {
+      top: 2.54,
+      right: 3.18,
+      bottom: 2.54,
+      left: 3.18
+    };
+    
+    const newSettings = { ...formatSettings };
+    newSettings.page.margin = { ...defaultMargins };
+    updateFormatSettings(newSettings);
+    message.success('已恢复默认页面边距');
   };
 
   // 打开保存模板对话框
@@ -213,8 +301,11 @@ const FormatSettings = ({ visible, toggleSettings }) => {
     const isHeading = elementType.startsWith('heading');
     const isParagraph = elementType === 'paragraph';
     
+    // 创建自定义标题组件
+    const customHeader = <CustomPanelHeader title={title} settings={settings} elementType={elementType} />;
+    
     return (
-      <Panel header={title} key={elementType}>
+      <Panel header={customHeader} key={elementType}>
         <FormItem label="字体">
           <Select 
             value={settings.fontFamily} 
@@ -393,14 +484,14 @@ const FormatSettings = ({ visible, toggleSettings }) => {
         
         <Tabs activeKey={activeTab} onChange={setActiveTab}>
           <TabPane tab="内容设置" key="content">
-            <Collapse defaultActiveKey={['heading1']}>
+            <StyledCollapse defaultActiveKey={['paragraph']}>
+              {renderElementSettings('paragraph', '正文')}
               {renderElementSettings('heading1', '一级标题')}
               {renderElementSettings('heading2', '二级标题')}
               {renderElementSettings('heading3', '三级标题')}
               {renderElementSettings('heading4', '四级标题')}
-              {renderElementSettings('paragraph', '正文')}
               {renderElementSettings('quote', '引用')}
-            </Collapse>
+            </StyledCollapse>
           </TabPane>
           
           <TabPane tab="页面布局" key="page">
@@ -416,7 +507,30 @@ const FormatSettings = ({ visible, toggleSettings }) => {
               </Select>
             </FormItem>
             
-            <FormItem label="页边距 (厘米)">
+            <FormItem 
+              label={
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                  <span>页边距 (厘米)</span>
+                  <Button 
+                    size="small"
+                    type="default"
+                    onClick={resetDefaultMargins}
+                    icon={<RedoOutlined />}
+                    style={{ 
+                      fontSize: '12px', 
+                      height: '24px', 
+                      padding: '0 8px', 
+                      color: '#8c8c8c', 
+                      borderColor: '#d9d9d9',
+                      background: '#f5f5f5'
+                    }}
+                  >
+                    恢复默认
+                  </Button>
+                </div>
+              }
+              colon={false}
+            >
               <Form.Item label="上" style={{ marginBottom: 8 }}>
                 <InputNumber 
                   value={formatSettings.page.margin.top} 

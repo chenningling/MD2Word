@@ -267,12 +267,14 @@ const createHeading = (token, contentSettings) => {
     console.warn(`找不到标题级别 ${level} 的设置，使用默认设置`);
     return new Paragraph({
       text: token.text,
-      heading: getHeadingLevel(level)
+      heading: getHeadingLevel(level),
+      bold: true // 默认标题使用粗体
     });
   }
   
   // 处理标题内容
-  const inlineTokens = parseInlineTokens(token.text, settings);
+  // 传递一个明确的标志，表示这是标题内容
+  const inlineTokens = parseInlineTokens(token.text, settings, true);
   
   // 段前/段后间距（Word中使用twip单位，1磅约等于20twip）
   const spacingBeforeTwips = settings.spacingBefore ? settings.spacingBefore * 20 : 0;
@@ -287,10 +289,11 @@ const createHeading = (token, contentSettings) => {
     spacingAfter: settings.spacingAfter,
     spacingAfterTwips,
     lineHeight: settings.lineHeight,
-    lineSpacingTwips
+    lineSpacingTwips,
+    bold: settings.bold
   });
   
-  // 创建标题段落
+  // 创建标题段落，明确指定不使用斜体
   return new Paragraph({
     children: inlineTokens,
     heading: getHeadingLevel(level),
@@ -537,7 +540,7 @@ const createTable = (token, settings) => {
 };
 
 // 处理tokens数组转换为TextRun数组
-const processTokensToTextRuns = (tokens, settings) => {
+const processTokensToTextRuns = (tokens, settings, isHeading = false) => {
   const textRuns = [];
   
   tokens.forEach(token => {
@@ -549,7 +552,8 @@ const processTokensToTextRuns = (tokens, settings) => {
             bold: true,
             font: { name: settings.fontFamily },
             size: Math.round(settings.fontSize * 2),
-            color: "000000" // 设置为黑色
+            color: "000000", // 设置为黑色
+            italics: false // 确保不使用斜体
           })
         );
         break;
@@ -584,6 +588,8 @@ const processTokensToTextRuns = (tokens, settings) => {
                 style: "Hyperlink",
                 font: { name: settings.fontFamily },
                 size: Math.round(settings.fontSize * 2),
+                bold: isHeading ? settings.bold : undefined, // 如果是标题，应用粗体设置
+                italics: false // 确保不使用斜体
               })
             ],
             link: token.href
@@ -599,7 +605,8 @@ const processTokensToTextRuns = (tokens, settings) => {
             color: "000000", // 设置为黑色
             shading: { 
               fill: "F0F0F0" // 浅灰色背景
-            }
+            },
+            italics: false // 确保不使用斜体
           })
         );
         break;
@@ -611,7 +618,10 @@ const processTokensToTextRuns = (tokens, settings) => {
               text: token.text,
               font: { name: settings.fontFamily },
               size: Math.round(settings.fontSize * 2),
-              color: "000000" // 设置为黑色
+              // 如果是标题或者设置了粗体，则使用粗体
+              bold: isHeading ? settings.bold : settings.bold,
+              color: "000000", // 设置为黑色
+              italics: false // 如果是标题，确保不使用斜体
             })
           );
         }
@@ -626,7 +636,10 @@ const processTokensToTextRuns = (tokens, settings) => {
         text: '',
         font: { name: settings.fontFamily },
         size: Math.round(settings.fontSize * 2),
-        color: "000000" // 设置为黑色
+        // 如果是标题或者设置了粗体，则使用粗体
+        bold: isHeading ? settings.bold : settings.bold,
+        color: "000000", // 设置为黑色
+        italics: false // 确保不使用斜体
       })
     );
   }
@@ -635,17 +648,17 @@ const processTokensToTextRuns = (tokens, settings) => {
 };
 
 // 解析内联格式
-const parseInlineTokens = (text, settings) => {
+const parseInlineTokens = (text, settings, isHeading = false) => {
   // 确保text是字符串
   const textContent = String(text || '');
-  console.log('处理内联格式:', textContent);
+  console.log('处理内联格式:', textContent, isHeading ? '(标题)' : '');
   
   // 使用marked解析内联标记
   const inlineTokens = marked.lexer(textContent, { gfm: true });
   
   // 如果解析成功并且包含内联标记，使用processTokensToTextRuns处理
   if (inlineTokens && inlineTokens.length > 0 && inlineTokens[0].type === 'paragraph' && inlineTokens[0].tokens) {
-    return processTokensToTextRuns(inlineTokens[0].tokens, settings);
+    return processTokensToTextRuns(inlineTokens[0].tokens, settings, isHeading);
   }
   
   // 简化处理方式，直接使用正则表达式查找和替换
@@ -739,7 +752,8 @@ const parseInlineTokens = (text, settings) => {
             bold: true,
             font: { name: settings.fontFamily },
             size: Math.round(settings.fontSize * 2),
-            color: "000000" // 设置为黑色
+            color: "000000", // 设置为黑色
+            italics: false // 确保不使用斜体
           })
         );
         break;
@@ -774,7 +788,8 @@ const parseInlineTokens = (text, settings) => {
             color: "000000", // 设置为黑色
             shading: { 
               fill: "F0F0F0" // 浅灰色背景
-            }
+            },
+            italics: false // 确保不使用斜体
           })
         );
         break;
@@ -787,6 +802,8 @@ const parseInlineTokens = (text, settings) => {
                 style: "Hyperlink",
                 font: { name: settings.fontFamily },
                 size: Math.round(settings.fontSize * 2),
+                bold: isHeading ? settings.bold : undefined, // 如果是标题，应用粗体设置
+                italics: false // 确保不使用斜体
               })
             ],
             link: segment.url
@@ -801,8 +818,10 @@ const parseInlineTokens = (text, settings) => {
               text: segment.text,
               font: { name: settings.fontFamily },
               size: Math.round(settings.fontSize * 2),
-              bold: settings.bold,
-              color: "000000" // 设置为黑色
+              // 如果是标题或者设置了粗体，则使用粗体
+              bold: isHeading ? settings.bold : settings.bold,
+              color: "000000", // 设置为黑色
+              italics: false // 如果是标题，确保不使用斜体
             })
           );
         }
@@ -817,7 +836,10 @@ const parseInlineTokens = (text, settings) => {
         text: textContent,
         font: { name: settings.fontFamily },
         size: Math.round(settings.fontSize * 2),
-        bold: settings.bold
+        // 如果是标题或者设置了粗体，则使用粗体
+        bold: isHeading ? settings.bold : settings.bold,
+        color: "000000", // 设置为黑色
+        italics: false // 确保不使用斜体
       })
     );
   }
