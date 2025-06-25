@@ -150,6 +150,9 @@ const createCodeBlock = (token, settings) => {
   // 创建代码块容器
   const codeElements = [];
   
+  // 行间距（Word中使用240为单倍行距的基准）
+  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  
   // 为每一行代码创建单独的段落
   codeLines.forEach((line, index) => {
     codeElements.push(
@@ -164,9 +167,10 @@ const createCodeBlock = (token, settings) => {
         ],
         spacing: {
           // 只有第一行需要上边距，最后一行需要下边距
-          before: index === 0 ? 240 : 0,
-          after: index === codeLines.length - 1 ? 240 : 0,
-          line: Math.round(settings.lineHeight * 240)
+          before: index === 0 ? 120 : 0,      // 6磅
+          after: index === codeLines.length - 1 ? 120 : 0,  // 6磅
+          line: lineSpacingTwips,
+          lineRule: 'exact'
         },
         shading: {
           type: 'solid',
@@ -201,9 +205,10 @@ const createCodeBlock = (token, settings) => {
           })
         ],
         spacing: {
-          before: 240,
-          after: 240,
-          line: Math.round(settings.lineHeight * 240)
+          before: 120,  // 6磅
+          after: 120,   // 6磅
+          line: lineSpacingTwips,
+          lineRule: 'exact'
         },
         shading: {
           type: 'solid',
@@ -255,66 +260,96 @@ const createHorizontalRule = () => {
 // 创建标题
 const createHeading = (token, contentSettings) => {
   const level = token.depth;
-  let settings;
-
-  // 根据标题级别选择对应的设置
-  switch (level) {
-    case 1:
-      settings = contentSettings.heading1;
-      break;
-    case 2:
-      settings = contentSettings.heading2;
-      break;
-    case 3:
-    default:
-      settings = contentSettings.heading3;
-      break;
+  const headingType = `heading${level}`;
+  const settings = contentSettings[headingType];
+  
+  if (!settings) {
+    console.warn(`找不到标题级别 ${level} 的设置，使用默认设置`);
+    return new Paragraph({
+      text: token.text,
+      heading: getHeadingLevel(level)
+    });
   }
-
-  // 转换对齐方式
-  const alignment = convertAlignment(settings.align);
-
-  // 处理标题中可能的内联格式
-  const textRuns = parseInlineTokens(token.text, {
-    ...settings,
-    bold: settings.bold // 保持标题的粗体设置
+  
+  // 处理标题内容
+  const inlineTokens = parseInlineTokens(token.text, settings);
+  
+  // 段前/段后间距（Word中使用twip单位，1磅约等于20twip）
+  const spacingBeforeTwips = settings.spacingBefore ? settings.spacingBefore * 20 : 0;
+  const spacingAfterTwips = settings.spacingAfter ? settings.spacingAfter * 20 : 0;
+  
+  // 行间距（Word中使用240为单倍行距的基准）
+  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  
+  console.log(`标题${level}设置:`, {
+    spacingBefore: settings.spacingBefore,
+    spacingBeforeTwips,
+    spacingAfter: settings.spacingAfter,
+    spacingAfterTwips,
+    lineHeight: settings.lineHeight,
+    lineSpacingTwips
   });
   
-  // 确保所有TextRun都设置了黑色
-  textRuns.forEach(run => {
-    if (run.color === undefined) {
-      run.color = "000000"; // 设置为黑色
-    }
-  });
-
+  // 创建标题段落
   return new Paragraph({
-    children: textRuns,
+    children: inlineTokens,
     heading: getHeadingLevel(level),
-    alignment,
+    alignment: convertAlignment(settings.align),
     spacing: {
-      after: 200,
-      line: Math.round(settings.lineHeight * 240)
+      before: spacingBeforeTwips,
+      after: spacingAfterTwips,
+      line: lineSpacingTwips,
+      lineRule: 'exact' // 使用确切的行间距，而不是最小值
     }
   });
 };
 
 // 创建段落
 const createParagraph = (token, settings) => {
-  // 转换对齐方式
-  const alignment = convertAlignment(settings.align);
-
-  // 确保token.text是字符串
-  const textContent = String(token.text || token.raw || '');
-
-  // 处理段落中的内联格式
-  const textRuns = parseInlineTokens(textContent, settings);
-
+  // 处理段落内容
+  let inlineTokens;
+  
+  if (token.tokens) {
+    // 如果有tokens数组，使用processTokensToTextRuns处理
+    inlineTokens = processTokensToTextRuns(token.tokens, settings);
+  } else if (token.text || token.raw) {
+    // 否则使用parseInlineTokens处理文本
+    inlineTokens = parseInlineTokens(String(token.text || token.raw || ''), settings);
+  } else {
+    inlineTokens = [new TextRun({ text: '' })];
+  }
+  
+  // 计算首行缩进值（Word中使用twip单位，1字符约等于120twip）
+  // 中文字符宽度约为英文的2倍，所以乘以240
+  const firstLineIndentTwips = settings.firstLineIndent ? settings.firstLineIndent * 240 : 0;
+  
+  // 段落间距（Word中使用twip单位，1磅约等于20twip）
+  const spacingAfterTwips = settings.paragraphSpacing ? settings.paragraphSpacing * 20 : 0;
+  
+  // 行间距（Word中使用240为单倍行距的基准）
+  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  
+  console.log('段落设置:', {
+    firstLineIndent: settings.firstLineIndent,
+    firstLineIndentTwips,
+    paragraphSpacing: settings.paragraphSpacing,
+    spacingAfterTwips,
+    lineHeight: settings.lineHeight,
+    lineSpacingTwips
+  });
+  
+  // 创建段落
   return new Paragraph({
-    children: textRuns,
-    alignment,
+    children: inlineTokens,
+    alignment: convertAlignment(settings.align),
     spacing: {
-      after: 200,
-      line: Math.round(settings.lineHeight * 240)
+      before: 0,
+      after: spacingAfterTwips,
+      line: lineSpacingTwips,
+      lineRule: 'exact' // 使用确切的行间距，而不是最小值
+    },
+    indent: {
+      firstLine: firstLineIndentTwips
     }
   });
 };
@@ -329,13 +364,18 @@ const createBlockquote = (token, settings) => {
 
   // 处理引用中的内联格式
   const textRuns = parseInlineTokens(textContent, settings);
+  
+  // 行间距（Word中使用240为单倍行距的基准）
+  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
 
   return new Paragraph({
     children: textRuns,
     alignment,
     spacing: {
-      after: 200,
-      line: Math.round(settings.lineHeight * 240)
+      before: 120, // 6磅
+      after: 120,  // 6磅
+      line: lineSpacingTwips,
+      lineRule: 'exact'
     },
     indent: {
       left: convertInchesToTwip(0.5)
@@ -355,6 +395,9 @@ const createBlockquote = (token, settings) => {
 const createList = (token, settings) => {
   const paragraphs = [];
   
+  // 行间距（Word中使用240为单倍行距的基准）
+  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  
   token.items.forEach((item, index) => {
     const prefix = token.ordered ? `${index + 1}. ` : '• ';
     
@@ -369,8 +412,10 @@ const createList = (token, settings) => {
       new Paragraph({
         children: textRuns,
         spacing: {
-          after: 100,
-          line: Math.round(settings.lineHeight * 240)
+          before: 40,  // 2磅
+          after: 40,   // 2磅
+          line: lineSpacingTwips,
+          lineRule: 'exact'
         },
         indent: {
           left: convertInchesToTwip(0.25)
@@ -794,8 +839,9 @@ const getHeadingLevel = (level) => {
     case 5:
       return HeadingLevel.HEADING_5;
     case 6:
-    default:
       return HeadingLevel.HEADING_6;
+    default:
+      return HeadingLevel.HEADING_1;
   }
 };
 

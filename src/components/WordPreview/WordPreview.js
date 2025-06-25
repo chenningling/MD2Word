@@ -86,6 +86,8 @@ const WordDocument = styled.div`
     font-weight: ${props => props.heading1.bold ? 'bold' : 'normal'};
     line-height: ${props => props.heading1.lineHeight};
     text-align: ${props => props.heading1.align};
+    margin-top: ${props => props.heading1.spacingBefore ? `${props.heading1.spacingBefore}pt` : '12pt'};
+    margin-bottom: ${props => props.heading1.spacingAfter ? `${props.heading1.spacingAfter}pt` : '8pt'};
   }
   
   h1 {
@@ -98,6 +100,8 @@ const WordDocument = styled.div`
     font-weight: ${props => props.heading2.bold ? 'bold' : 'normal'};
     line-height: ${props => props.heading2.lineHeight};
     text-align: ${props => props.heading2.align};
+    margin-top: ${props => props.heading2.spacingBefore ? `${props.heading2.spacingBefore}pt` : '10pt'};
+    margin-bottom: ${props => props.heading2.spacingAfter ? `${props.heading2.spacingAfter}pt` : '6pt'};
   }
   
   h3 {
@@ -106,6 +110,18 @@ const WordDocument = styled.div`
     font-weight: ${props => props.heading3.bold ? 'bold' : 'normal'};
     line-height: ${props => props.heading3.lineHeight};
     text-align: ${props => props.heading3.align};
+    margin-top: ${props => props.heading3.spacingBefore ? `${props.heading3.spacingBefore}pt` : '8pt'};
+    margin-bottom: ${props => props.heading3.spacingAfter ? `${props.heading3.spacingAfter}pt` : '6pt'};
+  }
+  
+  h4 {
+    font-size: ${props => props.heading4.fontSize}pt;
+    font-family: ${props => getMappedFont(props.heading4.fontFamily)};
+    font-weight: ${props => props.heading4.bold ? 'bold' : 'normal'};
+    line-height: ${props => props.heading4.lineHeight};
+    text-align: ${props => props.heading4.align};
+    margin-top: ${props => props.heading4.spacingBefore ? `${props.heading4.spacingBefore}pt` : '6pt'};
+    margin-bottom: ${props => props.heading4.spacingAfter ? `${props.heading4.spacingAfter}pt` : '4pt'};
   }
   
   p {
@@ -114,7 +130,8 @@ const WordDocument = styled.div`
     font-weight: ${props => props.paragraph.bold ? 'bold' : 'normal'};
     line-height: ${props => props.paragraph.lineHeight};
     text-align: ${props => props.paragraph.align};
-    margin-bottom: 1em;
+    margin-bottom: ${props => props.paragraph.paragraphSpacing ? `${props.paragraph.paragraphSpacing}pt` : '6pt'};
+    text-indent: ${props => props.paragraph.firstLineIndent ? `${props.paragraph.firstLineIndent}em` : '0'};
   }
   
   blockquote {
@@ -316,6 +333,7 @@ const WordPreview = () => {
           heading1={content.heading1}
           heading2={content.heading2}
           heading3={content.heading3}
+          heading4={content.heading4}
           paragraph={content.paragraph}
           quote={content.quote}
           dangerouslySetInnerHTML={{ __html: processedHtml }}

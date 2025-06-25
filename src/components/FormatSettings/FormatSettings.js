@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Layout, Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography } from 'antd';
-import { CloseOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons';
+import { Layout, Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, Modal, Input, message } from 'antd';
+import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 
@@ -58,6 +58,25 @@ const ButtonGroup = styled.div`
   gap: 8px;
 `;
 
+// 添加自定义样式，确保删除按钮正常工作
+const StyledSelect = styled(Select)`
+  .ant-select-item-option-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .template-delete-btn {
+    z-index: 100;
+    position: relative;
+    
+    &:hover {
+      color: #ff7875;
+      background-color: rgba(255, 77, 79, 0.1);
+    }
+  }
+`;
+
 // 预设模板列表
 const templates = [
   { id: 'default', name: '默认样式' },
@@ -108,18 +127,18 @@ const FontOption = ({ value, children }) => {
 };
 
 const FormatSettings = ({ visible, toggleSettings }) => {
-  const { formatSettings, updateFormatSettings, customTemplates, addCustomTemplate } = useDocument();
+  const { formatSettings, updateFormatSettings, customTemplates, addCustomTemplate, deleteCustomTemplate, applyTemplate } = useDocument();
   const [form] = Form.useForm();
   const [activeTab, setActiveTab] = useState('content');
   const [selectedTemplate, setSelectedTemplate] = useState(formatSettings.template);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [templateName, setTemplateName] = useState('');
 
   // 处理模板选择
   const handleTemplateChange = (value) => {
     setSelectedTemplate(value);
-    // 这里应该根据选择的模板更新设置
-    // 在实际应用中，需要从预设模板或自定义模板中获取设置
-    // 这里简化处理
-    updateFormatSettings({ template: value });
+    // 应用选中的模板设置
+    applyTemplate(value);
   };
 
   // 处理内容设置变更
@@ -141,21 +160,58 @@ const FormatSettings = ({ visible, toggleSettings }) => {
     updateFormatSettings(newSettings);
   };
 
+  // 打开保存模板对话框
+  const showSaveTemplateModal = () => {
+    setTemplateName('');
+    setIsModalVisible(true);
+  };
+
   // 保存当前设置为自定义模板
   const saveAsTemplate = () => {
-    // 实际应用中应该弹出对话框让用户输入模板名称
-    const templateName = `自定义模板 ${customTemplates.length + 1}`;
+    if (!templateName.trim()) {
+      message.error('请输入模板名称');
+      return;
+    }
+
     const newTemplate = {
       id: `custom_${Date.now()}`,
-      name: templateName,
+      name: templateName.trim(),
       settings: { ...formatSettings }
     };
+    
     addCustomTemplate(newTemplate);
+    setIsModalVisible(false);
+    message.success(`模板 "${templateName}" 已保存`);
+    setSelectedTemplate(newTemplate.id);
+  };
+
+  // 处理删除自定义模板
+  const handleDeleteTemplate = (e, templateId) => {
+    // 完全阻止事件传播和默认行为
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (e && e.preventDefault) e.preventDefault();
+    
+    // 直接执行删除操作，不使用Modal确认
+    deleteCustomTemplate(templateId);
+    if (selectedTemplate === templateId) {
+      // 如果删除的是当前选中的模板，切换到默认模板
+      setSelectedTemplate('default');
+      applyTemplate('default');
+    }
+    message.success('模板已删除');
+    
+    // 添加日志
+    console.log('删除模板:', templateId);
+    
+    // 返回false阻止事件冒泡
+    return false;
   };
 
   // 渲染元素类型设置
   const renderElementSettings = (elementType, title) => {
     const settings = formatSettings.content[elementType];
+    const isHeading = elementType.startsWith('heading');
+    const isParagraph = elementType === 'paragraph';
     
     return (
       <Panel header={title} key={elementType}>
@@ -219,6 +275,59 @@ const FormatSettings = ({ visible, toggleSettings }) => {
             ))}
           </Select>
         </FormItem>
+        
+        {isHeading && (
+          <>
+            <FormItem label="段前间距 (磅)">
+              <InputNumber 
+                value={settings.spacingBefore} 
+                onChange={(value) => handleContentSettingChange(elementType, 'spacingBefore', value)}
+                min={0}
+                max={72}
+                step={1}
+                style={{ width: '100%' }}
+              />
+            </FormItem>
+            
+            <FormItem label="段后间距 (磅)">
+              <InputNumber 
+                value={settings.spacingAfter} 
+                onChange={(value) => handleContentSettingChange(elementType, 'spacingAfter', value)}
+                min={0}
+                max={72}
+                step={1}
+                style={{ width: '100%' }}
+              />
+            </FormItem>
+          </>
+        )}
+        
+        {isParagraph && (
+          <>
+            <FormItem label="首行缩进 (字符数)">
+              <Select 
+                value={settings.firstLineIndent} 
+                onChange={(value) => handleContentSettingChange(elementType, 'firstLineIndent', value)}
+                style={{ width: '100%' }}
+              >
+                <Option value={0}>无缩进</Option>
+                <Option value={2}>2字符 (中文标准)</Option>
+                <Option value={4}>4字符 (英文标准)</Option>
+              </Select>
+            </FormItem>
+            
+            <FormItem label="段落间距 (磅)">
+              <InputNumber 
+                value={settings.paragraphSpacing} 
+                onChange={(value) => handleContentSettingChange(elementType, 'paragraphSpacing', value)}
+                min={0}
+                max={36}
+                step={1}
+                style={{ width: '100%' }}
+              />
+            </FormItem>
+          </>
+        )}
       </Panel>
     );
   };
@@ -239,7 +348,7 @@ const FormatSettings = ({ visible, toggleSettings }) => {
       <SettingsContent>
         <TemplateSelect>
           <FormItem label="预设模板">
-            <Select 
+            <StyledSelect 
               value={selectedTemplate} 
               onChange={handleTemplateChange}
               style={{ width: '100%' }}
@@ -250,7 +359,7 @@ const FormatSettings = ({ visible, toggleSettings }) => {
                     <Button 
                       type="text" 
                       icon={<SaveOutlined />} 
-                      onClick={saveAsTemplate}
+                      onClick={showSaveTemplateModal}
                     >
                       保存当前设置为模板
                     </Button>
@@ -262,9 +371,23 @@ const FormatSettings = ({ visible, toggleSettings }) => {
                 <Option key={template.id} value={template.id}>{template.name}</Option>
               ))}
               {customTemplates.map(template => (
-                <Option key={template.id} value={template.id}>{template.name}</Option>
+                <Option key={template.id} value={template.id}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span onClick={() => handleTemplateChange(template.id)}>{template.name}</span>
+                    <Button 
+                      type="text" 
+                      size="small" 
+                      icon={<DeleteOutlined />} 
+                      onClick={(e) => handleDeleteTemplate(e, template.id)}
+                      style={{ color: '#ff4d4f' }}
+                      className="template-delete-btn"
+                      onMouseDown={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                      onMouseUp={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                    />
+                  </div>
+                </Option>
               ))}
-            </Select>
+            </StyledSelect>
           </FormItem>
         </TemplateSelect>
         
@@ -274,6 +397,7 @@ const FormatSettings = ({ visible, toggleSettings }) => {
               {renderElementSettings('heading1', '一级标题')}
               {renderElementSettings('heading2', '二级标题')}
               {renderElementSettings('heading3', '三级标题')}
+              {renderElementSettings('heading4', '四级标题')}
               {renderElementSettings('paragraph', '正文')}
               {renderElementSettings('quote', '引用')}
             </Collapse>
@@ -340,6 +464,31 @@ const FormatSettings = ({ visible, toggleSettings }) => {
           </TabPane>
         </Tabs>
       </SettingsContent>
+
+      {/* 保存模板对话框 */}
+      <Modal
+        title="保存为模板"
+        open={isModalVisible}
+        onOk={saveAsTemplate}
+        onCancel={() => setIsModalVisible(false)}
+        okText="保存"
+        cancelText="取消"
+      >
+        <Form layout="vertical">
+          <Form.Item 
+            label="模板名称" 
+            required 
+            rules={[{ required: true, message: '请输入模板名称' }]}
+          >
+            <Input 
+              placeholder="请输入模板名称" 
+              value={templateName} 
+              onChange={(e) => setTemplateName(e.target.value)}
+              autoFocus
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </StyledSider>
   );
 };

@@ -4,10 +4,11 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const defaultFormatSettings = {
   template: 'default',
   content: {
-    heading1: { fontFamily: '微软雅黑', fontSize: 16, bold: true, lineHeight: 1.5, align: 'left' },
-    heading2: { fontFamily: '微软雅黑', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left' },
-    heading3: { fontFamily: '微软雅黑', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left' },
-    paragraph: { fontFamily: '宋体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
+    heading1: { fontFamily: '微软雅黑', fontSize: 16, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 12, spacingAfter: 8 },
+    heading2: { fontFamily: '微软雅黑', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 10, spacingAfter: 6 },
+    heading3: { fontFamily: '微软雅黑', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
+    heading4: { fontFamily: '微软雅黑', fontSize: 11, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 6, spacingAfter: 4 },
+    paragraph: { fontFamily: '宋体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left', firstLineIndent: 2, paragraphSpacing: 6 },
     quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
   },
   page: {
@@ -18,6 +19,74 @@ const defaultFormatSettings = {
       left: 3.18
     },
     size: 'A4'
+  }
+};
+
+// 预设模板定义
+const predefinedTemplates = {
+  default: defaultFormatSettings,
+  
+  academic: {
+    template: 'academic',
+    content: {
+      heading1: { fontFamily: 'Times New Roman', fontSize: 18, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 14, spacingAfter: 10 },
+      heading2: { fontFamily: 'Times New Roman', fontSize: 16, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 12, spacingAfter: 8 },
+      heading3: { fontFamily: 'Times New Roman', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 10, spacingAfter: 6 },
+      heading4: { fontFamily: 'Times New Roman', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
+      paragraph: { fontFamily: 'Times New Roman', fontSize: 12, bold: false, lineHeight: 2.0, align: 'justify', firstLineIndent: 2, paragraphSpacing: 6 },
+      quote: { fontFamily: 'Times New Roman', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
+    },
+    page: {
+      margin: {
+        top: 2.54,
+        right: 3.18,
+        bottom: 2.54,
+        left: 3.18
+      },
+      size: 'A4'
+    }
+  },
+  
+  legal: {
+    template: 'legal',
+    content: {
+      heading1: { fontFamily: '黑体', fontSize: 16, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 14, spacingAfter: 10 },
+      heading2: { fontFamily: '黑体', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 12, spacingAfter: 8 },
+      heading3: { fontFamily: '黑体', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 10, spacingAfter: 6 },
+      heading4: { fontFamily: '黑体', fontSize: 11, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
+      paragraph: { fontFamily: '仿宋', fontSize: 12, bold: false, lineHeight: 1.8, align: 'justify', firstLineIndent: 2, paragraphSpacing: 0 },
+      quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
+    },
+    page: {
+      margin: {
+        top: 3.0,
+        right: 2.5,
+        bottom: 3.0,
+        left: 2.5
+      },
+      size: 'A4'
+    }
+  },
+  
+  business: {
+    template: 'business',
+    content: {
+      heading1: { fontFamily: '黑体', fontSize: 18, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 12, spacingAfter: 8 },
+      heading2: { fontFamily: '黑体', fontSize: 16, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 10, spacingAfter: 6 },
+      heading3: { fontFamily: '黑体', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
+      heading4: { fontFamily: '黑体', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 6, spacingAfter: 4 },
+      paragraph: { fontFamily: '宋体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left', firstLineIndent: 2, paragraphSpacing: 3 },
+      quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
+    },
+    page: {
+      margin: {
+        top: 2.0,
+        right: 2.0,
+        bottom: 2.0,
+        left: 2.0
+      },
+      size: 'A4'
+    }
   }
 };
 
@@ -32,6 +101,8 @@ export const DocumentProvider = ({ children }) => {
   const [formatSettings, setFormatSettings] = useState(defaultFormatSettings);
   // 自定义模板状态
   const [customTemplates, setCustomTemplates] = useState([]);
+  // 添加一个ref来标记是否已完成初始加载
+  const initialLoadDone = React.useRef(false);
 
   // 从本地存储加载内容
   useEffect(() => {
@@ -52,11 +123,18 @@ export const DocumentProvider = ({ children }) => {
     const savedTemplates = localStorage.getItem('md2word-templates');
     if (savedTemplates) {
       try {
-        setCustomTemplates(JSON.parse(savedTemplates));
+        const parsedTemplates = JSON.parse(savedTemplates);
+        console.log('加载自定义模板:', parsedTemplates);
+        if (Array.isArray(parsedTemplates) && parsedTemplates.length > 0) {
+          setCustomTemplates(parsedTemplates);
+        }
       } catch (e) {
         console.error('Failed to parse saved templates:', e);
       }
     }
+    
+    // 标记初始加载完成
+    initialLoadDone.current = true;
   }, []);
 
   // 保存内容到本地存储
@@ -73,7 +151,11 @@ export const DocumentProvider = ({ children }) => {
 
   // 保存自定义模板到本地存储
   useEffect(() => {
-    localStorage.setItem('md2word-templates', JSON.stringify(customTemplates));
+    // 只有当customTemplates不为空或者已经完成初始加载时才保存
+    if (customTemplates.length > 0 || initialLoadDone.current) {
+      localStorage.setItem('md2word-templates', JSON.stringify(customTemplates));
+      console.log('保存自定义模板:', customTemplates);
+    }
   }, [customTemplates]);
 
   // 更新文档内容
@@ -86,9 +168,39 @@ export const DocumentProvider = ({ children }) => {
     setFormatSettings({ ...formatSettings, ...newSettings });
   };
 
+  // 根据模板ID获取模板设置
+  const getTemplateSettings = (templateId) => {
+    // 检查是否是预设模板
+    if (predefinedTemplates[templateId]) {
+      return predefinedTemplates[templateId];
+    }
+    
+    // 检查是否是自定义模板
+    const customTemplate = customTemplates.find(template => template.id === templateId);
+    if (customTemplate) {
+      return customTemplate.settings;
+    }
+    
+    // 如果找不到模板，返回默认设置
+    return defaultFormatSettings;
+  };
+
+  // 应用模板设置
+  const applyTemplate = (templateId) => {
+    const templateSettings = getTemplateSettings(templateId);
+    setFormatSettings(templateSettings);
+  };
+
   // 添加自定义模板
   const addCustomTemplate = (template) => {
-    setCustomTemplates([...customTemplates, template]);
+    // 确保模板有正确的ID和名称
+    const newTemplate = {
+      id: template.id || `custom_${Date.now()}`,
+      name: template.name || '自定义模板',
+      settings: { ...template.settings }
+    };
+    
+    setCustomTemplates(prevTemplates => [...prevTemplates, newTemplate]);
   };
 
   // 删除自定义模板
@@ -115,7 +227,9 @@ export const DocumentProvider = ({ children }) => {
         customTemplates,
         addCustomTemplate,
         deleteCustomTemplate,
-        updateCustomTemplate
+        updateCustomTemplate,
+        getTemplateSettings,
+        applyTemplate
       }}
     >
       {children}
