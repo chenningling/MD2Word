@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+/* 添加拖动相关样式 */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 拖动时禁止文本选择 */
+.resizing {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* 拖动时的光标样式 */
+.resizing * {
+  cursor: col-resize !important;
+}
+
+/* 确保布局容器占满高度 */
+#root {
+  height: 100vh;
+}

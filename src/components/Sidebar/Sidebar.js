@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { Layout, Menu } from 'antd';
+import { Menu } from 'antd';
 import { BookOutlined, FormatPainterOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
-const { Sider } = Layout;
-
-const StyledSider = styled(Sider)`
+const StyledSidebarContainer = styled.div`
   background-color: #f0f2f5;
-  
-  .ant-menu {
-    height: 100%;
-  }
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
+
+const StyledMenu = styled(Menu)`
+  height: 100%;
+  border-right: 0;
 `;
 
 const Sidebar = ({ visible, toggleSidebar, openSideContent }) => {
@@ -32,41 +34,22 @@ const Sidebar = ({ visible, toggleSidebar, openSideContent }) => {
     }
   };
 
-  if (!visible) {
-    return (
-      <StyledSider 
-        width={50} 
-        collapsible 
-        collapsed={true} 
-        trigger={null}
-      >
-        <Menu 
-          mode="inline" 
-          selectedKeys={[activeKey]} 
-          onClick={({ key }) => handleMenuClick(key)}
-        >
-          <Menu.Item key="markdown-guide" icon={<BookOutlined />} />
-          <Menu.Item key="text-to-markdown" icon={<FormatPainterOutlined />} />
-        </Menu>
-      </StyledSider>
-    );
-  }
-
   return (
-    <StyledSider width={200}>
-      <Menu 
+    <StyledSidebarContainer>
+      <StyledMenu 
         mode="inline" 
         selectedKeys={[activeKey]} 
         onClick={({ key }) => handleMenuClick(key)}
+        inlineCollapsed={!visible}
       >
         <Menu.Item key="markdown-guide" icon={<BookOutlined />}>
-          Markdown基本语法学习
+          {visible && "Markdown基本语法学习"}
         </Menu.Item>
         <Menu.Item key="text-to-markdown" icon={<FormatPainterOutlined />}>
-          文本转Markdown
+          {visible && "文本转Markdown"}
         </Menu.Item>
-      </Menu>
-    </StyledSider>
+      </StyledMenu>
+    </StyledSidebarContainer>
   );
 };
 

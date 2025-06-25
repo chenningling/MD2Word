@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
-import { Layout, Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, Modal, Input, message } from 'antd';
+import { Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, Modal, Input, message } from 'antd';
 import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 
-const { Sider } = Layout;
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { Panel } = Collapse;
 const { Title } = Typography;
 
-const StyledSider = styled(Sider)`
+const SettingsContainer = styled.div`
   background-color: white;
   height: 100%;
-  overflow: auto;
+  width: 100%;
+  overflow: hidden;
   border-left: 1px solid #f0f0f0;
-  
-  .ant-layout-sider-children {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
+  display: flex;
+  flex-direction: column;
 `;
 
 const SettingsHeader = styled.div`
@@ -426,160 +422,147 @@ const FormatSettings = ({ visible, toggleSettings }) => {
   if (!visible) return null;
 
   return (
-    <StyledSider width={300}>
+    <SettingsContainer>
       <SettingsHeader>
         <SettingsTitle level={4}>排版格式设置</SettingsTitle>
         <Button 
           type="text" 
           icon={<CloseOutlined />} 
-          onClick={toggleSettings} 
+          onClick={toggleSettings}
         />
       </SettingsHeader>
-      
       <SettingsContent>
-        <TemplateSelect>
-          <FormItem label="预设模板">
-            <StyledSelect 
-              value={selectedTemplate} 
-              onChange={handleTemplateChange}
-              style={{ width: '100%' }}
-              dropdownRender={(menu) => (
-                <>
-                  {menu}
-                  <ButtonGroup>
-                    <Button 
-                      type="text" 
-                      icon={<SaveOutlined />} 
-                      onClick={showSaveTemplateModal}
-                    >
-                      保存当前设置为模板
-                    </Button>
-                  </ButtonGroup>
-                </>
-              )}
-            >
-              {templates.map(template => (
-                <Option key={template.id} value={template.id}>{template.name}</Option>
-              ))}
-              {customTemplates.map(template => (
-                <Option key={template.id} value={template.id}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span onClick={() => handleTemplateChange(template.id)}>{template.name}</span>
-                    <Button 
-                      type="text" 
-                      size="small" 
-                      icon={<DeleteOutlined />} 
-                      onClick={(e) => handleDeleteTemplate(e, template.id)}
-                      style={{ color: '#ff4d4f' }}
-                      className="template-delete-btn"
-                      onMouseDown={(e) => { e.stopPropagation(); e.preventDefault(); }}
-                      onMouseUp={(e) => { e.stopPropagation(); e.preventDefault(); }}
-                    />
+        <Tabs defaultActiveKey="content" activeKey={activeTab} onChange={setActiveTab}>
+          <TabPane tab="内容格式" key="content">
+            <TemplateSelect>
+              <StyledSelect
+                style={{ width: '100%' }}
+                placeholder="选择预设模板"
+                value={selectedTemplate}
+                onChange={handleTemplateChange}
+                dropdownRender={menu => (
+                  <div>
+                    {menu}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px' }}>
+                      <Button 
+                        type="text" 
+                        icon={<PlusOutlined />}
+                        onClick={showSaveTemplateModal}
+                      >
+                        保存当前设置为模板
+                      </Button>
+                    </div>
                   </div>
-                </Option>
-              ))}
-            </StyledSelect>
-          </FormItem>
-        </TemplateSelect>
-        
-        <Tabs activeKey={activeTab} onChange={setActiveTab}>
-          <TabPane tab="内容设置" key="content">
-            <StyledCollapse defaultActiveKey={['paragraph']}>
-              {renderElementSettings('paragraph', '正文')}
+                )}
+              >
+                <Select.OptGroup label="预设模板">
+                  {templates.map(template => (
+                    <Option key={template.id} value={template.id}>
+                      {template.name}
+                    </Option>
+                  ))}
+                </Select.OptGroup>
+                
+                {customTemplates.length > 0 && (
+                  <Select.OptGroup label="自定义模板">
+                    {customTemplates.map(template => (
+                      <Option key={template.id} value={template.id}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>{template.name}</span>
+                          <DeleteOutlined 
+                            className="template-delete-btn"
+                            onClick={(e) => handleDeleteTemplate(e, template.id)} 
+                          />
+                        </div>
+                      </Option>
+                    ))}
+                  </Select.OptGroup>
+                )}
+              </StyledSelect>
+            </TemplateSelect>
+            
+            <StyledCollapse defaultActiveKey={['heading1']}>
               {renderElementSettings('heading1', '一级标题')}
               {renderElementSettings('heading2', '二级标题')}
               {renderElementSettings('heading3', '三级标题')}
               {renderElementSettings('heading4', '四级标题')}
-              {renderElementSettings('quote', '引用')}
+              {renderElementSettings('paragraph', '正文段落')}
+              {renderElementSettings('quote', '引用文本')}
             </StyledCollapse>
           </TabPane>
           
-          <TabPane tab="页面布局" key="page">
-            <FormItem label="纸张大小">
-              <Select 
-                value={formatSettings.page.size} 
-                onChange={(value) => handlePageSettingChange('size', value)}
-                style={{ width: '100%' }}
-              >
-                <Option value="A4">A4</Option>
-                <Option value="Letter">Letter</Option>
-                <Option value="Legal">Legal</Option>
-              </Select>
-            </FormItem>
-            
-            <FormItem 
-              label={
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                  <span>页边距 (厘米)</span>
+          <TabPane tab="页面设置" key="page">
+            <Form layout="vertical">
+              <FormItem label="页面大小">
+                <Radio.Group 
+                  value={formatSettings.page.size} 
+                  onChange={(e) => handlePageSettingChange('size', e.target.value)}
+                >
+                  <Radio.Button value="A4">A4</Radio.Button>
+                  <Radio.Button value="Letter">Letter</Radio.Button>
+                </Radio.Group>
+              </FormItem>
+              
+              <FormItem label="页面边距 (厘米)">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <FormItem label="上" style={{ flex: 1, margin: 0 }}>
+                      <InputNumber
+                        min={1}
+                        max={5}
+                        step={0.01}
+                        value={formatSettings.page.margin.top}
+                        onChange={(value) => handlePageSettingChange('margin.top', value)}
+                        style={{ width: '100%' }}
+                      />
+                    </FormItem>
+                    <FormItem label="下" style={{ flex: 1, margin: 0 }}>
+                      <InputNumber
+                        min={1}
+                        max={5}
+                        step={0.01}
+                        value={formatSettings.page.margin.bottom}
+                        onChange={(value) => handlePageSettingChange('margin.bottom', value)}
+                        style={{ width: '100%' }}
+                      />
+                    </FormItem>
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <FormItem label="左" style={{ flex: 1, margin: 0 }}>
+                      <InputNumber
+                        min={1}
+                        max={5}
+                        step={0.01}
+                        value={formatSettings.page.margin.left}
+                        onChange={(value) => handlePageSettingChange('margin.left', value)}
+                        style={{ width: '100%' }}
+                      />
+                    </FormItem>
+                    <FormItem label="右" style={{ flex: 1, margin: 0 }}>
+                      <InputNumber
+                        min={1}
+                        max={5}
+                        step={0.01}
+                        value={formatSettings.page.margin.right}
+                        onChange={(value) => handlePageSettingChange('margin.right', value)}
+                        style={{ width: '100%' }}
+                      />
+                    </FormItem>
+                  </div>
                   <Button 
-                    size="small"
-                    type="default"
+                    icon={<RedoOutlined />} 
                     onClick={resetDefaultMargins}
-                    icon={<RedoOutlined />}
-                    style={{ 
-                      fontSize: '12px', 
-                      height: '24px', 
-                      padding: '0 8px', 
-                      color: '#8c8c8c', 
-                      borderColor: '#d9d9d9',
-                      background: '#f5f5f5'
-                    }}
+                    size="small"
                   >
-                    恢复默认
+                    恢复默认边距
                   </Button>
                 </div>
-              }
-              colon={false}
-            >
-              <Form.Item label="上" style={{ marginBottom: 8 }}>
-                <InputNumber 
-                  value={formatSettings.page.margin.top} 
-                  onChange={(value) => handlePageSettingChange('margin.top', value)}
-                  min={0}
-                  max={10}
-                  step={0.1}
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-              
-              <Form.Item label="右" style={{ marginBottom: 8 }}>
-                <InputNumber 
-                  value={formatSettings.page.margin.right} 
-                  onChange={(value) => handlePageSettingChange('margin.right', value)}
-                  min={0}
-                  max={10}
-                  step={0.1}
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-              
-              <Form.Item label="下" style={{ marginBottom: 8 }}>
-                <InputNumber 
-                  value={formatSettings.page.margin.bottom} 
-                  onChange={(value) => handlePageSettingChange('margin.bottom', value)}
-                  min={0}
-                  max={10}
-                  step={0.1}
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-              
-              <Form.Item label="左" style={{ marginBottom: 8 }}>
-                <InputNumber 
-                  value={formatSettings.page.margin.left} 
-                  onChange={(value) => handlePageSettingChange('margin.left', value)}
-                  min={0}
-                  max={10}
-                  step={0.1}
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-            </FormItem>
+              </FormItem>
+            </Form>
           </TabPane>
         </Tabs>
       </SettingsContent>
-
-      {/* 保存模板对话框 */}
+      
       <Modal
         title="保存为模板"
         open={isModalVisible}
@@ -591,19 +574,18 @@ const FormatSettings = ({ visible, toggleSettings }) => {
         <Form layout="vertical">
           <Form.Item 
             label="模板名称" 
-            required 
+            required
             rules={[{ required: true, message: '请输入模板名称' }]}
           >
             <Input 
               placeholder="请输入模板名称" 
               value={templateName} 
               onChange={(e) => setTemplateName(e.target.value)}
-              autoFocus
             />
           </Form.Item>
         </Form>
       </Modal>
-    </StyledSider>
+    </SettingsContainer>
   );
 };
 

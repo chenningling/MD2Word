@@ -23,6 +23,7 @@ const ContentLayout = styled(Layout)`
   display: flex;
   flex-direction: row;
   flex: 1;
+  position: relative;
 `;
 
 const MainContent = styled.div`
@@ -44,14 +45,35 @@ const PreviewContainer = styled.div`
   min-width: 20%;
 `;
 
-// 新增左侧内容区域样式
+// 修改左侧内容区域样式，添加宽度属性
 const SideContentContainer = styled.div`
-  width: 300px;
+  width: ${props => props.width}px;
   height: 100%;
   background-color: white;
   border-right: 1px solid #f0f0f0;
   overflow: auto;
   padding: 16px;
+  position: relative;
+  min-width: 200px;
+  max-width: 500px;
+`;
+
+// 修改侧边栏样式，添加宽度属性
+const StyledSidebar = styled.div`
+  width: ${props => props.width}px;
+  height: 100%;
+  position: relative;
+  min-width: 50px;
+  max-width: 300px;
+`;
+
+// 修改设置面板样式，添加宽度属性
+const SettingsContainer = styled.div`
+  width: ${props => props.width}px;
+  height: 100%;
+  position: relative;
+  min-width: 250px;
+  max-width: 500px;
 `;
 
 // 新增左侧内容标题样式
@@ -70,10 +92,16 @@ function App() {
   const [settingsVisible, setSettingsVisible] = useState(true);
   const [editorWidth, setEditorWidth] = useState(50); // 默认编辑器占50%宽度
   const mainContentRef = useRef(null);
+  const contentLayoutRef = useRef(null);
   
   // 新增左侧内容区域状态
   const [sideContentVisible, setSideContentVisible] = useState(false);
   const [sideContentType, setSideContentType] = useState(null);
+  
+  // 新增宽度状态
+  const [sidebarWidth, setSidebarWidth] = useState(200); // 默认侧边栏宽度
+  const [sideContentWidth, setSideContentWidth] = useState(300); // 默认左侧内容区域宽度
+  const [settingsWidth, setSettingsWidth] = useState(300); // 默认设置面板宽度
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -115,11 +143,59 @@ function App() {
     setEditorWidth(clampedWidth);
   };
 
+  // 新增侧边栏宽度调整处理函数
+  const handleSidebarResize = (clientX) => {
+    if (!contentLayoutRef.current) return;
+    
+    const newWidth = clientX;
+    // 限制宽度范围
+    const clampedWidth = Math.min(Math.max(newWidth, 50), 300);
+    setSidebarWidth(clampedWidth);
+    localStorage.setItem('sidebarWidth', clampedWidth.toString());
+  };
+
+  // 新增左侧内容区域宽度调整处理函数
+  const handleSideContentResize = (clientX) => {
+    if (!contentLayoutRef.current) return;
+    
+    const sidebarOffset = sidebarVisible ? sidebarWidth : 0;
+    const newWidth = clientX - sidebarOffset;
+    // 限制宽度范围
+    const clampedWidth = Math.min(Math.max(newWidth, 200), 500);
+    setSideContentWidth(clampedWidth);
+    localStorage.setItem('sideContentWidth', clampedWidth.toString());
+  };
+
+  // 新增设置面板宽度调整处理函数
+  const handleSettingsResize = (clientX) => {
+    if (!contentLayoutRef.current) return;
+    
+    const containerRect = contentLayoutRef.current.getBoundingClientRect();
+    const newWidth = containerRect.right - clientX;
+    // 限制宽度范围
+    const clampedWidth = Math.min(Math.max(newWidth, 250), 500);
+    setSettingsWidth(clampedWidth);
+    localStorage.setItem('settingsWidth', clampedWidth.toString());
+  };
+
   // 保存宽度设置到localStorage
   useEffect(() => {
     const savedEditorWidth = localStorage.getItem('editorWidth');
+    const savedSidebarWidth = localStorage.getItem('sidebarWidth');
+    const savedSideContentWidth = localStorage.getItem('sideContentWidth');
+    const savedSettingsWidth = localStorage.getItem('settingsWidth');
+    
     if (savedEditorWidth) {
       setEditorWidth(parseFloat(savedEditorWidth));
+    }
+    if (savedSidebarWidth) {
+      setSidebarWidth(parseFloat(savedSidebarWidth));
+    }
+    if (savedSideContentWidth) {
+      setSideContentWidth(parseFloat(savedSideContentWidth));
+    }
+    if (savedSettingsWidth) {
+      setSettingsWidth(parseFloat(savedSettingsWidth));
     }
   }, []);
 
@@ -132,7 +208,7 @@ function App() {
     switch (sideContentType) {
       case 'markdown-guide':
         return (
-          <SideContentContainer>
+          <SideContentContainer width={sideContentWidth}>
             <SideContentHeader>
               <h3>Markdown基本语法学习</h3>
               <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>✕</button>
@@ -142,7 +218,7 @@ function App() {
         );
       case 'text-to-markdown':
         return (
-          <SideContentContainer>
+          <SideContentContainer width={sideContentWidth}>
             <SideContentHeader>
               <h3>文本转Markdown</h3>
               <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>✕</button>
@@ -167,13 +243,25 @@ function App() {
           toggleSidebar={toggleSidebar}
           sidebarVisible={sidebarVisible}
         />
-        <ContentLayout>
-          <Sidebar 
-            visible={sidebarVisible} 
-            toggleSidebar={toggleSidebar}
-            openSideContent={openSideContent}
-          />
-          {sideContentVisible && renderSideContent()}
+        <ContentLayout ref={contentLayoutRef}>
+          {sidebarVisible && (
+            <StyledSidebar width={sidebarWidth}>
+              <Sidebar 
+                visible={sidebarVisible} 
+                toggleSidebar={toggleSidebar}
+                openSideContent={openSideContent}
+              />
+              <Resizer onResize={handleSidebarResize} />
+            </StyledSidebar>
+          )}
+          
+          {sideContentVisible && (
+            <>
+              {renderSideContent()}
+              <Resizer onResize={handleSideContentResize} />
+            </>
+          )}
+          
           <MainContent ref={mainContentRef}>
             <EditorContainer width={editorWidth}>
               <MarkdownEditor />
@@ -183,10 +271,18 @@ function App() {
               <WordPreview />
             </PreviewContainer>
           </MainContent>
-          <FormatSettings 
-            visible={settingsVisible} 
-            toggleSettings={toggleSettings} 
-          />
+          
+          {settingsVisible && (
+            <>
+              <Resizer onResize={handleSettingsResize} />
+              <SettingsContainer width={settingsWidth}>
+                <FormatSettings 
+                  visible={settingsVisible} 
+                  toggleSettings={toggleSettings} 
+                />
+              </SettingsContainer>
+            </>
+          )}
         </ContentLayout>
       </StyledLayout>
     </DocumentProvider>

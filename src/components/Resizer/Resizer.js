@@ -20,12 +20,27 @@ const ResizerBar = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     width: 2px;
-    height: 30px;
+    height: 50px;
     background-color: #d9d9d9;
   }
 
   &:hover::before, &.active::before {
     background-color: #ffffff;
+  }
+  
+  &::after {
+    content: "⋮";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    color: #999;
+    font-size: 16px;
+    line-height: 1;
+  }
+  
+  &:hover::after, &.active::after {
+    color: #fff;
   }
 `;
 
@@ -41,6 +56,7 @@ const Resizer = ({ onResize }) => {
       resizer.classList.add('active');
       document.body.style.cursor = 'col-resize';
       document.body.style.userSelect = 'none';
+      document.body.classList.add('resizing');
       e.preventDefault();
     };
     
@@ -59,6 +75,7 @@ const Resizer = ({ onResize }) => {
       resizer.classList.remove('active');
       document.body.style.removeProperty('cursor');
       document.body.style.removeProperty('user-select');
+      document.body.classList.remove('resizing');
     };
     
     resizer.addEventListener('mousedown', handleMouseDown);
