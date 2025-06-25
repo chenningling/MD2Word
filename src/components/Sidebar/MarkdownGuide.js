@@ -12,8 +12,10 @@ const GuideContainer = styled.div`
 const CodeBlock = styled.pre`
   background-color: #f5f5f5;
   border-radius: 4px;
-  padding: 16px;
+  padding: 8px;
   overflow-x: auto;
+  font-size: 12px;
+  margin: 0;
 `;
 
 const ExampleBlock = styled.div`
@@ -24,7 +26,20 @@ const ExampleBlock = styled.div`
 `;
 
 const SectionTitle = styled(Title)`
-  margin-top: 24px !important;
+  margin-top: 16px !important;
+  font-size: 16px !important;
+`;
+
+const StyledTable = styled(Table)`
+  .ant-table-thead > tr > th {
+    padding: 8px;
+    font-size: 13px;
+  }
+  
+  .ant-table-tbody > tr > td {
+    padding: 8px;
+    font-size: 12px;
+  }
 `;
 
 const MarkdownGuide = () => {
@@ -34,17 +49,20 @@ const MarkdownGuide = () => {
       title: 'Markdown语法',
       dataIndex: 'syntax',
       key: 'syntax',
+      width: '30%',
       render: text => <CodeBlock>{text}</CodeBlock>
     },
     {
       title: '效果',
       dataIndex: 'result',
       key: 'result',
+      width: '30%',
     },
     {
       title: '说明',
       dataIndex: 'description',
       key: 'description',
+      width: '40%',
     }
   ];
   
@@ -163,54 +181,58 @@ const MarkdownGuide = () => {
 
   return (
     <GuideContainer>
-      <Title level={2}>Markdown基本语法学习</Title>
       <Paragraph>
         Markdown是一种轻量级标记语言，用于简单的文本格式化。以下是一些常用的Markdown语法示例。
       </Paragraph>
       
-      <Divider />
+      <Divider style={{ margin: '12px 0' }} />
       
-      <SectionTitle level={3}>标题</SectionTitle>
-      <Table 
+      <SectionTitle level={4}>标题</SectionTitle>
+      <StyledTable 
         columns={tableColumns} 
         dataSource={headingData} 
         pagination={false}
         bordered
+        size="small"
       />
       
-      <SectionTitle level={3}>文本样式</SectionTitle>
-      <Table 
+      <SectionTitle level={4}>文本样式</SectionTitle>
+      <StyledTable 
         columns={tableColumns} 
         dataSource={textStyleData} 
         pagination={false}
         bordered
+        size="small"
       />
       
-      <SectionTitle level={3}>列表</SectionTitle>
-      <Table 
+      <SectionTitle level={4}>列表</SectionTitle>
+      <StyledTable 
         columns={tableColumns} 
         dataSource={listData} 
         pagination={false}
         bordered
+        size="small"
       />
       
-      <SectionTitle level={3}>表格</SectionTitle>
-      <Table 
+      <SectionTitle level={4}>表格</SectionTitle>
+      <StyledTable 
         columns={tableColumns} 
         dataSource={tableExampleData} 
         pagination={false}
         bordered
+        size="small"
       />
       
-      <SectionTitle level={3}>其他元素</SectionTitle>
-      <Table 
+      <SectionTitle level={4}>其他元素</SectionTitle>
+      <StyledTable 
         columns={tableColumns} 
         dataSource={otherData} 
         pagination={false}
         bordered
+        size="small"
       />
       
-      <Divider />
+      <Divider style={{ margin: '12px 0' }} />
       
       <Paragraph>
         <Text strong>提示：</Text> 在Markdown中，需要空一行才能开始新的段落。

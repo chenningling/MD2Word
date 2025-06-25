@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Button, Typography, Space } from 'antd';
-import { SettingOutlined, ExportOutlined } from '@ant-design/icons';
+import { SettingOutlined, ExportOutlined, MenuOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 import { exportToWord } from '../../services/exportService';
@@ -29,7 +29,7 @@ const ButtonGroup = styled(Space)`
   display: flex;
 `;
 
-const Header = ({ toggleSettings, settingsVisible }) => {
+const Header = ({ toggleSettings, settingsVisible, toggleSidebar, sidebarVisible }) => {
   const { markdown, formatSettings } = useDocument();
 
   const handleExport = () => {
@@ -38,7 +38,15 @@ const Header = ({ toggleSettings, settingsVisible }) => {
 
   return (
     <StyledHeader>
-      <HeaderTitle level={3}>Word快速排版助手——MD2Word</HeaderTitle>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Button 
+          type="text" 
+          icon={<MenuOutlined />} 
+          onClick={toggleSidebar}
+          style={{ marginRight: '16px' }}
+        />
+        <HeaderTitle level={3}>Word快速排版助手——MD2Word</HeaderTitle>
+      </div>
       <ButtonGroup>
         <Button 
           type={settingsVisible ? "primary" : "default"}
