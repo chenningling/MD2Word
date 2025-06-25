@@ -85,6 +85,28 @@ const alignOptions = [
   { value: 'justify', label: '两端对齐' },
 ];
 
+// 添加自定义字体选项组件
+const FontOption = ({ value, children }) => {
+  // 字体映射，与WordPreview.js中保持一致
+  const FONT_MAPPING = {
+    '宋体': 'SimSun, "Source Serif Pro", serif',
+    '微软雅黑': 'Microsoft YaHei, "Source Sans Pro", sans-serif',
+    '黑体': 'SimHei, "Source Sans Pro", sans-serif',
+    '仿宋': 'FangSong, "Source Serif Pro", serif',
+    '楷体': 'KaiTi, "Source Serif Pro", serif',
+    'Arial': 'Arial, "Source Sans Pro", sans-serif',
+    'Times New Roman': '"Times New Roman", "Source Serif Pro", serif',
+  };
+  
+  const fontFamily = FONT_MAPPING[value] || `${value}, sans-serif`;
+  
+  return (
+    <div style={{ fontFamily: fontFamily }}>
+      {children}
+    </div>
+  );
+};
+
 const FormatSettings = ({ visible, toggleSettings }) => {
   const { formatSettings, updateFormatSettings, customTemplates, addCustomTemplate } = useDocument();
   const [form] = Form.useForm();
@@ -142,11 +164,17 @@ const FormatSettings = ({ visible, toggleSettings }) => {
             value={settings.fontFamily} 
             onChange={(value) => handleContentSettingChange(elementType, 'fontFamily', value)}
             style={{ width: '100%' }}
+            optionLabelProp="label"
           >
             {fonts.map(font => (
-              <Option key={font.value} value={font.value}>{font.label}</Option>
+              <Option key={font.value} value={font.value} label={font.label}>
+                <FontOption value={font.value}>{font.label}</FontOption>
+              </Option>
             ))}
           </Select>
+          <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
+            部分字体在预览中可能显示不准确，导出后生效
+          </div>
         </FormItem>
         
         <FormItem label="字号">

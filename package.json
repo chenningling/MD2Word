@@ -5,6 +5,9 @@
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
     "@codemirror/lang-markdown": "^6.3.3",
+    "@fontsource/source-code-pro": "^5.2.6",
+    "@fontsource/source-sans-pro": "^5.2.5",
+    "@fontsource/source-serif-pro": "^5.2.5",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

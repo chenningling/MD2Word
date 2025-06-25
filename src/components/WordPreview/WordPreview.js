@@ -5,6 +5,30 @@ import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 import { renderMermaidToPng, isMermaidCode } from '../../utils/mermaidUtils';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
+
+// 导入字体
+import '@fontsource/source-serif-pro';
+import '@fontsource/source-sans-pro';
+import '@fontsource/source-code-pro';
+
+// 字体映射，将常用中文字体名映射到已加载的Web字体或系统字体
+const FONT_MAPPING = {
+  '宋体': 'SimSun, "Source Serif Pro", serif',
+  '微软雅黑': 'Microsoft YaHei, "Source Sans Pro", sans-serif',
+  '黑体': 'SimHei, "Source Sans Pro", sans-serif',
+  '仿宋': 'FangSong, "Source Serif Pro", serif',
+  '楷体': 'KaiTi, "Source Serif Pro", serif',
+  'Arial': 'Arial, "Source Sans Pro", sans-serif',
+  'Times New Roman': '"Times New Roman", "Source Serif Pro", serif',
+  'Courier New': '"Courier New", "Source Code Pro", monospace'
+};
+
+// 获取映射后的字体名
+const getMappedFont = (fontFamily) => {
+  return FONT_MAPPING[fontFamily] || `${fontFamily}, sans-serif`;
+};
 
 const PreviewContainer = styled.div`
   flex: 1;
@@ -20,6 +44,25 @@ const PreviewHeader = styled.div`
   font-weight: 500;
   color: #333;
   background-color: #fafafa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const PreviewTitle = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const PreviewHint = styled.div`
+  color: #ff8c00; /* 明亮的橙色 */
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  
+  .anticon {
+    margin-right: 4px;
+  }
 `;
 
 const PreviewContent = styled.div`
@@ -39,7 +82,7 @@ const WordDocument = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: ${props => props.heading1.fontFamily};
+    font-family: ${props => getMappedFont(props.heading1.fontFamily)};
     font-weight: ${props => props.heading1.bold ? 'bold' : 'normal'};
     line-height: ${props => props.heading1.lineHeight};
     text-align: ${props => props.heading1.align};
@@ -51,7 +94,7 @@ const WordDocument = styled.div`
   
   h2 {
     font-size: ${props => props.heading2.fontSize}pt;
-    font-family: ${props => props.heading2.fontFamily};
+    font-family: ${props => getMappedFont(props.heading2.fontFamily)};
     font-weight: ${props => props.heading2.bold ? 'bold' : 'normal'};
     line-height: ${props => props.heading2.lineHeight};
     text-align: ${props => props.heading2.align};
@@ -59,14 +102,14 @@ const WordDocument = styled.div`
   
   h3 {
     font-size: ${props => props.heading3.fontSize}pt;
-    font-family: ${props => props.heading3.fontFamily};
+    font-family: ${props => getMappedFont(props.heading3.fontFamily)};
     font-weight: ${props => props.heading3.bold ? 'bold' : 'normal'};
     line-height: ${props => props.heading3.lineHeight};
     text-align: ${props => props.heading3.align};
   }
   
   p {
-    font-family: ${props => props.paragraph.fontFamily};
+    font-family: ${props => getMappedFont(props.paragraph.fontFamily)};
     font-size: ${props => props.paragraph.fontSize}pt;
     font-weight: ${props => props.paragraph.bold ? 'bold' : 'normal'};
     line-height: ${props => props.paragraph.lineHeight};
@@ -75,7 +118,7 @@ const WordDocument = styled.div`
   }
   
   blockquote {
-    font-family: ${props => props.quote.fontFamily};
+    font-family: ${props => getMappedFont(props.quote.fontFamily)};
     font-size: ${props => props.quote.fontSize}pt;
     font-weight: ${props => props.quote.bold ? 'bold' : 'normal'};
     line-height: ${props => props.quote.lineHeight};
@@ -91,7 +134,7 @@ const WordDocument = styled.div`
     width: 100%;
     border-collapse: collapse;
     margin: 1em 0;
-    font-family: ${props => props.paragraph.fontFamily};
+    font-family: ${props => getMappedFont(props.paragraph.fontFamily)};
     font-size: ${props => props.paragraph.fontSize}pt;
   }
   
@@ -111,7 +154,7 @@ const WordDocument = styled.div`
   
   /* 列表样式 */
   ul, ol {
-    font-family: ${props => props.paragraph.fontFamily};
+    font-family: ${props => getMappedFont(props.paragraph.fontFamily)};
     font-size: ${props => props.paragraph.fontSize}pt;
     line-height: ${props => props.paragraph.lineHeight};
     margin-bottom: 1em;
@@ -135,11 +178,11 @@ const WordDocument = styled.div`
     padding: 16px;
     overflow: auto;
     margin-bottom: 1em;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Source Code Pro', 'Courier New', Courier, monospace;
   }
   
   code {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Source Code Pro', 'Courier New', Courier, monospace;
     background-color: #f6f8fa;
     padding: 2px 4px;
     border-radius: 3px;
@@ -163,6 +206,11 @@ const WordDocument = styled.div`
   .mermaid-diagram img {
     max-width: 100%;
     height: auto;
+  }
+
+  /* 添加字体样式预览效果 */
+  .font-preview {
+    transition: all 0.2s ease;
   }
 `;
 
@@ -251,7 +299,14 @@ const WordPreview = () => {
   
   return (
     <PreviewContainer>
-      <PreviewHeader>Word 预览</PreviewHeader>
+      <PreviewHeader>
+        <PreviewTitle>Word 预览</PreviewTitle>
+        <PreviewHint>
+          <Tooltip title="由于浏览器渲染限制，预览效果与实际Word文档可能存在差异，特别是字体显示。导出后的文档将正确应用您选择的所有格式。">
+            <InfoCircleOutlined /> 预览仅供参考，导出后查看实际效果
+          </Tooltip>
+        </PreviewHint>
+      </PreviewHeader>
       <PreviewContent>
         <WordDocument 
           marginTop={page.margin.top}
