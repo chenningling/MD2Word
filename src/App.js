@@ -58,13 +58,12 @@ const SideContentContainer = styled.div`
   max-width: 500px;
 `;
 
-// 修改侧边栏样式，添加宽度属性
+// 修改侧边栏样式，固定宽度为80px
 const StyledSidebar = styled.div`
-  width: ${props => props.width}px;
+  width: 80px;
   height: 100%;
   position: relative;
-  min-width: 50px;
-  max-width: 300px;
+  border-right: 1px solid #f0f0f0;
 `;
 
 // 修改设置面板样式，添加宽度属性
@@ -78,17 +77,35 @@ const SettingsContainer = styled.div`
 
 // 新增左侧内容标题样式
 const SideContentHeader = styled.div`
-  padding: 16px;
+  padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
   margin: -16px -16px 16px -16px;
   background-color: #fafafa;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  button {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
 `;
 
 function App() {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [settingsVisible, setSettingsVisible] = useState(true);
   const [editorWidth, setEditorWidth] = useState(50); // 默认编辑器占50%宽度
   const mainContentRef = useRef(null);
@@ -99,13 +116,8 @@ function App() {
   const [sideContentType, setSideContentType] = useState(null);
   
   // 新增宽度状态
-  const [sidebarWidth, setSidebarWidth] = useState(200); // 默认侧边栏宽度
   const [sideContentWidth, setSideContentWidth] = useState(300); // 默认左侧内容区域宽度
   const [settingsWidth, setSettingsWidth] = useState(300); // 默认设置面板宽度
-
-  const toggleSidebar = () => {
-    setSidebarVisible(!sidebarVisible);
-  };
 
   const toggleSettings = () => {
     // 如果打开设置面板，则关闭左侧内容区域
@@ -143,23 +155,11 @@ function App() {
     setEditorWidth(clampedWidth);
   };
 
-  // 新增侧边栏宽度调整处理函数
-  const handleSidebarResize = (clientX) => {
-    if (!contentLayoutRef.current) return;
-    
-    const newWidth = clientX;
-    // 限制宽度范围
-    const clampedWidth = Math.min(Math.max(newWidth, 50), 300);
-    setSidebarWidth(clampedWidth);
-    localStorage.setItem('sidebarWidth', clampedWidth.toString());
-  };
-
   // 新增左侧内容区域宽度调整处理函数
   const handleSideContentResize = (clientX) => {
     if (!contentLayoutRef.current) return;
     
-    const sidebarOffset = sidebarVisible ? sidebarWidth : 0;
-    const newWidth = clientX - sidebarOffset;
+    const newWidth = clientX - 80; // 减去左侧导航条宽度
     // 限制宽度范围
     const clampedWidth = Math.min(Math.max(newWidth, 200), 500);
     setSideContentWidth(clampedWidth);
@@ -181,15 +181,11 @@ function App() {
   // 保存宽度设置到localStorage
   useEffect(() => {
     const savedEditorWidth = localStorage.getItem('editorWidth');
-    const savedSidebarWidth = localStorage.getItem('sidebarWidth');
     const savedSideContentWidth = localStorage.getItem('sideContentWidth');
     const savedSettingsWidth = localStorage.getItem('settingsWidth');
     
     if (savedEditorWidth) {
       setEditorWidth(parseFloat(savedEditorWidth));
-    }
-    if (savedSidebarWidth) {
-      setSidebarWidth(parseFloat(savedSidebarWidth));
     }
     if (savedSideContentWidth) {
       setSideContentWidth(parseFloat(savedSideContentWidth));
@@ -210,8 +206,8 @@ function App() {
         return (
           <SideContentContainer width={sideContentWidth}>
             <SideContentHeader>
-              <h3>Markdown基本语法学习</h3>
-              <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>✕</button>
+              <h3>Markdown基本语法</h3>
+              <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>×</button>
             </SideContentHeader>
             <MarkdownGuide />
           </SideContentContainer>
@@ -220,8 +216,8 @@ function App() {
         return (
           <SideContentContainer width={sideContentWidth}>
             <SideContentHeader>
-              <h3>文本转Markdown</h3>
-              <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>✕</button>
+              <h3>文本内容转Markdown</h3>
+              <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>×</button>
             </SideContentHeader>
             <div>
               <p>此功能将在后续版本中开放，敬请期待！</p>
@@ -240,20 +236,13 @@ function App() {
         <Header 
           toggleSettings={toggleSettings} 
           settingsVisible={settingsVisible}
-          toggleSidebar={toggleSidebar}
-          sidebarVisible={sidebarVisible}
         />
         <ContentLayout ref={contentLayoutRef}>
-          {sidebarVisible && (
-            <StyledSidebar width={sidebarWidth}>
-              <Sidebar 
-                visible={sidebarVisible} 
-                toggleSidebar={toggleSidebar}
-                openSideContent={openSideContent}
-              />
-              <Resizer onResize={handleSidebarResize} />
-            </StyledSidebar>
-          )}
+          <StyledSidebar>
+            <Sidebar 
+              openSideContent={openSideContent}
+            />
+          </StyledSidebar>
           
           {sideContentVisible && (
             <>

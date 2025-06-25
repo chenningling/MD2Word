@@ -4,6 +4,8 @@ import { markdown } from '@codemirror/lang-markdown';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 import { EditorView } from '@codemirror/view';
+import { Button, Tooltip } from 'antd';
+import { ReloadOutlined } from '@ant-design/icons';
 
 const EditorContainer = styled.div`
   flex: 1;
@@ -20,6 +22,13 @@ const EditorHeader = styled.div`
   font-weight: 500;
   color: #333;
   background-color: #fafafa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const EditorTitle = styled.div`
+  font-weight: 500;
 `;
 
 const EditorContent = styled.div`
@@ -36,39 +45,45 @@ const EditorContent = styled.div`
   }
 `;
 
-const placeholderText = `# 欢迎使用 MD2Word
+const placeholderText = `# 欢迎使用 MD2Word 排版助手
 
-这是一个Markdown编辑器，您可以在这里编写Markdown格式的文档。
+这是一款将Markdown文本快速转换为规范Word文档的工具。您可以在此编辑器中输入Markdown格式的内容，右侧将实时预览Word效果。
 
-## 基本用法
+## 快速上手指南
 
-- 使用 # 创建标题
-- 使用 **文本** 创建粗体
-- 使用 *文本* 创建斜体
-- 创建列表项
+### 基本Markdown语法
 
-> 这是一段引用文本
+1. **标题**：使用 # 号创建不同级别的标题（**注意：# 后必须有一个空格**）
+   - # 一级标题（# + 空格 + 文本）
+   - ## 二级标题（## + 空格 + 文本）
+   - ### 三级标题（### + 空格 + 文本）
 
-## 代码块示例
+2. **文本格式**
+   - **粗体文本**：使用 **文本** 或 __文本__
+   - *斜体文本*：使用 *文本* 或 _文本_
+   - ~~删除线~~：使用 ~~文本~~
 
-\`\`\`javascript
-function hello() {
-  console.log("Hello, world!");
-}
-\`\`\`
+3. **列表**
+   - 无序列表：使用 - 或 * 或 + 开头
+   - 有序列表：使用 1. 2. 3. 开头
 
-## Mermaid流程图示例
+4. **引用**：使用 > 符号
+   > 这是一段引用文本
 
-\`\`\`mermaid
-graph TD
-    A[开始] --> B{是否继续?}
-    B -->|是| C[处理]
-    C --> D[结束]
-    B -->|否| D
-\`\`\`
+### 使用本工具的步骤
 
-如需了解更多Markdown语法，请点击左侧的「Markdown基本语法学习」按钮。
+1. 在左侧编辑器中输入Markdown格式的文本
+2. 在右侧实时预览Word排版效果
+3. 点击右上角「排版格式设置」按钮调整文档格式
+4. 完成编辑后，点击「导出Word文档」按钮下载文件
 
+### 更多功能
+
+- **查看完整语法**：点击左侧导航栏的「MD基本语法学习」，了解更多Markdown语法
+- **文本转换**：点击左侧导航栏的「文本内容转MD」，将普通文本转换为Markdown格式
+- **格式设置**：点击右上角「排版格式设置」，可以选择预设模板或自定义格式
+
+祝您使用愉快！如有任何问题，请参考左侧的Markdown基本语法指南。
 `;
 
 const MarkdownEditor = () => {
@@ -81,15 +96,32 @@ const MarkdownEditor = () => {
       updateMarkdown(placeholderText);
       isInitialized.current = true;
     }
-  }, [updateMarkdown]);
+  }, [updateMarkdown, content]);
 
   const handleChange = (value) => {
     updateMarkdown(value);
   };
+  
+  // 恢复默认文案的处理函数
+  const handleRestoreDefault = () => {
+    if (window.confirm('确定要恢复默认文案吗？当前内容将被替换。')) {
+      updateMarkdown(placeholderText);
+    }
+  };
 
   return (
     <EditorContainer>
-      <EditorHeader>Markdown 编辑器</EditorHeader>
+      <EditorHeader>
+        <EditorTitle>Markdown 编辑器</EditorTitle>
+        <Tooltip title="恢复默认文案">
+          <Button 
+            type="text" 
+            icon={<ReloadOutlined />} 
+            onClick={handleRestoreDefault}
+            size="small"
+          />
+        </Tooltip>
+      </EditorHeader>
       <EditorContent>
         <CodeMirror
           value={content}

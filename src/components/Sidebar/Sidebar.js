@@ -13,9 +13,38 @@ const StyledSidebarContainer = styled.div`
 const StyledMenu = styled(Menu)`
   height: 100%;
   border-right: 0;
+  
+  .ant-menu-item {
+    height: 90px;
+    padding: 8px 4px;
+    margin: 4px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ant-menu-item .anticon {
+    font-size: 22px;
+    margin: 0 0 8px 0;
+  }
+  
+  .menu-item-text {
+    font-size: 12px;
+    line-height: 1.3;
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .ant-menu-item-selected {
+    background-color: #e6f7ff;
+    border-right: 3px solid #1890ff;
+  }
 `;
 
-const Sidebar = ({ visible, toggleSidebar, openSideContent }) => {
+const Sidebar = ({ openSideContent }) => {
   const [activeKey, setActiveKey] = useState('');
 
   const handleMenuClick = (key) => {
@@ -37,16 +66,15 @@ const Sidebar = ({ visible, toggleSidebar, openSideContent }) => {
   return (
     <StyledSidebarContainer>
       <StyledMenu 
-        mode="inline" 
+        mode="vertical"
         selectedKeys={[activeKey]} 
         onClick={({ key }) => handleMenuClick(key)}
-        inlineCollapsed={!visible}
       >
         <Menu.Item key="markdown-guide" icon={<BookOutlined />}>
-          {visible && "Markdown基本语法学习"}
+          <div className="menu-item-text">MD基本<br/>语法学习</div>
         </Menu.Item>
         <Menu.Item key="text-to-markdown" icon={<FormatPainterOutlined />}>
-          {visible && "文本转Markdown"}
+          <div className="menu-item-text">文本内容<br/>转MD</div>
         </Menu.Item>
       </StyledMenu>
     </StyledSidebarContainer>
