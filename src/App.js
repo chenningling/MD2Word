@@ -261,6 +261,8 @@ function App() {
           <StyledSidebar>
             <Sidebar 
               openSideContent={openSideContent}
+              sideContentVisible={sideContentVisible}
+              sideContentType={sideContentType}
             />
           </StyledSidebar>
           

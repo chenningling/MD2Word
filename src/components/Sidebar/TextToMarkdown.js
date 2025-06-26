@@ -27,6 +27,7 @@ const ButtonsContainer = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   margin-bottom: 24px;
+  width: 100%;
 `;
 
 const AIButton = styled(Button)`
@@ -35,7 +36,7 @@ const AIButton = styled(Button)`
   justify-content: center;
   gap: 8px;
   height: 40px;
-  width: 95%;
+  width: 100%;
   
   .ai-logo {
     width: 20px;
@@ -47,7 +48,8 @@ const AIButton = styled(Button)`
 const StepsContainer = styled.div`
   margin-top: 24px;
   border-top: 1px solid #f0f0f0;
-  padding-top: 24px;
+  padding-top: 20px;
+  width: 100%; /* 确保容器占满可用宽度 */
 `;
 
 const StyledSteps = styled(Steps)`
@@ -59,8 +61,10 @@ const StyledSteps = styled(Steps)`
   
   .ant-steps-item-description {
     font-size: 12px;
-    max-width: 240px;
+    max-width: none;
     color: rgba(0, 0, 0, 0.85) !important;
+    white-space: normal;
+    word-wrap: break-word;
   }
   
   /* 让所有步骤显示相同的高亮效果 */
@@ -77,12 +81,36 @@ const StyledSteps = styled(Steps)`
   .ant-steps-item-tail::after {
     background-color: #1890ff !important;
   }
+  
+  /* 优化步骤项的间距 */
+  .ant-steps-item {
+    padding-bottom: 12px;
+  }
+  
+  /* 确保步骤内容能够适应容器宽度 */
+  .ant-steps-item-container {
+    width: 100%;
+  }
 `;
 
 const StepTitle = styled(Title)`
   font-size: 16px !important;
-  margin-bottom: 16px !important;
+  margin-bottom: 12px !important;
   color: #333;
+  position: relative;
+  padding-left: 10px;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 16px;
+    background-color: #1890ff;
+    border-radius: 2px;
+  }
 `;
 
 const CountdownText = styled.div`
@@ -287,19 +315,19 @@ ${text}
           items={[
             {
               title: '复制提示词并跳转',
-              description: '点击上方按钮后，系统会自动复制提示词并跳转到对应AI平台',
+              description: '点击上方按钮，系统自动复制提示词并跳转到AI平台',
             },
             {
               title: '粘贴提示词并发送',
-              description: '在AI对话框中粘贴提示词(Ctrl+V)，点击发送，等待AI处理',
+              description: '在AI对话框中粘贴(Ctrl+V)并发送，等待处理',
             },
             {
               title: '复制转换结果',
-              description: '复制AI生成的Markdown内容(Ctrl+A, Ctrl+C)到Markdown编辑器',
+              description: '复制AI生成的Markdown内容(Ctrl+A, Ctrl+C)到编辑器',
             },
             {
               title: '设置排版并导出',
-              description: '调整右侧排版设置，预览效果并导出Word文档',
+              description: '调整排版设置，预览并导出Word文档',
             },
           ]}
         />
@@ -311,9 +339,10 @@ ${text}
         onCancel={handleCancel}
         footer={null}
         maskClosable={false}
+        width={360}
       >
         <div style={{ padding: '5px 0' }}>
-          <Paragraph style={{ fontSize: '14px', marginBottom: '10px' }}>
+          <Paragraph style={{ fontSize: '14px', marginBottom: '10px', textAlign: 'center' }}>
             <span style={{ fontWeight: 'bold', color: '#1890ff' }}>{countdown}秒</span> 后自动跳转到{currentPlatform.name}
           </Paragraph>
           

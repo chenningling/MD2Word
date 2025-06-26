@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu } from 'antd';
 import { BookOutlined, FormatPainterOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -44,8 +44,19 @@ const StyledMenu = styled(Menu)`
   }
 `;
 
-const Sidebar = ({ openSideContent }) => {
+const Sidebar = ({ openSideContent, sideContentVisible, sideContentType }) => {
   const [activeKey, setActiveKey] = useState('');
+
+  // 当sideContentVisible或sideContentType变化时，更新activeKey
+  useEffect(() => {
+    if (!sideContentVisible) {
+      // 如果侧边内容关闭，重置activeKey
+      setActiveKey('');
+    } else if (sideContentType) {
+      // 如果侧边内容打开，设置对应的activeKey
+      setActiveKey(sideContentType);
+    }
+  }, [sideContentVisible, sideContentType]);
 
   const handleMenuClick = (key) => {
     // 如果点击的是当前选中的项，则取消选中
