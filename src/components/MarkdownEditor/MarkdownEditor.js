@@ -17,18 +17,22 @@ const EditorContainer = styled.div`
 `;
 
 const EditorHeader = styled.div`
-  padding: 10px 15px;
+  padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
-  font-weight: 500;
-  color: #333;
   background-color: #fafafa;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+  height: 48px;
+  box-sizing: border-box;
 `;
 
 const EditorTitle = styled.div`
+  margin: 0;
+  font-size: 16px;
   font-weight: 500;
+  color: #333;
 `;
 
 const EditorContent = styled.div`

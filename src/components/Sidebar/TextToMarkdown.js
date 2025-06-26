@@ -54,11 +54,13 @@ const StyledSteps = styled(Steps)`
   .ant-steps-item-title {
     font-size: 14px;
     font-weight: 600;
+    color: rgba(0, 0, 0, 0.85) !important;
   }
   
   .ant-steps-item-description {
     font-size: 12px;
     max-width: 240px;
+    color: rgba(0, 0, 0, 0.85) !important;
   }
   
   /* 让所有步骤显示相同的高亮效果 */
@@ -71,17 +73,7 @@ const StyledSteps = styled(Steps)`
     color: #fff !important;
   }
   
-  /* 移除未激活步骤的灰色效果 */
-  .ant-steps-item-wait .ant-steps-item-icon {
-    background-color: #1890ff !important;
-    border-color: #1890ff !important;
-  }
-  
-  .ant-steps-item-wait .ant-steps-item-icon .ant-steps-icon {
-    color: #fff !important;
-  }
-  
-  /* 移除连接线的灰色效果 */
+  /* 统一连接线颜色 */
   .ant-steps-item-tail::after {
     background-color: #1890ff !important;
   }

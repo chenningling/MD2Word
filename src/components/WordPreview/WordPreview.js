@@ -38,20 +38,26 @@ const PreviewContainer = styled.div`
   flex-direction: column;
 `;
 
+// 使用与ModuleHeader一致的样式
 const PreviewHeader = styled.div`
-  padding: 10px 15px;
+  padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
-  font-weight: 500;
-  color: #333;
   background-color: #fafafa;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+  height: 48px;
+  box-sizing: border-box;
 `;
 
 const PreviewTitle = styled.div`
   display: flex;
   align-items: center;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
 `;
 
 const PreviewHint = styled.div`

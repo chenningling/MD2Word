@@ -46,17 +46,58 @@ const PreviewContainer = styled.div`
   min-width: 20%;
 `;
 
+// 创建统一的模块标题样式组件
+const ModuleHeader = styled.div`
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fafafa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  height: 48px; /* 固定高度 */
+  box-sizing: border-box;
+  
+  h3, .module-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .module-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  button.close-btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+`;
+
 // 修改左侧内容区域样式，添加宽度属性
 const SideContentContainer = styled.div`
   width: ${props => props.width}px;
   height: 100%;
   background-color: white;
   border-right: 1px solid #f0f0f0;
-  overflow: auto;
-  padding: 16px;
   position: relative;
   min-width: 200px;
   max-width: 500px;
+  display: flex;
+  flex-direction: column;
 `;
 
 // 修改侧边栏样式，固定宽度为80px
@@ -76,34 +117,11 @@ const SettingsContainer = styled.div`
   max-width: 500px;
 `;
 
-// 新增左侧内容标题样式
-const SideContentHeader = styled.div`
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  margin: -16px -16px 16px -16px;
-  background-color: #fafafa;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  
-  button {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-  }
+// 新增内容区域容器，用于滚动
+const SideContentBody = styled.div`
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
 `;
 
 function App() {
@@ -206,21 +224,25 @@ function App() {
       case 'markdown-guide':
         return (
           <SideContentContainer width={sideContentWidth}>
-            <SideContentHeader>
-              <h3>Markdown基本语法</h3>
-              <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>×</button>
-            </SideContentHeader>
-            <MarkdownGuide />
+            <ModuleHeader>
+              <h3>Markdown基本语法学习</h3>
+              <button className="close-btn" onClick={closeSideContent}>×</button>
+            </ModuleHeader>
+            <SideContentBody>
+              <MarkdownGuide />
+            </SideContentBody>
           </SideContentContainer>
         );
       case 'text-to-markdown':
         return (
           <SideContentContainer width={sideContentWidth}>
-            <SideContentHeader>
+            <ModuleHeader>
               <h3>文本内容转Markdown</h3>
-              <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>×</button>
-            </SideContentHeader>
-            <TextToMarkdown />
+              <button className="close-btn" onClick={closeSideContent}>×</button>
+            </ModuleHeader>
+            <SideContentBody>
+              <TextToMarkdown />
+            </SideContentBody>
           </SideContentContainer>
         );
       default:

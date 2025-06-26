@@ -10,6 +10,10 @@ const GuideContainer = styled.div`
   overflow-x: auto;
 `;
 
+const CodeBlockWrapper = styled.div`
+  position: relative;
+`;
+
 const CodeBlock = styled.pre`
   background-color: #f5f5f5;
   border-radius: 4px;
@@ -20,18 +24,34 @@ const CodeBlock = styled.pre`
   position: relative;
 `;
 
-const CodeBlockWrapper = styled.div`
-  position: relative;
-`;
-
 const CopyButton = styled(Button)`
   position: absolute;
   top: 4px;
   right: 4px;
-  opacity: 0.7;
+  opacity: 0.4;
+  padding: 0;
+  height: 22px;
+  min-width: 22px;
+  width: 22px;
+  background-color: transparent;
+  border: none;
+  color: #999;
+  box-shadow: none;
   
   &:hover {
-    opacity: 1;
+    opacity: 0.8;
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #666;
+  }
+  
+  &:focus {
+    background-color: transparent;
+    border: none;
+    color: #999;
+  }
+  
+  .anticon {
+    font-size: 14px;
   }
 `;
 
