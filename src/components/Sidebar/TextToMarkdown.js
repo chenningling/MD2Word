@@ -109,7 +109,7 @@ const TextToMarkdown = () => {
   const [text, setText] = useState('');
   const [isEmpty, setIsEmpty] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [countdown, setCountdown] = useState(3);
+  const [countdown, setCountdown] = useState(5);
   const [currentPlatform, setCurrentPlatform] = useState({ name: '', url: '' });
   const { updateMarkdown } = useDocument();
   const textAreaRef = useRef(null);
@@ -162,7 +162,7 @@ ${text}
         // 使用setTimeout确保状态已更新
         setTimeout(() => {
           setModalVisible(true);
-          setCountdown(3);
+          setCountdown(5);
           
           // 开始倒计时
           timerRef.current = setInterval(() => {
@@ -314,19 +314,28 @@ ${text}
       </StepsContainer>
       
       <Modal
-        title={`提示词已复制到剪贴板`}
+        title={`提示词已复制 - 即将前往${currentPlatform.name}`}
         open={modalVisible}
         onCancel={handleCancel}
         footer={null}
         maskClosable={false}
       >
-        <Paragraph>
-          提示词已成功复制到剪贴板，即将跳转到{currentPlatform.name}...
-        </Paragraph>
-        
-        <CountdownText>
-          {countdown}秒后自动跳转
-        </CountdownText>
+        <div style={{ padding: '5px 0' }}>
+          <Paragraph style={{ fontSize: '14px', marginBottom: '10px' }}>
+            <span style={{ fontWeight: 'bold', color: '#1890ff' }}>{countdown}秒</span> 后自动跳转到{currentPlatform.name}
+          </Paragraph>
+          
+          <div style={{ 
+            background: '#f6f8fa', 
+            padding: '12px', 
+            borderRadius: '4px',
+            marginBottom: '12px',
+            border: '1px solid #e1e4e8'
+          }}>
+            <div style={{ fontSize: '13px', marginBottom: '4px' }}>1. 在AI对话框中<strong>粘贴提示词</strong>(Ctrl+V)</div>
+            <div style={{ fontSize: '13px' }}>2. 复制AI生成的Markdown内容回本应用</div>
+          </div>
+        </div>
         
         <ModalFooter>
           <Button onClick={handleCancel}>取消</Button>
@@ -334,7 +343,7 @@ ${text}
             type="primary" 
             onClick={() => handleJump(currentPlatform.url, currentPlatform.name)}
           >
-            立即跳转
+            立即前往{currentPlatform.name}
           </Button>
         </ModalFooter>
       </Modal>
