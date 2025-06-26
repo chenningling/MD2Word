@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, Modal, Input, message } from 'antd';
-import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
+import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined, RedoOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { Panel } = Collapse;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const SettingsContainer = styled.div`
   background-color: white;
@@ -198,6 +198,21 @@ const StyledCollapse = styled(Collapse)`
   
   .ant-collapse-arrow {
     margin-top: 8px !important;
+  }
+`;
+
+// 优化提示语样式
+const CollapseHint = styled.div`
+  margin-bottom: 10px;
+  color: #8c8c8c;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  
+  .anticon {
+    margin-right: 6px;
+    color: #1890ff;
   }
 `;
 
@@ -487,7 +502,12 @@ const FormatSettings = ({ visible, toggleSettings }) => {
               </StyledSelect>
             </TemplateSelect>
             
-            <StyledCollapse defaultActiveKey={['paragraph']}>
+            <CollapseHint>
+              <InfoCircleOutlined />
+              <Text type="secondary">点击元素面板可展开编辑对应的格式设置</Text>
+            </CollapseHint>
+            
+            <StyledCollapse defaultActiveKey={[]}>
               {renderElementSettings('paragraph', '正文段落')}
               {renderElementSettings('heading1', '一级标题')}
               {renderElementSettings('heading2', '二级标题')}
