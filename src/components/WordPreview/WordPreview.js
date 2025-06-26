@@ -5,8 +5,8 @@ import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 import { renderMermaidToPng, isMermaidCode } from '../../utils/mermaidUtils';
-import { InfoCircleOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
+import { InfoCircleOutlined, ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
+import { Tooltip, Button, Dropdown, Space } from 'antd';
 
 // 导入字体
 import '@fontsource/source-serif-pro';
@@ -60,6 +60,29 @@ const PreviewTitle = styled.div`
   color: #333;
 `;
 
+const ZoomControls = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+  
+  .zoom-button {
+    color: #666;
+    font-size: 14px;
+    padding: 4px 8px;
+    &:hover {
+      color: #1890ff;
+    }
+  }
+  
+  .zoom-value {
+    margin: 0 4px;
+    min-width: 50px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+  }
+`;
+
 const PreviewHint = styled.div`
   color: #ff8c00; /* 明亮的橙色 */
   font-size: 12px;
@@ -86,6 +109,9 @@ const WordDocument = styled.div`
   padding: ${props => `${props.marginTop}cm ${props.marginRight}cm ${props.marginBottom}cm ${props.marginLeft}cm`};
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transform: scale(${props => props.zoom});
+  transform-origin: top center;
+  transition: transform 0.2s ease;
   
   h1, h2, h3, h4, h5, h6 {
     font-family: ${props => getMappedFont(props.heading1.fontFamily)};
@@ -240,6 +266,38 @@ const WordDocument = styled.div`
 const WordPreview = () => {
   const { markdown, formatSettings } = useDocument();
   const [processedHtml, setProcessedHtml] = useState('');
+  const [zoom, setZoom] = useState(1); // 默认缩放比例为1 (100%)
+  
+  // 缩放级别选项
+  const zoomOptions = [
+    { key: '0.5', label: '50%', value: 0.5 },
+    { key: '0.75', label: '75%', value: 0.75 },
+    { key: '1', label: '100%', value: 1 },
+    { key: '1.25', label: '125%', value: 1.25 },
+    { key: '1.5', label: '150%', value: 1.5 },
+    { key: '2', label: '200%', value: 2 },
+  ];
+  
+  // 处理缩放变化
+  const handleZoomChange = (newZoom) => {
+    setZoom(newZoom);
+  };
+  
+  // 缩小
+  const zoomOut = () => {
+    const currentIndex = zoomOptions.findIndex(option => option.value === zoom);
+    if (currentIndex > 0) {
+      setZoom(zoomOptions[currentIndex - 1].value);
+    }
+  };
+  
+  // 放大
+  const zoomIn = () => {
+    const currentIndex = zoomOptions.findIndex(option => option.value === zoom);
+    if (currentIndex < zoomOptions.length - 1) {
+      setZoom(zoomOptions[currentIndex + 1].value);
+    }
+  };
   
   // 配置marked选项，确保表格正确渲染
   const markedOptions = useMemo(() => {
@@ -320,10 +378,42 @@ const WordPreview = () => {
 
   const { content, page } = formatSettings;
   
+  // 缩放下拉菜单项
+  const zoomMenuItems = zoomOptions.map(option => ({
+    key: option.key,
+    label: option.label,
+    onClick: () => handleZoomChange(option.value)
+  }));
+  
   return (
     <PreviewContainer>
       <PreviewHeader>
-        <PreviewTitle>Word 预览</PreviewTitle>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <PreviewTitle>Word 预览</PreviewTitle>
+          <ZoomControls>
+            <Button 
+              type="text" 
+              className="zoom-button" 
+              icon={<ZoomOutOutlined />} 
+              onClick={zoomOut}
+              disabled={zoom <= zoomOptions[0].value}
+            />
+            <Dropdown menu={{ items: zoomMenuItems }} trigger={['click']}>
+              <Button type="text" className="zoom-value">
+                <Space>
+                  {(zoom * 100).toFixed(0)}%
+                </Space>
+              </Button>
+            </Dropdown>
+            <Button 
+              type="text" 
+              className="zoom-button" 
+              icon={<ZoomInOutlined />} 
+              onClick={zoomIn}
+              disabled={zoom >= zoomOptions[zoomOptions.length - 1].value}
+            />
+          </ZoomControls>
+        </div>
         <PreviewHint>
           <Tooltip title="由于浏览器渲染限制，预览效果与实际Word文档可能存在差异，特别是字体显示。导出后的文档将正确应用您选择的所有格式。">
             <InfoCircleOutlined /> 预览仅供参考，导出后查看实际效果
@@ -342,6 +432,7 @@ const WordPreview = () => {
           heading4={content.heading4}
           paragraph={content.paragraph}
           quote={content.quote}
+          zoom={zoom}
           dangerouslySetInnerHTML={{ __html: processedHtml }}
         />
       </PreviewContent>

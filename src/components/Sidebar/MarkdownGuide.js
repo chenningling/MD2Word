@@ -278,19 +278,29 @@ const MarkdownGuide = () => {
       key: '1',
       syntax: '| 表头1 | 表头2 | 表头3 |\n| --- | --- | --- |\n| 单元格1 | 单元格2 | 单元格3 |\n| 单元格4 | 单元格5 | 单元格6 |',
       result: (
-        <Table
-          pagination={false}
-          size="small"
-          columns={[
-            { title: '表头1', dataIndex: 'col1', key: 'col1' },
-            { title: '表头2', dataIndex: 'col2', key: 'col2' },
-            { title: '表头3', dataIndex: 'col3', key: 'col3' }
-          ]}
-          dataSource={[
-            { key: '1', col1: '单元格1', col2: '单元格2', col3: '单元格3' },
-            { key: '2', col1: '单元格4', col2: '单元格5', col3: '单元格6' }
-          ]}
-        />
+        <div style={{ fontSize: '12px', width: '100%', overflowX: 'auto' }}>
+          <table style={{ borderCollapse: 'collapse', width: 'auto', tableLayout: 'auto', whiteSpace: 'nowrap' }}>
+            <thead>
+              <tr>
+                <th style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center', minWidth: '60px' }}>表头1</th>
+                <th style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center', minWidth: '60px' }}>表头2</th>
+                <th style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center', minWidth: '60px' }}>表头3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center' }}>单元格1</td>
+                <td style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center' }}>单元格2</td>
+                <td style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center' }}>单元格3</td>
+              </tr>
+              <tr>
+                <td style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center' }}>单元格4</td>
+                <td style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center' }}>单元格5</td>
+                <td style={{ border: '1px solid #ddd', padding: '4px 8px', textAlign: 'center' }}>单元格6</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       ),
       description: '使用 | 分隔表格列，使用 --- 分隔表头和内容'
     }

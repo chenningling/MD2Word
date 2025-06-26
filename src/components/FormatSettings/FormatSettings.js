@@ -487,12 +487,12 @@ const FormatSettings = ({ visible, toggleSettings }) => {
               </StyledSelect>
             </TemplateSelect>
             
-            <StyledCollapse defaultActiveKey={['heading1']}>
+            <StyledCollapse defaultActiveKey={['paragraph']}>
+              {renderElementSettings('paragraph', '正文段落')}
               {renderElementSettings('heading1', '一级标题')}
               {renderElementSettings('heading2', '二级标题')}
               {renderElementSettings('heading3', '三级标题')}
               {renderElementSettings('heading4', '四级标题')}
-              {renderElementSettings('paragraph', '正文段落')}
               {renderElementSettings('quote', '引用文本')}
             </StyledCollapse>
           </TabPane>
@@ -500,13 +500,16 @@ const FormatSettings = ({ visible, toggleSettings }) => {
           <TabPane tab="页面设置" key="page">
             <Form layout="vertical">
               <FormItem label="页面大小">
-                <Radio.Group 
-                  value={formatSettings.page.size} 
-                  onChange={(e) => handlePageSettingChange('size', e.target.value)}
+                <Select
+                  value={formatSettings.page.size}
+                  onChange={(value) => handlePageSettingChange('size', value)}
+                  style={{ width: '100%' }}
                 >
-                  <Radio.Button value="A4">A4</Radio.Button>
-                  <Radio.Button value="Letter">Letter</Radio.Button>
-                </Radio.Group>
+                  <Option value="A4">A4 (21厘米 × 29.7厘米)</Option>
+                  <Option value="A3">A3 (29.7厘米 × 42厘米)</Option>
+                  <Option value="8K">8开 (26厘米 × 36.8厘米)</Option>
+                  <Option value="16K">16开 (18.4厘米 × 26厘米)</Option>
+                </Select>
               </FormItem>
               
               <FormItem label="页面边距 (厘米)">

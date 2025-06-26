@@ -79,6 +79,46 @@ const createWordDocument = (tokens, formatSettings) => {
     left: convertInchesToTwip(page.margin.left / 2.54)
   };
 
+  // 设置页面大小
+  let pageSize = {};
+  
+  switch (page.size) {
+    case 'A4':
+      pageSize = {
+        width: 11906, // 210mm = 8.27in = 11906 twips
+        height: 16838, // 297mm = 11.69in = 16838 twips
+        orientation: 'portrait'
+      };
+      break;
+    case 'A3':
+      pageSize = {
+        width: 16838, // 297mm = 11.69in = 16838 twips
+        height: 23811, // 420mm = 16.54in = 23811 twips
+        orientation: 'portrait'
+      };
+      break;
+    case '8K':
+      pageSize = {
+        width: 14748, // 260mm = 10.24in = 14748 twips
+        height: 20866, // 368mm = 14.49in = 20866 twips
+        orientation: 'portrait'
+      };
+      break;
+    case '16K':
+      pageSize = {
+        width: 10433, // 184mm = 7.24in = 10433 twips
+        height: 14748, // 260mm = 10.24in = 14748 twips
+        orientation: 'portrait'
+      };
+      break;
+    default:
+      pageSize = {
+        width: 11906, // A4 default
+        height: 16838,
+        orientation: 'portrait'
+      };
+  }
+
   // 创建文档
   const doc = new Document({
     sections: [
@@ -86,9 +126,7 @@ const createWordDocument = (tokens, formatSettings) => {
         properties: {
           page: {
             margin: margins,
-            size: {
-              orientation: 'portrait'
-            }
+            size: pageSize
           }
         },
         children: parseTokensToDocxElements(tokens, content)
