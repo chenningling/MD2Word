@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Modal, Steps, Typography, Space, Input } from 'antd';
+import { Button, Modal, Steps, Typography, Space, Input, Row, Col } from 'antd';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 
@@ -23,16 +23,19 @@ const EmptyTextWarning = styled.div`
 `;
 
 const ButtonsContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   margin-bottom: 24px;
-  flex-wrap: wrap;
 `;
 
 const AIButton = styled(Button)`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  height: 40px;
+  width: 95%;
   
   .ai-logo {
     width: 20px;
@@ -111,6 +114,8 @@ const TextToMarkdown = () => {
   const { updateMarkdown } = useDocument();
   const textAreaRef = useRef(null);
   const timerRef = useRef(null);
+  // 添加一个标志，用于跟踪是否已经执行了跳转
+  const hasJumpedRef = useRef(false);
 
   const handleTextChange = (e) => {
     const newText = e.target.value;
@@ -123,6 +128,14 @@ const TextToMarkdown = () => {
       setIsEmpty(true);
       textAreaRef.current?.focus();
       return;
+    }
+
+    // 重置跳转标志
+    hasJumpedRef.current = false;
+
+    // 清除可能存在的之前的定时器
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
     }
 
     // 构建提示词
@@ -142,22 +155,28 @@ ${text}
     // 复制到剪贴板
     navigator.clipboard.writeText(prompt)
       .then(() => {
-        // 设置当前平台信息并显示Modal
+        // 先设置当前平台信息
         setCurrentPlatform({ name: aiPlatform, url: url });
-        setModalVisible(true);
-        setCountdown(3);
         
-        // 开始倒计时
-        timerRef.current = setInterval(() => {
-          setCountdown(prev => {
-            if (prev <= 1) {
-              clearInterval(timerRef.current);
-              handleJump();
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
+        // 然后在状态更新后显示Modal和开始倒计时
+        // 使用setTimeout确保状态已更新
+        setTimeout(() => {
+          setModalVisible(true);
+          setCountdown(3);
+          
+          // 开始倒计时
+          timerRef.current = setInterval(() => {
+            setCountdown(prev => {
+              if (prev <= 1) {
+                clearInterval(timerRef.current);
+                // 使用存储的URL进行跳转，而不是依赖状态
+                handleJump(url, aiPlatform);
+                return 0;
+              }
+              return prev - 1;
+            });
+          }, 1000);
+        }, 0);
       })
       .catch(err => {
         console.error('复制失败:', err);
@@ -168,13 +187,28 @@ ${text}
       });
   };
   
-  const handleJump = () => {
-    window.open(currentPlatform.url, '_blank');
+  // 修改handleJump函数，接收URL和平台名称作为参数
+  const handleJump = (url, platformName) => {
+    // 如果已经跳转过，则不再重复跳转
+    if (hasJumpedRef.current) {
+      return;
+    }
+    
+    // 标记为已跳转
+    hasJumpedRef.current = true;
+    
+    // 使用传入的URL而不是从状态中获取
+    window.open(url, '_blank');
     setModalVisible(false);
   };
   
   const handleCancel = () => {
-    clearInterval(timerRef.current);
+    // 清除定时器
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    // 重置跳转标志
+    hasJumpedRef.current = false;
     setModalVisible(false);
   };
   
@@ -213,6 +247,10 @@ ${text}
         请输入需要转换的文本内容
       </EmptyTextWarning>
       
+      {/* 
+        按钮布局：2x2网格
+        注意：需要在public/images目录添加doubao-logo.png文件
+      */}
       <ButtonsContainer>
         <AIButton 
           type="primary" 
@@ -236,7 +274,15 @@ ${text}
           disabled={isEmpty}
         >
           <img className="ai-logo" src="/images/tongyi-logo.png" alt="通义千问" />
-          发送给 通义 转换
+          发送给 通义千问 转换
+        </AIButton>
+        
+        <AIButton
+          onClick={() => handleCopyPrompt('豆包', 'https://www.doubao.com/chat')}
+          disabled={isEmpty}
+        >
+          <img className="ai-logo" src="/images/doubao-logo.png" alt="豆包" />
+          发送给 豆包 转换
         </AIButton>
       </ButtonsContainer>
       
@@ -284,7 +330,12 @@ ${text}
         
         <ModalFooter>
           <Button onClick={handleCancel}>取消</Button>
-          <Button type="primary" onClick={handleJump}>立即跳转</Button>
+          <Button 
+            type="primary" 
+            onClick={() => handleJump(currentPlatform.url, currentPlatform.name)}
+          >
+            立即跳转
+          </Button>
         </ModalFooter>
       </Modal>
     </Container>
