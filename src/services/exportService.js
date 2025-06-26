@@ -19,6 +19,22 @@ export const exportToWord = async (markdown, formatSettings) => {
     if (tableTokes.length > 0) {
       console.log('表格内容:', JSON.stringify(tableTokes, null, 2));
     }
+    
+    // 检查列表内容，特别关注嵌套的引用块
+    const listTokens = tokens.filter(token => token.type === 'list');
+    if (listTokens.length > 0) {
+      console.log('列表内容:', JSON.stringify(listTokens, null, 2));
+      
+      // 检查列表项中的嵌套内容
+      listTokens.forEach((list, listIndex) => {
+        list.items.forEach((item, itemIndex) => {
+          if (item.tokens && item.tokens.length > 0) {
+            console.log(`列表 ${listIndex} 项 ${itemIndex} 的嵌套内容:`, 
+              JSON.stringify(item.tokens.map(t => ({ type: t.type, text: t.text })), null, 2));
+          }
+        });
+      });
+    }
 
     // 处理Mermaid流程图
     const processedTokens = await processMermaidTokens(tokens);
@@ -121,6 +137,86 @@ const createWordDocument = (tokens, formatSettings) => {
 
   // 创建文档
   const doc = new Document({
+    numbering: {
+      config: [
+        {
+          reference: "unordered-list",
+          levels: [
+            {
+              level: 0,
+              format: "bullet",
+              text: "•",
+              alignment: AlignmentType.LEFT,
+              style: {
+                paragraph: {
+                  indent: { left: convertInchesToTwip(0.5), hanging: convertInchesToTwip(0.25) }
+                }
+              }
+            },
+            {
+              level: 1,
+              format: "bullet",
+              text: "○",
+              alignment: AlignmentType.LEFT,
+              style: {
+                paragraph: {
+                  indent: { left: convertInchesToTwip(1.0), hanging: convertInchesToTwip(0.25) }
+                }
+              }
+            },
+            {
+              level: 2,
+              format: "bullet",
+              text: "■",
+              alignment: AlignmentType.LEFT,
+              style: {
+                paragraph: {
+                  indent: { left: convertInchesToTwip(1.5), hanging: convertInchesToTwip(0.25) }
+                }
+              }
+            }
+          ]
+        },
+        {
+          reference: "ordered-list",
+          levels: [
+            {
+              level: 0,
+              format: "decimal",
+              text: "%1.",
+              alignment: AlignmentType.LEFT,
+              style: {
+                paragraph: {
+                  indent: { left: convertInchesToTwip(0.5), hanging: convertInchesToTwip(0.25) }
+                }
+              }
+            },
+            {
+              level: 1,
+              format: "lowerLetter",
+              text: "%2.",
+              alignment: AlignmentType.LEFT,
+              style: {
+                paragraph: {
+                  indent: { left: convertInchesToTwip(1.0), hanging: convertInchesToTwip(0.25) }
+                }
+              }
+            },
+            {
+              level: 2,
+              format: "lowerRoman",
+              text: "%3.",
+              alignment: AlignmentType.LEFT,
+              style: {
+                paragraph: {
+                  indent: { left: convertInchesToTwip(1.5), hanging: convertInchesToTwip(0.25) }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
     sections: [
       {
         properties: {
@@ -400,14 +496,21 @@ const createBlockquote = (token, settings) => {
   // 转换对齐方式
   const alignment = convertAlignment(settings.align);
 
-  // 确保token.text是字符串
-  const textContent = String(token.text || '');
-
-  // 处理引用中的内联格式
-  const textRuns = parseInlineTokens(textContent, settings);
-  
   // 行间距（Word中使用240为单倍行距的基准）
   const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  
+  // 确定引用内容
+  let textRuns;
+  
+  if (token.tokens) {
+    // 如果有tokens数组，使用processTokensToTextRuns处理
+    textRuns = processTokensToTextRuns(token.tokens, settings);
+  } else {
+    // 确保token.text是字符串
+    const textContent = String(token.text || token.raw || '');
+    // 处理引用中的内联格式
+    textRuns = parseInlineTokens(textContent, settings);
+  }
 
   return new Paragraph({
     children: textRuns,
@@ -433,22 +536,24 @@ const createBlockquote = (token, settings) => {
 };
 
 // 创建列表
-const createList = (token, settings) => {
+const createList = (token, settings, nestLevel = 0) => {
   const paragraphs = [];
   
   // 行间距（Word中使用240为单倍行距的基准）
   const lineSpacingTwips = Math.round(settings.lineHeight * 240);
   
+  // 确定列表类型
+  const isOrdered = token.ordered;
+  
+  // 处理列表项
   token.items.forEach((item, index) => {
-    const prefix = token.ordered ? `${index + 1}. ` : '• ';
-    
     // 确保item.text是字符串
     const itemText = String(item.text || '');
     
-    // 处理列表项中的内联格式
-    const textContent = prefix + itemText;
-    const textRuns = parseInlineTokens(textContent, settings);
+    // 处理列表项中的内联格式，不再添加前缀，让Word自动处理
+    const textRuns = parseInlineTokens(itemText, settings);
     
+    // 创建带有正确列表格式的段落
     paragraphs.push(
       new Paragraph({
         children: textRuns,
@@ -458,11 +563,82 @@ const createList = (token, settings) => {
           line: lineSpacingTwips,
           lineRule: 'exact'
         },
-        indent: {
-          left: convertInchesToTwip(0.25)
+        numbering: {
+          reference: isOrdered ? 'ordered-list' : 'unordered-list',
+          level: nestLevel,
         }
       })
     );
+    
+    // 处理嵌套内容（列表、引用等）
+    if (item.tokens) {
+      // 处理所有嵌套内容
+      item.tokens.forEach(token => {
+        if (token.type === 'list') {
+          // 递归处理嵌套列表，增加嵌套级别
+          const nestedParagraphs = createList(token, settings, nestLevel + 1);
+          paragraphs.push(...nestedParagraphs);
+        } 
+        else if (token.type === 'blockquote') {
+          // 处理引用块，使用缩进来保持在列表项下方
+          
+          // 确定引用内容
+          let textRuns;
+          
+          if (token.tokens) {
+            // 如果有tokens数组，使用processTokensToTextRuns处理
+            textRuns = processTokensToTextRuns(token.tokens, settings);
+          } else {
+            // 确保token.text是字符串
+            const quoteText = String(token.text || token.raw || '');
+            // 处理引用中的内联格式
+            textRuns = parseInlineTokens(quoteText, settings);
+          }
+          
+          // 创建引用段落，增加左缩进以对齐列表项
+          const indentLevel = nestLevel + 1;
+          const leftIndent = convertInchesToTwip(0.5 + (indentLevel * 0.5));
+          
+          paragraphs.push(
+            new Paragraph({
+              children: textRuns,
+              spacing: {
+                before: 40,  // 2磅
+                after: 40,   // 2磅
+                line: lineSpacingTwips,
+                lineRule: 'exact'
+              },
+              indent: {
+                left: leftIndent
+              },
+              border: {
+                left: {
+                  color: "#CCCCCC",
+                  space: 10,
+                  style: "single",
+                  size: 10
+                }
+              }
+            })
+          );
+        }
+        else if (token.type === 'code') {
+          // 处理代码块
+          const codeBlocks = createCodeBlock(token, settings);
+          // 增加左缩进以对齐列表项
+          codeBlocks.forEach(block => {
+            const indentLevel = nestLevel + 1;
+            const currentIndent = block.indent?.left || 0;
+            block.indent = {
+              ...block.indent,
+              left: currentIndent + convertInchesToTwip(indentLevel * 0.5)
+            };
+          });
+          paragraphs.push(...codeBlocks);
+        }
+        // 可以根据需要添加其他类型的嵌套内容处理
+      });
+    }
   });
   
   return paragraphs;

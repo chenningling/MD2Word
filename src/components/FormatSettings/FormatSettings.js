@@ -68,7 +68,7 @@ const StyledSelect = styled(Select)`
     align-items: center;
   }
   
-  .template-delete-btn {
+  .template-delete-btn, .fontsize-delete-btn {
     z-index: 100;
     position: relative;
     
@@ -178,8 +178,33 @@ const getFormatSummary = (settings, elementType) => {
     return alignMap[align] || '左对齐';
   };
   
+  // 获取中文字号名称
+  const getChineseFontSizeName = (fontSize) => {
+    // 中文字号映射表
+    const fontSizeMap = {
+      42: '初号',
+      36: '小初',
+      26: '一号',
+      24: '小一',
+      22: '二号',
+      18: '小二',
+      16: '三号',
+      15: '小三',
+      14: '四号',
+      12: '小四',
+      10.5: '五号',
+      9: '小五',
+      7.5: '六号',
+      6.5: '小六',
+      5.5: '七号'
+    };
+    
+    // 如果是标准字号，返回中文名称，否则返回数字+pt
+    return fontSizeMap[fontSize] ? `${fontSizeMap[fontSize]} (${fontSize}pt)` : `${fontSize}pt`;
+  };
+  
   // 基本信息
-  const basicInfo = `${settings.fontFamily} ${settings.fontSize}pt ${settings.bold ? '粗体' : ''}`;
+  const basicInfo = `${settings.fontFamily} ${getChineseFontSizeName(settings.fontSize)} ${settings.bold ? '粗体' : ''}`;
   
   // 对齐和行间距
   const layoutInfo = `${getAlignLabel(settings.align)} · 行距${settings.lineHeight}`;
@@ -324,6 +349,32 @@ const FormatSettings = ({ visible, toggleSettings }) => {
     }
   };
 
+  // 处理删除自定义字号
+  const handleDeleteCustomFontSize = (e, sizeValue, elementType) => {
+    // 阻止事件冒泡，避免触发Select的onChange
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (e && e.preventDefault) e.preventDefault();
+    
+    // 从自定义字号列表中删除
+    const updatedCustomSizes = customFontSizes.filter(size => size.value !== sizeValue);
+    setCustomFontSizes(updatedCustomSizes);
+    
+    // 更新localStorage
+    localStorage.setItem('md2word-custom-fontsizes', JSON.stringify(updatedCustomSizes));
+    
+    // 如果当前元素正在使用被删除的字号，则将其设置为小四(12pt)
+    const currentElementSettings = formatSettings.content[elementType];
+    if (currentElementSettings && currentElementSettings.fontSize === sizeValue) {
+      handleContentSettingChange(elementType, 'fontSize', 12); // 12pt是小四字号
+    }
+    
+    // 添加成功提示
+    message.success('已删除自定义字号');
+    
+    // 返回false阻止事件冒泡
+    return false;
+  };
+
   // 处理页面设置变更
   const handlePageSettingChange = (field, value) => {
     const newSettings = { ...formatSettings };
@@ -428,7 +479,7 @@ const FormatSettings = ({ visible, toggleSettings }) => {
         </FormItem>
         
         <FormItem label="字号">
-          <Select
+          <StyledSelect
             value={settings.fontSize}
             onChange={(value) => {
               // 处理可能的字符串输入，转换为数字
@@ -439,11 +490,15 @@ const FormatSettings = ({ visible, toggleSettings }) => {
             }}
             style={{ width: '100%' }}
             showSearch
-            optionFilterProp="children"
-            filterOption={(input, option) => 
-              option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-              String(option?.value).indexOf(input) >= 0
-            }
+            filterOption={(input, option) => {
+              // 简单的过滤逻辑，只使用值进行匹配
+              if (!input || !option) return true;
+              
+              const optionValue = String(option.value);
+              const inputValue = String(input);
+              
+              return optionValue.indexOf(inputValue) >= 0;
+            }}
             dropdownRender={(menu) => (
               <>
                 {menu}
@@ -474,18 +529,36 @@ const FormatSettings = ({ visible, toggleSettings }) => {
             <Option key="custom-input" value="custom-input" style={{ display: 'none' }}></Option>
             <Select.OptGroup label="常用中文字号">
               {chineseFontSizes.map(size => (
-                <Option key={size.value} value={size.value}>{size.label}</Option>
+                <Option 
+                  key={size.value} 
+                  value={size.value}
+                  label={size.label}
+                >
+                  {size.label}
+                </Option>
               ))}
             </Select.OptGroup>
             
             {customFontSizes.length > 0 && (
               <Select.OptGroup label="我的自定义字号">
                 {customFontSizes.map(size => (
-                  <Option key={`custom-${size.value}`} value={size.value}>{size.label}</Option>
+                  <Option 
+                    key={`custom-${size.value}`} 
+                    value={size.value}
+                    label={size.label}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span>{size.label}</span>
+                      <DeleteOutlined 
+                        className="fontsize-delete-btn"
+                        onClick={(e) => handleDeleteCustomFontSize(e, size.value, elementType)} 
+                      />
+                    </div>
+                  </Option>
                 ))}
               </Select.OptGroup>
             )}
-          </Select>
+          </StyledSelect>
         </FormItem>
         
         <FormItem label="粗体">
