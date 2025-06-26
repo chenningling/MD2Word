@@ -20,8 +20,17 @@ const FONT_MAPPING = {
   '黑体': 'SimHei, "Source Sans Pro", sans-serif',
   '仿宋': 'FangSong, "Source Serif Pro", serif',
   '楷体': 'KaiTi, "Source Serif Pro", serif',
+  '华文宋体': 'STSong, "Source Serif Pro", serif',
+  '华文楷体': 'STKaiti, "Source Serif Pro", serif',
+  '华文黑体': 'STHeiti, "Source Sans Pro", sans-serif',
+  '方正书宋': 'FZShuSong, "Source Serif Pro", serif',
+  '方正黑体': 'FZHei, "Source Sans Pro", sans-serif',
   'Arial': 'Arial, "Source Sans Pro", sans-serif',
   'Times New Roman': '"Times New Roman", "Source Serif Pro", serif',
+  'Calibri': 'Calibri, "Source Sans Pro", sans-serif',
+  'Cambria': 'Cambria, "Source Serif Pro", serif',
+  'Georgia': 'Georgia, "Source Serif Pro", serif',
+  'Helvetica': 'Helvetica, "Source Sans Pro", sans-serif',
   'Courier New': '"Courier New", "Source Code Pro", monospace'
 };
 

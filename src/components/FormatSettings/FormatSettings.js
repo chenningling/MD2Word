@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, Modal, Input, message } from 'antd';
 import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined, RedoOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -94,8 +94,36 @@ const fonts = [
   { value: '黑体', label: '黑体' },
   { value: '仿宋', label: '仿宋' },
   { value: '楷体', label: '楷体' },
+  { value: '华文宋体', label: '华文宋体' },
+  { value: '华文楷体', label: '华文楷体' },
+  { value: '华文黑体', label: '华文黑体' },
+  { value: '方正书宋', label: '方正书宋' },
+  { value: '方正黑体', label: '方正黑体' },
   { value: 'Arial', label: 'Arial' },
   { value: 'Times New Roman', label: 'Times New Roman' },
+  { value: 'Calibri', label: 'Calibri' },
+  { value: 'Cambria', label: 'Cambria' },
+  { value: 'Georgia', label: 'Georgia' },
+  { value: 'Helvetica', label: 'Helvetica' },
+];
+
+// 中文字号映射表
+const chineseFontSizes = [
+  { value: 42, label: '初号 (42pt)' },
+  { value: 36, label: '小初 (36pt)' },
+  { value: 26, label: '一号 (26pt)' },
+  { value: 24, label: '小一 (24pt)' },
+  { value: 22, label: '二号 (22pt)' },
+  { value: 18, label: '小二 (18pt)' },
+  { value: 16, label: '三号 (16pt)' },
+  { value: 15, label: '小三 (15pt)' },
+  { value: 14, label: '四号 (14pt)' },
+  { value: 12, label: '小四 (12pt)' },
+  { value: 10.5, label: '五号 (10.5pt)' },
+  { value: 9, label: '小五 (9pt)' },
+  { value: 7.5, label: '六号 (7.5pt)' },
+  { value: 6.5, label: '小六 (6.5pt)' },
+  { value: 5.5, label: '七号 (5.5pt)' },
 ];
 
 // 对齐方式
@@ -115,8 +143,17 @@ const FontOption = ({ value, children }) => {
     '黑体': 'SimHei, "Source Sans Pro", sans-serif',
     '仿宋': 'FangSong, "Source Serif Pro", serif',
     '楷体': 'KaiTi, "Source Serif Pro", serif',
+    '华文宋体': 'STSong, "Source Serif Pro", serif',
+    '华文楷体': 'STKaiti, "Source Serif Pro", serif',
+    '华文黑体': 'STHeiti, "Source Sans Pro", sans-serif',
+    '方正书宋': 'FZShuSong, "Source Serif Pro", serif',
+    '方正黑体': 'FZHei, "Source Sans Pro", sans-serif',
     'Arial': 'Arial, "Source Sans Pro", sans-serif',
     'Times New Roman': '"Times New Roman", "Source Serif Pro", serif',
+    'Calibri': 'Calibri, "Source Sans Pro", sans-serif',
+    'Cambria': 'Cambria, "Source Serif Pro", serif',
+    'Georgia': 'Georgia, "Source Serif Pro", serif',
+    'Helvetica': 'Helvetica, "Source Sans Pro", sans-serif',
   };
   
   const fontFamily = FONT_MAPPING[value] || `${value}, sans-serif`;
@@ -223,6 +260,11 @@ const FormatSettings = ({ visible, toggleSettings }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(formatSettings.template);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [templateName, setTemplateName] = useState('');
+
+  // 当formatSettings.template变化时更新选择器显示
+  useEffect(() => {
+    setSelectedTemplate(formatSettings.template);
+  }, [formatSettings.template]);
 
   // 处理模板选择
   const handleTemplateChange = (value) => {
@@ -342,13 +384,15 @@ const FormatSettings = ({ visible, toggleSettings }) => {
         </FormItem>
         
         <FormItem label="字号">
-          <InputNumber 
-            value={settings.fontSize} 
+          <Select
+            value={settings.fontSize}
             onChange={(value) => handleContentSettingChange(elementType, 'fontSize', value)}
-            min={8}
-            max={72}
             style={{ width: '100%' }}
-          />
+          >
+            {chineseFontSizes.map(size => (
+              <Option key={size.value} value={size.value}>{size.label}</Option>
+            ))}
+          </Select>
         </FormItem>
         
         <FormItem label="粗体">

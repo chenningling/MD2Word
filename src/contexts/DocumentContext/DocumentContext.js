@@ -137,6 +137,29 @@ export const DocumentProvider = ({ children }) => {
     initialLoadDone.current = true;
   }, []);
 
+  // 在自定义模板加载完成后，尝试应用上次选择的模板
+  useEffect(() => {
+    // 确保自定义模板已经加载完成
+    if (initialLoadDone.current) {
+      const lastSelectedTemplate = localStorage.getItem('md2word-last-template');
+      if (lastSelectedTemplate) {
+        // 检查模板是否存在（可能是预设模板或自定义模板）
+        const isPreset = ['default', 'academic', 'legal', 'business'].includes(lastSelectedTemplate);
+        const isCustom = customTemplates.some(template => template.id === lastSelectedTemplate);
+        
+        if (isPreset || isCustom) {
+          // 应用上次选择的模板
+          const templateSettings = getTemplateSettings(lastSelectedTemplate);
+          // 确保设置template属性
+          setFormatSettings({
+            ...templateSettings,
+            template: lastSelectedTemplate
+          });
+        }
+      }
+    }
+  }, [customTemplates]);
+
   // 保存内容到本地存储
   useEffect(() => {
     if (markdown) {
@@ -188,7 +211,13 @@ export const DocumentProvider = ({ children }) => {
   // 应用模板设置
   const applyTemplate = (templateId) => {
     const templateSettings = getTemplateSettings(templateId);
-    setFormatSettings(templateSettings);
+    // 确保设置template属性，这样选择器可以正确显示
+    setFormatSettings({
+      ...templateSettings,
+      template: templateId
+    });
+    // 保存用户选择的模板到localStorage
+    localStorage.setItem('md2word-last-template', templateId);
   };
 
   // 添加自定义模板
