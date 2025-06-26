@@ -260,11 +260,25 @@ const FormatSettings = ({ visible, toggleSettings }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(formatSettings.template);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [templateName, setTemplateName] = useState('');
+  // 添加自定义字号状态
+  const [customFontSizes, setCustomFontSizes] = useState([]);
 
   // 当formatSettings.template变化时更新选择器显示
   useEffect(() => {
     setSelectedTemplate(formatSettings.template);
   }, [formatSettings.template]);
+
+  // 从localStorage加载自定义字号
+  useEffect(() => {
+    const savedCustomFontSizes = localStorage.getItem('md2word-custom-fontsizes');
+    if (savedCustomFontSizes) {
+      try {
+        setCustomFontSizes(JSON.parse(savedCustomFontSizes));
+      } catch (e) {
+        console.error('Failed to parse custom font sizes:', e);
+      }
+    }
+  }, []);
 
   // 处理模板选择
   const handleTemplateChange = (value) => {
@@ -278,6 +292,36 @@ const FormatSettings = ({ visible, toggleSettings }) => {
     const newSettings = { ...formatSettings };
     newSettings.content[elementType][field] = value;
     updateFormatSettings(newSettings);
+  };
+
+  // 处理字号变更并保存自定义字号
+  const handleFontSizeChange = (elementType, value) => {
+    // 应用字号变更
+    handleContentSettingChange(elementType, 'fontSize', value);
+    
+    // 检查是否是自定义输入的字号
+    const isPresetSize = chineseFontSizes.some(size => size.value === value);
+    const isExistingCustomSize = customFontSizes.some(size => size.value === value);
+    
+    // 如果是新的自定义字号，保存到本地
+    if (!isPresetSize && !isExistingCustomSize && value >= 6 && value <= 72) {
+      const newCustomSize = { 
+        value: value, 
+        label: `${value}pt (自定义)` 
+      };
+      
+      // 添加到自定义列表（限制最多10个）
+      const updatedCustomSizes = [newCustomSize, ...customFontSizes]
+        .filter((size, index, self) => 
+          index === self.findIndex(s => s.value === size.value)
+        )
+        .slice(0, 10);
+      
+      setCustomFontSizes(updatedCustomSizes);
+      
+      // 保存到localStorage
+      localStorage.setItem('md2word-custom-fontsizes', JSON.stringify(updatedCustomSizes));
+    }
   };
 
   // 处理页面设置变更
@@ -386,12 +430,61 @@ const FormatSettings = ({ visible, toggleSettings }) => {
         <FormItem label="字号">
           <Select
             value={settings.fontSize}
-            onChange={(value) => handleContentSettingChange(elementType, 'fontSize', value)}
+            onChange={(value) => {
+              // 处理可能的字符串输入，转换为数字
+              const numValue = parseFloat(value);
+              if (!isNaN(numValue) && numValue >= 6 && numValue <= 72) {
+                handleFontSizeChange(elementType, numValue);
+              }
+            }}
             style={{ width: '100%' }}
+            showSearch
+            optionFilterProp="children"
+            filterOption={(input, option) => 
+              option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+              String(option?.value).indexOf(input) >= 0
+            }
+            dropdownRender={(menu) => (
+              <>
+                {menu}
+                <div
+                  style={{
+                    padding: '8px',
+                    borderTop: '1px solid #e8e8e8',
+                  }}
+                >
+                  <div style={{ fontSize: '12px', color: '#888' }}>
+                    可以输入6-72之间的自定义字号值，按回车确认
+                  </div>
+                </div>
+              </>
+            )}
+            onInputKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const inputValue = parseFloat(e.target.value);
+                if (!isNaN(inputValue) && inputValue >= 6 && inputValue <= 72) {
+                  handleFontSizeChange(elementType, inputValue);
+                  // 关闭下拉框
+                  document.activeElement.blur();
+                }
+              }
+            }}
+            dropdownMatchSelectWidth={false}
           >
-            {chineseFontSizes.map(size => (
-              <Option key={size.value} value={size.value}>{size.label}</Option>
-            ))}
+            <Option key="custom-input" value="custom-input" style={{ display: 'none' }}></Option>
+            <Select.OptGroup label="常用中文字号">
+              {chineseFontSizes.map(size => (
+                <Option key={size.value} value={size.value}>{size.label}</Option>
+              ))}
+            </Select.OptGroup>
+            
+            {customFontSizes.length > 0 && (
+              <Select.OptGroup label="我的自定义字号">
+                {customFontSizes.map(size => (
+                  <Option key={`custom-${size.value}`} value={size.value}>{size.label}</Option>
+                ))}
+              </Select.OptGroup>
+            )}
           </Select>
         </FormItem>
         
