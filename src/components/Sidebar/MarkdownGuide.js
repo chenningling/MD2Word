@@ -108,6 +108,22 @@ const StyledTable = styled(Table)`
     padding: 8px;
     font-size: 12px;
   }
+  
+  .ant-table-cell ul, .ant-table-cell ol {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 16px;
+  }
+  
+  .ant-table-cell li {
+    line-height: 1.3;
+  }
+  
+  .ant-table-cell li ul, .ant-table-cell li ol {
+    padding-left: 14px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 `;
 
 const MarkdownGuide = () => {
@@ -249,6 +265,22 @@ const MarkdownGuide = () => {
         </ol>
       ),
       description: '使用数字加点和空格表示有序列表项'
+    },
+    {
+      key: '3',
+      syntax: '- 一级列表\n\t- 二级列表\n\t\t- 三级列表',
+      result: (
+        <div style={{lineHeight: '1.3'}}>
+          • 一级列表
+          <div style={{paddingLeft: '12px'}}>
+            ○ 二级列表
+            <div style={{paddingLeft: '12px'}}>
+              ■ 三级列表
+            </div>
+          </div>
+        </div>
+      ),
+      description: '使用Tab键缩进创建嵌套列表'
     }
   ];
   
@@ -363,7 +395,7 @@ const MarkdownGuide = () => {
       <Divider style={{ margin: '12px 0' }} />
       
       <Paragraph>
-        <Text strong>提示：</Text> 在Markdown中，需要空一行才能开始新的段落。点击代码块右上角的复制按钮可以快速复制语法示例。
+        <Text strong>提示：</Text> 在Markdown中，需要空一行才能开始新的段落。点击代码块右上角的复制按钮可以快速复制语法示例。嵌套列表使用Tab键缩进，导出Word时自动使用不同样式的项目符号。
       </Paragraph>
     </GuideContainer>
   );

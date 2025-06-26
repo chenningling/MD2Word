@@ -145,33 +145,46 @@ const createWordDocument = (tokens, formatSettings) => {
             {
               level: 0,
               format: "bullet",
-              text: "•",
+              text: "●", // 使用实心圆点，比普通圆点大
               alignment: AlignmentType.LEFT,
               style: {
                 paragraph: {
                   indent: { left: convertInchesToTwip(0.5), hanging: convertInchesToTwip(0.25) }
+                },
+                run: {
+                  // 增大字体大小，使圆点更大
+                  size: 24, // 12pt字体大小的2倍
+                  bold: true // 加粗显示
                 }
               }
             },
             {
               level: 1,
               format: "bullet",
-              text: "○",
+              text: "○", // 空心圆点
               alignment: AlignmentType.LEFT,
               style: {
                 paragraph: {
                   indent: { left: convertInchesToTwip(1.0), hanging: convertInchesToTwip(0.25) }
+                },
+                run: {
+                  size: 20, // 比一级列表小一些，但不要太小
+                  bold: true
                 }
               }
             },
             {
               level: 2,
               format: "bullet",
-              text: "■",
+              text: "▪", // 使用较小的实心方块
               alignment: AlignmentType.LEFT,
               style: {
                 paragraph: {
                   indent: { left: convertInchesToTwip(1.5), hanging: convertInchesToTwip(0.25) }
+                },
+                run: {
+                  size: 18, // 比二级列表再小一些
+                  bold: true
                 }
               }
             }
@@ -188,6 +201,11 @@ const createWordDocument = (tokens, formatSettings) => {
               style: {
                 paragraph: {
                   indent: { left: convertInchesToTwip(0.5), hanging: convertInchesToTwip(0.25) }
+                },
+                run: {
+                  // 增大字体大小，使数字更明显
+                  size: 22, // 11pt字体大小的2倍
+                  bold: true // 加粗显示
                 }
               }
             },
@@ -199,6 +217,10 @@ const createWordDocument = (tokens, formatSettings) => {
               style: {
                 paragraph: {
                   indent: { left: convertInchesToTwip(1.0), hanging: convertInchesToTwip(0.25) }
+                },
+                run: {
+                  size: 20, // 略小于一级列表
+                  bold: true
                 }
               }
             },
@@ -210,6 +232,10 @@ const createWordDocument = (tokens, formatSettings) => {
               style: {
                 paragraph: {
                   indent: { left: convertInchesToTwip(1.5), hanging: convertInchesToTwip(0.25) }
+                },
+                run: {
+                  size: 18, // 略小于二级列表
+                  bold: true
                 }
               }
             }
@@ -553,22 +579,22 @@ const createList = (token, settings, nestLevel = 0) => {
     // 处理列表项中的内联格式，不再添加前缀，让Word自动处理
     const textRuns = parseInlineTokens(itemText, settings);
     
-    // 创建带有正确列表格式的段落
-    paragraphs.push(
-      new Paragraph({
-        children: textRuns,
-        spacing: {
-          before: 40,  // 2磅
-          after: 40,   // 2磅
-          line: lineSpacingTwips,
-          lineRule: 'exact'
-        },
-        numbering: {
-          reference: isOrdered ? 'ordered-list' : 'unordered-list',
-          level: nestLevel,
-        }
-      })
-    );
+          // 创建带有正确列表格式的段落
+      paragraphs.push(
+        new Paragraph({
+          children: textRuns,
+          spacing: {
+            before: 40,  // 2磅
+            after: 40,   // 2磅
+            line: lineSpacingTwips,
+            lineRule: 'exact'
+          },
+          numbering: {
+            reference: isOrdered ? 'ordered-list' : 'unordered-list',
+            level: nestLevel,
+          }
+        })
+      );
     
     // 处理嵌套内容（列表、引用等）
     if (item.tokens) {
