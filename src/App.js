@@ -10,6 +10,7 @@ import FormatSettings from './components/FormatSettings/FormatSettings';
 import Sidebar from './components/Sidebar/Sidebar';
 import Resizer from './components/Resizer/Resizer';
 import MarkdownGuide from './components/Sidebar/MarkdownGuide';
+import TextToMarkdown from './components/Sidebar/TextToMarkdown';
 
 // 导入上下文
 import { DocumentProvider } from './contexts/DocumentContext/DocumentContext';
@@ -219,10 +220,7 @@ function App() {
               <h3>文本内容转Markdown</h3>
               <button onClick={closeSideContent} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>×</button>
             </SideContentHeader>
-            <div>
-              <p>此功能将在后续版本中开放，敬请期待！</p>
-              <p>该功能将允许您将普通文本转换为Markdown格式，方便排版。</p>
-            </div>
+            <TextToMarkdown />
           </SideContentContainer>
         );
       default:
