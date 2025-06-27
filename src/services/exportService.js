@@ -107,6 +107,15 @@ const processSpecialTokens = async (tokens) => {
         // 如果处理失败，保留原始代码块
         processedTokens.push(token);
       }
+    } else if (token.type === 'code') {
+      // 处理普通代码块，确保它们被正确添加到处理后的tokens中
+      console.log('处理普通代码块:', token.lang, token.text ? token.text.substring(0, 30) + '...' : '无内容');
+      processedTokens.push({
+        ...token,
+        type: 'code',  // 确保类型是'code'
+        text: token.text || '',  // 确保有文本内容
+        lang: token.lang || ''   // 确保有语言标识
+      });
     } else if (token.type === 'paragraph') {
       try {
         // 检查段落中是否包含单个图片
@@ -468,6 +477,12 @@ const createWordDocument = (tokens, formatSettings) => {
 
 // 将tokens解析为Word文档元素
 const parseTokensToDocxElements = (tokens, contentSettings) => {
+  console.log(`开始解析 ${tokens.length} 个tokens为Word文档元素`);
+  console.log('tokens类型统计:', tokens.reduce((acc, token) => {
+    acc[token.type] = (acc[token.type] || 0) + 1;
+    return acc;
+  }, {}));
+  
   const elements = [];
   
   for (let i = 0; i < tokens.length; i++) {
@@ -484,7 +499,10 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
         elements.push(createBlockquote(token, contentSettings.quote));
         break;
       case 'code':
-        elements.push(createCodeBlock(token, contentSettings.paragraph));
+        console.log('处理代码块用于Word导出:', token.lang, token.text ? token.text.substring(0, 30) + '...' : '无内容');
+        const codeElements = createCodeBlock(token, contentSettings.paragraph);
+        console.log(`生成了 ${codeElements.length} 个代码块段落元素`);
+        elements.push(...codeElements);
         break;
       case 'list':
         elements.push(...createList(token, contentSettings.paragraph));
@@ -506,14 +524,32 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
     }
   }
   
+  console.log(`解析完成，共生成 ${elements.length} 个Word文档元素`);
+  console.log('Word文档元素类型统计:', elements.reduce((acc, element) => {
+    if (element && element.constructor) {
+      const type = element.constructor.name;
+      acc[type] = (acc[type] || 0) + 1;
+    } else {
+      acc['unknown'] = (acc['unknown'] || 0) + 1;
+    }
+    return acc;
+  }, {}));
+  
   return elements;
 };
 
 // 创建代码块
 const createCodeBlock = (token, settings) => {
+  console.log('创建代码块, token:', JSON.stringify({
+    type: token.type,
+    lang: token.lang,
+    text: token.text ? (token.text.length > 50 ? token.text.substring(0, 50) + '...' : token.text) : '无内容'
+  }));
+  
   const codeText = token.text || '';
   // 按换行符分割代码文本
   const codeLines = codeText.split('\n');
+  console.log(`代码块有 ${codeLines.length} 行`);
   
   // 创建代码块容器
   const codeElements = [];

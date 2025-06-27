@@ -94,8 +94,8 @@ const SideContentContainer = styled.div`
   background-color: white;
   border-right: 1px solid #f0f0f0;
   position: relative;
-  min-width: 200px;
-  max-width: 500px;
+  min-width: 300px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
 `;
@@ -135,7 +135,7 @@ function App() {
   const [sideContentType, setSideContentType] = useState(null);
   
   // 新增宽度状态
-  const [sideContentWidth, setSideContentWidth] = useState(300); // 默认左侧内容区域宽度
+  const [sideContentWidth, setSideContentWidth] = useState(380); // 默认左侧内容区域宽度
   const [settingsWidth, setSettingsWidth] = useState(300); // 默认设置面板宽度
 
   const toggleSettings = () => {
@@ -180,7 +180,7 @@ function App() {
     
     const newWidth = clientX - 80; // 减去左侧导航条宽度
     // 限制宽度范围
-    const clampedWidth = Math.min(Math.max(newWidth, 200), 500);
+    const clampedWidth = Math.min(Math.max(newWidth, 300), 600);
     setSideContentWidth(clampedWidth);
     localStorage.setItem('sideContentWidth', clampedWidth.toString());
   };
