@@ -17,6 +17,7 @@ const SettingsContainer = styled.div`
   border-left: 1px solid #f0f0f0;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 // 使用与ModuleHeader一致的样式
@@ -42,6 +43,7 @@ const SettingsTitle = styled(Title)`
 const SettingsContent = styled.div`
   flex: 1;
   padding: 16px;
+  padding-bottom: 60px; /* 为悬浮按钮留出空间 */
   overflow: auto;
 `;
 
@@ -58,6 +60,37 @@ const ButtonGroup = styled.div`
   justify-content: flex-end;
   margin-top: 16px;
   gap: 8px;
+`;
+
+// 添加悬浮保存按钮样式
+const FloatingSaveButton = styled(Button)`
+  position: absolute;
+  bottom: 26px; /* 上移10px，从16px改为26px */
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  padding: 0 14px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0.95;
+  transition: all 0.3s;
+  font-size: 13px;
+  font-weight: 500;
+  
+  &:hover {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.02);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  }
+  
+  .anticon {
+    margin-right: 3px; /* 减少图标与文字的距离 */
+    font-size: 13px;
+  }
 `;
 
 // 添加自定义样式，确保删除按钮正常工作
@@ -287,6 +320,8 @@ const FormatSettings = ({ visible, toggleSettings }) => {
   const [templateName, setTemplateName] = useState('');
   // 添加自定义字号状态
   const [customFontSizes, setCustomFontSizes] = useState([]);
+  // 添加设置是否被修改的状态
+  const [isSettingsChanged, setIsSettingsChanged] = useState(false);
 
   // 当formatSettings.template变化时更新选择器显示
   useEffect(() => {
@@ -310,6 +345,8 @@ const FormatSettings = ({ visible, toggleSettings }) => {
     setSelectedTemplate(value);
     // 应用选中的模板设置
     applyTemplate(value);
+    // 重置设置变更状态
+    setIsSettingsChanged(false);
   };
 
   // 处理内容设置变更
@@ -317,6 +354,10 @@ const FormatSettings = ({ visible, toggleSettings }) => {
     const newSettings = { ...formatSettings };
     newSettings.content[elementType][field] = value;
     updateFormatSettings(newSettings);
+    // 标记设置已被修改，但只有在已选择模板的情况下
+    if (selectedTemplate) {
+      setIsSettingsChanged(true);
+    }
   };
 
   // 处理字号变更并保存自定义字号
@@ -385,6 +426,10 @@ const FormatSettings = ({ visible, toggleSettings }) => {
       newSettings.page[field] = value;
     }
     updateFormatSettings(newSettings);
+    // 标记设置已被修改，但只有在已选择模板的情况下
+    if (selectedTemplate) {
+      setIsSettingsChanged(true);
+    }
   };
 
   // 恢复默认页面边距
@@ -400,6 +445,10 @@ const FormatSettings = ({ visible, toggleSettings }) => {
     newSettings.page.margin = { ...defaultMargins };
     updateFormatSettings(newSettings);
     message.success('已恢复默认页面边距');
+    // 标记设置已被修改，但只有在已选择模板的情况下
+    if (selectedTemplate) {
+      setIsSettingsChanged(true);
+    }
   };
 
   // 打开保存模板对话框
@@ -425,6 +474,8 @@ const FormatSettings = ({ visible, toggleSettings }) => {
     setIsModalVisible(false);
     message.success(`模板 "${templateName}" 已保存`);
     setSelectedTemplate(newTemplate.id);
+    // 重置设置变更状态
+    setIsSettingsChanged(false);
   };
 
   // 处理删除自定义模板
@@ -824,6 +875,18 @@ const FormatSettings = ({ visible, toggleSettings }) => {
           </Form.Item>
         </Form>
       </Modal>
+      
+      {/* 添加悬浮保存按钮 - 恢复图标但减少间距 */}
+      {isSettingsChanged && (
+        <FloatingSaveButton
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={showSaveTemplateModal}
+          title="保存为模板"
+        >
+          保存为模板
+        </FloatingSaveButton>
+      )}
     </SettingsContainer>
   );
 };

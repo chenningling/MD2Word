@@ -97,8 +97,8 @@ const DocumentContext = createContext();
 export const DocumentProvider = ({ children }) => {
   // 文档内容状态
   const [markdown, setMarkdown] = useState('');
-  // 格式设置状态
-  const [formatSettings, setFormatSettings] = useState(defaultFormatSettings);
+  // 格式设置状态 - 使用深拷贝确保不会修改原始默认设置
+  const [formatSettings, setFormatSettings] = useState(JSON.parse(JSON.stringify(defaultFormatSettings)));
   // 自定义模板状态
   const [customTemplates, setCustomTemplates] = useState([]);
   // 添加一个ref来标记是否已完成初始加载
@@ -149,12 +149,7 @@ export const DocumentProvider = ({ children }) => {
         
         if (isPreset || isCustom) {
           // 应用上次选择的模板
-          const templateSettings = getTemplateSettings(lastSelectedTemplate);
-          // 确保设置template属性
-          setFormatSettings({
-            ...templateSettings,
-            template: lastSelectedTemplate
-          });
+          applyTemplate(lastSelectedTemplate);
         }
       }
     }
@@ -195,7 +190,8 @@ export const DocumentProvider = ({ children }) => {
   const getTemplateSettings = (templateId) => {
     // 检查是否是预设模板
     if (predefinedTemplates[templateId]) {
-      return predefinedTemplates[templateId];
+      // 返回预设模板的深拷贝，确保不会修改原始模板
+      return JSON.parse(JSON.stringify(predefinedTemplates[templateId]));
     }
     
     // 检查是否是自定义模板
@@ -204,18 +200,36 @@ export const DocumentProvider = ({ children }) => {
       return customTemplate.settings;
     }
     
-    // 如果找不到模板，返回默认设置
-    return defaultFormatSettings;
+    // 如果找不到模板，返回默认设置的深拷贝
+    return JSON.parse(JSON.stringify(defaultFormatSettings));
   };
 
   // 应用模板设置
   const applyTemplate = (templateId) => {
-    const templateSettings = getTemplateSettings(templateId);
+    // 获取原始模板设置（不使用本地存储的修改版本）
+    let templateSettings;
+    
+    // 检查是否是预设模板
+    if (predefinedTemplates[templateId]) {
+      // 对于预设模板，直接使用预定义的设置
+      templateSettings = JSON.parse(JSON.stringify(predefinedTemplates[templateId]));
+    } else {
+      // 对于自定义模板，使用保存的设置
+      const customTemplate = customTemplates.find(template => template.id === templateId);
+      if (customTemplate) {
+        templateSettings = customTemplate.settings;
+      } else {
+        // 如果找不到模板，使用默认设置
+        templateSettings = defaultFormatSettings;
+      }
+    }
+    
     // 确保设置template属性，这样选择器可以正确显示
     setFormatSettings({
       ...templateSettings,
       template: templateId
     });
+    
     // 保存用户选择的模板到localStorage
     localStorage.setItem('md2word-last-template', templateId);
   };
