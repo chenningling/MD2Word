@@ -13,6 +13,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@uiw/react-codemirror": "^4.23.13",
+    "ali-oss": "^6.23.0",
     "antd": "^5.26.1",
     "axios": "^1.10.0",
     "docx": "^9.5.1",
@@ -22,9 +23,11 @@
     "mermaid": "^11.7.0",
     "prismjs": "^1.29.0",
     "react": "^19.1.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^19.1.0",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.19",
+    "uuid": "^11.1.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
