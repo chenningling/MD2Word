@@ -10,17 +10,31 @@ export const downloadImage = async (imageUrl) => {
     // 处理相对路径
     const url = imageUrl.startsWith('http') ? imageUrl : `https:${imageUrl}`;
     
+    // 处理OSS图片URL的CORS问题
+    let fetchUrl = url;
+    if (url.includes('aliyuncs.com')) {
+      // 添加图片处理参数，可能有助于绕过某些限制
+      fetchUrl = url.includes('?') ? `${url}&x-oss-process=image/resize,m_lfit,w_800` : `${url}?x-oss-process=image/resize,m_lfit,w_800`;
+      console.log('修改后的OSS URL:', fetchUrl);
+    }
+    
     // 下载图片
-    const response = await axios.get(url, {
+    const response = await axios.get(fetchUrl, {
       responseType: 'arraybuffer',
+      // 添加请求头以模拟浏览器行为
+      headers: {
+        'Referer': window.location.origin,
+        'User-Agent': navigator.userAgent
+      }
     });
     
     // 转换为Base64
     const arrayBufferView = new Uint8Array(response.data);
-    const blob = new Blob([arrayBufferView], { type: response.headers['content-type'] });
-    
-    // 使用FileReader将Blob转换为Base64
-    const base64 = await blobToBase64(blob);
+    let binary = '';
+    for (let i = 0; i < arrayBufferView.length; i++) {
+      binary += String.fromCharCode(arrayBufferView[i]);
+    }
+    const base64 = btoa(binary);
     
     // 获取图片类型
     const contentType = response.headers['content-type'];
@@ -67,9 +81,20 @@ const getImageDimensions = (dataUri) => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
+      // 限制图片最大宽度为800px，保持原始比例
+      const maxWidth = 800;
+      let width = img.width;
+      let height = img.height;
+      
+      if (width > maxWidth) {
+        const ratio = maxWidth / width;
+        width = maxWidth;
+        height = Math.round(height * ratio);
+      }
+      
       resolve({
-        width: img.width,
-        height: img.height,
+        width,
+        height,
       });
     };
     img.onerror = (err) => {
@@ -103,6 +128,13 @@ export const dataUriToUint8Array = (dataUri) => {
  * @returns {boolean} - 是否是图片链接
  */
 export const isImageUrl = (url) => {
+  if (!url || typeof url !== 'string') return false;
+  
+  // 检查是否是OSS链接
+  if (url.includes('aliyuncs.com')) {
+    return true;
+  }
+  
   const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg'];
   const lowerCaseUrl = url.toLowerCase();
   

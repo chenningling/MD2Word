@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# OSS配置文件（包含敏感信息）
+src/services/ossConfig.js
+.env
