@@ -1,7 +1,6 @@
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip, Table, TableRow, TableCell, WidthType, BorderStyle, HorizontalPositionAlign, HorizontalPositionRelativeFrom, ThematicBreak, Shading, ExternalHyperlink, ImageRun } from 'docx';
 import { saveAs } from 'file-saver';
 import { marked } from 'marked';
-import { renderMermaidToPng, isMermaidCode } from '../utils/mermaidUtils';
 import { dataUriToUint8Array, downloadImage, isImageUrl } from '../utils/imageUtils';
 import axios from 'axios';
 
@@ -89,25 +88,7 @@ const processSpecialTokens = async (tokens) => {
   
   // 然后处理所有token
   for (const token of tokens) {
-    if (token.type === 'code' && isMermaidCode(token.lang)) {
-      try {
-        // 渲染Mermaid图表为PNG
-        const { dataUrl, width, height } = await renderMermaidToPng(token.text);
-        
-        // 创建一个新的图片token
-        processedTokens.push({
-          type: 'mermaid',
-          dataUrl,
-          width,
-          height,
-          raw: token.raw
-        });
-      } catch (error) {
-        console.error('处理Mermaid图表失败:', error);
-        // 如果处理失败，保留原始代码块
-        processedTokens.push(token);
-      }
-    } else if (token.type === 'code') {
+    if (token.type === 'code') {
       // 处理普通代码块，确保它们被正确添加到处理后的tokens中
       console.log('处理普通代码块:', token.lang, token.text ? token.text.substring(0, 30) + '...' : '无内容');
       processedTokens.push({
@@ -218,7 +199,7 @@ const processSpecialTokens = async (tokens) => {
   console.log('处理后的tokens:', processedTokens.map(t => ({ 
     type: t.type, 
     text: t.text || (t.raw ? t.raw.substring(0, 20) : ''), 
-    isImage: t.type === 'image' || t.type === 'mermaid'
+    isImage: t.type === 'image'
   })));
   return processedTokens;
 };
@@ -512,9 +493,6 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
         break;
       case 'hr':
         elements.push(createHorizontalRule());
-        break;
-      case 'mermaid':
-        elements.push(createMermaidDiagram(token));
         break;
       case 'image':
         elements.push(createImageElement(token));
@@ -1367,47 +1345,7 @@ const convertAlignment = (align) => {
   }
 };
 
-// 创建Mermaid图表
-const createMermaidDiagram = (token) => {
-  try {
-    const imageData = dataUriToUint8Array(token.dataUrl);
-    
-    return new Paragraph({
-      children: [
-        new ImageRun({
-          data: imageData,
-          transformation: {
-            width: token.width,
-            height: token.height
-          },
-          alignment: {
-            horizontal: HorizontalPositionAlign.CENTER
-          }
-        })
-      ],
-      spacing: {
-        before: 240,
-        after: 240
-      },
-      alignment: AlignmentType.CENTER
-    });
-  } catch (error) {
-    console.error('创建Mermaid图表失败:', error);
-    // 如果创建失败，返回一个错误提示段落
-    return new Paragraph({
-      children: [
-        new TextRun({
-          text: '[无法显示Mermaid图表]',
-          color: 'FF0000'
-        })
-      ],
-      spacing: {
-        before: 240,
-        after: 240
-      }
-    });
-  }
-};
+
 
 // 创建图片元素
 const createImageElement = (token) => {
