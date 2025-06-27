@@ -1,6 +1,7 @@
 import OSS from 'ali-oss';
 import { v4 as uuidv4 } from 'uuid';
 import ossConfig from './ossConfig';
+import { isWordSupportedImageFormat, getWordSupportedImageFormats } from '../utils/imageUtils';
 
 // OSS客户端实例
 let ossClient = null;
@@ -106,17 +107,58 @@ export const uploadImageFromClipboard = async (clipboardEvent) => {
   try {
     const items = clipboardEvent.clipboardData.items;
     let imageFile = null;
+    let isSvgImage = false;
     
     console.log('检查剪贴板内容，项目数量:', items.length);
     
     // 查找剪贴板中的图片数据
     for (let i = 0; i < items.length; i++) {
       console.log(`剪贴板项目 ${i}:`, items[i].type);
-      if (items[i].type.indexOf('image') !== -1) {
+      
+      // 检查是否是SVG图片（通常以text/html或text/plain形式存在于剪贴板）
+      if (items[i].type === 'text/html' || items[i].type === 'text/plain') {
+        let text = '';
+        try {
+          // 获取文本内容
+          const textBlob = items[i].getAsFile() || await new Promise(resolve => {
+            items[i].getAsString(string => resolve(string));
+          });
+          
+          if (typeof textBlob === 'string') {
+            text = textBlob;
+          } else if (textBlob instanceof Blob) {
+            text = await textBlob.text();
+          }
+          
+          // 检查是否包含SVG标记
+          if (text && (text.includes('<svg') || text.includes('<?xml') && text.includes('<svg'))) {
+            console.log('检测到SVG图像内容');
+            isSvgImage = true;
+            break;
+          }
+        } catch (e) {
+          console.error('解析剪贴板文本失败:', e);
+        }
+      }
+      
+      // 检查常规图片格式
+      if (items[i].type.indexOf('image/') !== -1) {
         imageFile = items[i].getAsFile();
         console.log('找到图片文件:', imageFile.name, imageFile.size, imageFile.type);
+        
+        // 特别检查SVG格式
+        if (items[i].type === 'image/svg+xml') {
+          isSvgImage = true;
+          break;
+        }
         break;
       }
+    }
+    
+    // 如果检测到SVG图像，直接提示不支持
+    if (isSvgImage) {
+      console.error('检测到SVG格式图片，不支持导出到Word');
+      throw new Error(`SVG格式图片不支持导出到Word文档。请使用以下格式：${getWordSupportedImageFormats()}`);
     }
     
     if (!imageFile) {
@@ -124,12 +166,18 @@ export const uploadImageFromClipboard = async (clipboardEvent) => {
       return null; // 剪贴板中没有图片
     }
     
+    // 验证图片格式是否被Word支持
+    if (!isWordSupportedImageFormat(imageFile)) {
+      console.error('不支持的图片格式:', imageFile.type);
+      throw new Error(`不支持的图片格式。请使用Word支持的格式：${getWordSupportedImageFormats()}`);
+    }
+    
     // 上传图片到OSS
     const imageUrl = await uploadToOSS(imageFile);
     return imageUrl;
   } catch (error) {
     console.error('从剪贴板上传图片失败:', error);
-    return null;
+    throw error; // 向上抛出错误，让调用者处理
   }
 };
 
@@ -145,6 +193,12 @@ export const uploadImageFromLocal = async (file) => {
       throw new Error('无效的图片文件');
     }
     
+    // 验证图片格式是否被Word支持
+    if (!isWordSupportedImageFormat(file)) {
+      console.error('不支持的图片格式:', file.type);
+      throw new Error(`不支持的图片格式。请使用Word支持的格式：${getWordSupportedImageFormats()}`);
+    }
+    
     console.log('准备上传本地图片:', file.name, file.size, file.type);
     
     // 上传图片到OSS
@@ -152,7 +206,7 @@ export const uploadImageFromLocal = async (file) => {
     return imageUrl;
   } catch (error) {
     console.error('上传本地图片失败:', error);
-    return null;
+    throw error; // 向上抛出错误，让调用者处理
   }
 };
 

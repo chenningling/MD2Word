@@ -7,6 +7,7 @@ import { EditorView } from '@codemirror/view';
 import { Button, Tooltip, message, Modal } from 'antd';
 import { ReloadOutlined, PictureOutlined } from '@ant-design/icons';
 import { uploadImageFromClipboard, uploadImageFromLocal, imageUrlToMarkdown } from '../../services/ossService';
+import { getWordSupportedImageFormats } from '../../utils/imageUtils';
 
 const EditorContainer = styled.div`
   flex: 1;
@@ -56,7 +57,7 @@ const HiddenFileInput = styled.input`
   display: none;
 `;
 
-// 右键菜单样式
+// 右键菜单样式 - 不再需要，可以移除或保留以备将来使用
 const ContextMenu = styled.div`
   position: absolute;
   background: white;
@@ -65,7 +66,7 @@ const ContextMenu = styled.div`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 8px 0;
   z-index: 1000;
-  min-width: 150px;
+  min-width: 180px;
   
   .menu-item {
     padding: 8px 16px;
@@ -80,6 +81,13 @@ const ContextMenu = styled.div`
     .anticon {
       margin-right: 8px;
     }
+  }
+  
+  .menu-item-desc {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+    padding-left: 24px;
   }
 `;
 
@@ -133,11 +141,6 @@ const MarkdownEditor = () => {
   const isInitialized = useRef(false);
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
-  const [contextMenu, setContextMenu] = React.useState({
-    visible: false,
-    x: 0,
-    y: 0
-  });
 
   // 获取编辑器实例
   const handleEditorCreated = (editor) => {
@@ -150,20 +153,7 @@ const MarkdownEditor = () => {
       updateMarkdown(placeholderText);
       isInitialized.current = true;
     }
-    
-    // 添加全局点击事件监听，用于关闭右键菜单
-    const handleGlobalClick = () => {
-      if (contextMenu.visible) {
-        setContextMenu({ ...contextMenu, visible: false });
-      }
-    };
-    
-    document.addEventListener('click', handleGlobalClick);
-    
-    return () => {
-      document.removeEventListener('click', handleGlobalClick);
-    };
-  }, [updateMarkdown, content, contextMenu]);
+  }, [updateMarkdown, content]);
 
   const handleChange = (value) => {
     updateMarkdown(value);
@@ -208,7 +198,9 @@ const MarkdownEditor = () => {
       console.error('粘贴图片处理失败:', error);
       
       // 提供更具体的错误信息
-      if (error.message && error.message.includes('CORS')) {
+      if (error.message && error.message.includes('不支持的图片格式')) {
+        message.error(error.message);
+      } else if (error.message && error.message.includes('CORS')) {
         message.error('图片上传失败：跨域请求被拒绝，请检查OSS的CORS设置');
       } else if (error.status === 403) {
         message.error('图片上传失败：没有权限访问OSS，请检查AccessKey权限');
@@ -218,19 +210,8 @@ const MarkdownEditor = () => {
     }
   }, []);
   
-  // 处理右键菜单
-  const handleContextMenu = (e) => {
-    e.preventDefault();
-    setContextMenu({
-      visible: true,
-      x: e.clientX,
-      y: e.clientY
-    });
-  };
-  
   // 处理插入本地图片
   const handleInsertLocalImage = () => {
-    setContextMenu({ ...contextMenu, visible: false });
     fileInputRef.current?.click();
   };
   
@@ -276,7 +257,9 @@ const MarkdownEditor = () => {
         loadingMessage();
         
         // 提供更具体的错误信息
-        if (uploadError.message && uploadError.message.includes('CORS')) {
+        if (uploadError.message && uploadError.message.includes('不支持的图片格式')) {
+          message.error(uploadError.message);
+        } else if (uploadError.message && uploadError.message.includes('CORS')) {
           message.error('图片上传失败：跨域请求被拒绝，请检查OSS的CORS设置');
         } else if (uploadError.status === 403) {
           message.error('图片上传失败：没有权限访问OSS，请检查AccessKey权限');
@@ -295,6 +278,9 @@ const MarkdownEditor = () => {
       }
     }
   };
+
+  // 在组件初始化时获取支持的图片格式
+  const supportedFormats = getWordSupportedImageFormats().toLowerCase().replace(/,\s+/g, ',');
 
   return (
     <EditorContainer>
@@ -320,7 +306,7 @@ const MarkdownEditor = () => {
           </Tooltip>
         </div>
       </EditorHeader>
-      <EditorContent onContextMenu={handleContextMenu}>
+      <EditorContent>
         <CodeMirror
           value={content}
           height="100%"
@@ -334,25 +320,11 @@ const MarkdownEditor = () => {
           theme="light"
         />
         
-        {/* 右键菜单 */}
-        {contextMenu.visible && (
-          <ContextMenu 
-            style={{ 
-              left: `${contextMenu.x}px`, 
-              top: `${contextMenu.y}px` 
-            }}
-          >
-            <div className="menu-item" onClick={handleInsertLocalImage}>
-              <PictureOutlined /> 插入本地图片
-            </div>
-          </ContextMenu>
-        )}
-        
         {/* 隐藏的文件输入框 */}
         <HiddenFileInput 
           type="file" 
           ref={fileInputRef} 
-          accept="image/*"
+          accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp,image/tiff,image/webp"
           onChange={handleFileChange}
         />
       </EditorContent>

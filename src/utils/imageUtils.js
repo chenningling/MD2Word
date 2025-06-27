@@ -139,4 +139,46 @@ export const isImageUrl = (url) => {
   const lowerCaseUrl = url.toLowerCase();
   
   return imageExtensions.some(ext => lowerCaseUrl.endsWith(ext));
+};
+
+/**
+ * 检查图片格式是否被Word支持
+ * @param {File|Blob} file - 图片文件
+ * @returns {boolean} - 是否是Word支持的格式
+ */
+export const isWordSupportedImageFormat = (file) => {
+  if (!file) return false;
+  
+  // Word支持的图片格式MIME类型
+  const supportedMimeTypes = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/gif',
+    'image/bmp',
+    'image/tiff',
+    'image/webp'
+  ];
+  
+  // 检查MIME类型
+  if (supportedMimeTypes.includes(file.type)) {
+    return true;
+  }
+  
+  // 如果MIME类型检查不通过，也检查文件扩展名
+  if (file.name) {
+    const supportedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.tif', '.webp'];
+    const lowerCaseName = file.name.toLowerCase();
+    return supportedExtensions.some(ext => lowerCaseName.endsWith(ext));
+  }
+  
+  return false;
+};
+
+/**
+ * 获取Word支持的图片格式列表（用于显示）
+ * @returns {string} - 格式列表字符串
+ */
+export const getWordSupportedImageFormats = () => {
+  return 'JPG, JPEG, PNG, GIF, BMP, TIFF, WEBP';
 }; 

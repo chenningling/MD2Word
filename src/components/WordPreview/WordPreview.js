@@ -122,6 +122,49 @@ const WordDocument = styled.div`
   transform-origin: top center;
   transition: transform 0.2s ease;
   
+  /* 添加图片样式，确保图片不会超出页面宽度 */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+  }
+  
+  /* 图片容器样式 */
+  .image-container {
+    text-align: center;
+    margin: 1.5em 0;
+    max-width: 100%;
+  }
+  
+  .markdown-image {
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  /* 不同尺寸图片的样式 */
+  .large-image {
+    max-width: 95%;
+    margin: 0 auto;
+  }
+  
+  .medium-image {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+  
+  .small-image {
+    max-width: 60%;
+    margin: 0 auto;
+  }
+  
+  /* 处理超长图片 */
+  .tall-image {
+    max-height: 500px;
+    object-fit: contain;
+  }
+  
   h1, h2, h3, h4, h5, h6 {
     font-family: ${props => getMappedFont(props.heading1.fontFamily)};
     font-weight: ${props => props.heading1.bold ? 'bold' : 'normal'};
@@ -264,6 +307,8 @@ const WordDocument = styled.div`
   .mermaid-diagram img {
     max-width: 100%;
     height: auto;
+    display: block;
+    margin: 0 auto; /* 保持居中对齐 */
   }
 
   /* 添加字体样式预览效果 */
@@ -341,11 +386,53 @@ const WordPreview = () => {
         // 查找所有Mermaid占位符
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = html;
+        
+        // 处理所有图片，添加样式类
+        const imgElements = tempDiv.querySelectorAll('img:not(.mermaid-diagram img)');
+        imgElements.forEach(img => {
+          // 添加样式类
+          img.classList.add('markdown-image');
+          
+          // 为图片添加父容器，便于控制样式
+          if (!img.parentElement.classList.contains('image-container')) {
+            const container = document.createElement('div');
+            container.className = 'image-container';
+            img.parentNode.insertBefore(container, img);
+            container.appendChild(img);
+            
+            // 添加加载事件，处理图片尺寸
+            img.onload = function() {
+              // 获取图片原始尺寸
+              const width = this.naturalWidth;
+              const height = this.naturalHeight;
+              
+              // 根据图片尺寸应用不同的样式类
+              if (width > 800) {
+                this.classList.add('large-image');
+              } else if (width < 300) {
+                this.classList.add('small-image');
+              } else {
+                this.classList.add('medium-image');
+              }
+              
+              // 处理超长图片
+              if (height > width * 1.5) {
+                this.classList.add('tall-image');
+              }
+            };
+            
+            // 为已经加载的图片触发onload事件
+            if (img.complete) {
+              img.onload();
+            }
+          }
+        });
+        
         const mermaidPlaceholders = tempDiv.querySelectorAll('.mermaid-placeholder');
         
         // 如果没有Mermaid图表，直接使用HTML
         if (mermaidPlaceholders.length === 0) {
-          setProcessedHtml(html);
+          setProcessedHtml(tempDiv.innerHTML);
           return;
         }
         
@@ -358,7 +445,31 @@ const WordPreview = () => {
             // 创建图片元素替换占位符
             const imgElement = document.createElement('div');
             imgElement.className = 'mermaid-diagram';
-            imgElement.innerHTML = `<img src="${dataUrl}" alt="Mermaid Diagram" />`;
+            imgElement.innerHTML = `<img src="${dataUrl}" alt="Mermaid Diagram" class="markdown-image" />`;
+            
+            // 为Mermaid图表添加加载事件
+            const mermaidImg = imgElement.querySelector('img');
+            if (mermaidImg) {
+              mermaidImg.onload = function() {
+                // 获取图片原始尺寸
+                const width = this.naturalWidth;
+                const height = this.naturalHeight;
+                
+                // 根据图片尺寸应用不同的样式类
+                if (width > 800) {
+                  this.classList.add('large-image');
+                } else if (width < 300) {
+                  this.classList.add('small-image');
+                } else {
+                  this.classList.add('medium-image');
+                }
+                
+                // 处理超长图表
+                if (height > width * 1.5) {
+                  this.classList.add('tall-image');
+                }
+              };
+            }
             
             placeholder.parentNode.replaceChild(imgElement, placeholder);
           } catch (error) {
