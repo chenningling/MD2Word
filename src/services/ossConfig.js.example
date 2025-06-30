@@ -1,0 +1,14 @@
+// 阿里云OSS配置示例
+// 请复制此文件为ossConfig.js并填入您的实际配置信息
+
+const ossConfig = {
+  region: 'your-oss-region',  // 例如: oss-cn-beijing
+  bucket: 'your-bucket-name',
+  accessKeyId: 'your-access-key-id',
+  accessKeySecret: 'your-access-key-secret',
+  directory: 'uploads/',      // 上传目录
+  secure: true,               // 使用HTTPS
+  timeout: 60000              // 超时时间60秒
+};
+
+export default ossConfig; 

@@ -52,6 +52,12 @@ MD2Word是一款将Markdown文本快速转换为规范Word文档的工具。用�
 npm install
 ```
 
+### 配置OSS服务
+本项目使用阿里云OSS存储图片。您需要创建自己的OSS配置文件：
+
+1. 复制`src/services/ossConfig.js.example`为`src/services/ossConfig.js`
+2. 在`ossConfig.js`中填入您的阿里云OSS配置信息
+
 ### 启动开发服务器
 ```
 npm start
@@ -97,6 +103,8 @@ npm start
 - 图表生成：Mermaid
 - 图片存储：阿里云OSS
 
+## 贡献指南
+欢迎贡献代码或提出建议！请先fork本仓库，然后提交pull request。
+
 ## 开发者信息
-本项目基于Create React App构建，详细信息请参考[Create React App文档](https://facebook.github.io/
-create-react-app/docs/getting-started)。
+本项目基于Create React App构建，详细信息请参考[Create React App文档](https://facebook.github.io/create-react-app/docs/getting-started)。
