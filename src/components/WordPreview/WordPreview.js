@@ -20,6 +20,7 @@ const FONT_MAPPING = {
   '黑体': 'SimHei, "Source Sans Pro", sans-serif',
   '仿宋': 'FangSong, "Source Serif Pro", serif',
   '楷体': 'KaiTi, "Source Serif Pro", serif',
+  '小标宋体': 'STZhongsong, SimSun, "Source Serif Pro", serif',
   '华文宋体': 'STSong, "Source Serif Pro", serif',
   '华文楷体': 'STKaiti, "Source Serif Pro", serif',
   '华文黑体': 'STHeiti, "Source Sans Pro", sans-serif',

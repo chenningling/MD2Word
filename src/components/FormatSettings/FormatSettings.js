@@ -117,7 +117,7 @@ const templates = [
   { id: 'default', name: '默认样式' },
   { id: 'academic', name: '研究论文' },
   { id: 'legal', name: '法律文书' },
-  { id: 'business', name: '公司公文' },
+  { id: 'business', name: '企业公文' },
 ];
 
 // 字体列表
@@ -127,6 +127,7 @@ const fonts = [
   { value: '黑体', label: '黑体' },
   { value: '仿宋', label: '仿宋' },
   { value: '楷体', label: '楷体' },
+  { value: '小标宋体', label: '小标宋体' },
   { value: '华文宋体', label: '华文宋体' },
   { value: '华文楷体', label: '华文楷体' },
   { value: '华文黑体', label: '华文黑体' },
@@ -176,6 +177,7 @@ const FontOption = ({ value, children }) => {
     '黑体': 'SimHei, "Source Sans Pro", sans-serif',
     '仿宋': 'FangSong, "Source Serif Pro", serif',
     '楷体': 'KaiTi, "Source Serif Pro", serif',
+    '小标宋体': 'STZhongsong, SimSun, "Source Serif Pro", serif',
     '华文宋体': 'STSong, "Source Serif Pro", serif',
     '华文楷体': 'STKaiti, "Source Serif Pro", serif',
     '华文黑体': 'STHeiti, "Source Sans Pro", sans-serif',

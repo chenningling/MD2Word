@@ -29,19 +29,19 @@ const predefinedTemplates = {
   academic: {
     template: 'academic',
     content: {
-      heading1: { fontFamily: 'Times New Roman', fontSize: 18, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 14, spacingAfter: 10 },
-      heading2: { fontFamily: 'Times New Roman', fontSize: 16, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 12, spacingAfter: 8 },
-      heading3: { fontFamily: 'Times New Roman', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 10, spacingAfter: 6 },
-      heading4: { fontFamily: 'Times New Roman', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
-      paragraph: { fontFamily: 'Times New Roman', fontSize: 12, bold: false, lineHeight: 2.0, align: 'justify', firstLineIndent: 2, paragraphSpacing: 6 },
-      quote: { fontFamily: 'Times New Roman', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
+      heading1: { fontFamily: '黑体', fontSize: 16, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 14, spacingAfter: 10 },
+      heading2: { fontFamily: '黑体', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 12, spacingAfter: 8 },
+      heading3: { fontFamily: '黑体', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 10, spacingAfter: 6 },
+      heading4: { fontFamily: '黑体', fontSize: 10.5, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
+      paragraph: { fontFamily: '宋体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'justify', firstLineIndent: 2, paragraphSpacing: 6 },
+      quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
     },
     page: {
       margin: {
-        top: 2.54,
-        right: 3.18,
-        bottom: 2.54,
-        left: 3.18
+        top: 2.5,
+        right: 3.0,
+        bottom: 2.5,
+        left: 3.0
       },
       size: 'A4'
     }
@@ -53,15 +53,15 @@ const predefinedTemplates = {
       heading1: { fontFamily: '黑体', fontSize: 16, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 14, spacingAfter: 10 },
       heading2: { fontFamily: '黑体', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 12, spacingAfter: 8 },
       heading3: { fontFamily: '黑体', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 10, spacingAfter: 6 },
-      heading4: { fontFamily: '黑体', fontSize: 11, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
+      heading4: { fontFamily: '黑体', fontSize: 10.5, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
       paragraph: { fontFamily: '仿宋', fontSize: 12, bold: false, lineHeight: 1.8, align: 'justify', firstLineIndent: 2, paragraphSpacing: 0 },
       quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
     },
     page: {
       margin: {
-        top: 3.0,
+        top: 2.5,
         right: 2.5,
-        bottom: 3.0,
+        bottom: 2.5,
         left: 2.5
       },
       size: 'A4'
@@ -71,19 +71,19 @@ const predefinedTemplates = {
   business: {
     template: 'business',
     content: {
-      heading1: { fontFamily: '黑体', fontSize: 18, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 12, spacingAfter: 8 },
+      heading1: { fontFamily: '小标宋体', fontSize: 22, bold: true, lineHeight: 1.5, align: 'center', spacingBefore: 12, spacingAfter: 8 },
       heading2: { fontFamily: '黑体', fontSize: 16, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 10, spacingAfter: 6 },
-      heading3: { fontFamily: '黑体', fontSize: 14, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
-      heading4: { fontFamily: '黑体', fontSize: 12, bold: true, lineHeight: 1.5, align: 'left', spacingBefore: 6, spacingAfter: 4 },
-      paragraph: { fontFamily: '宋体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left', firstLineIndent: 2, paragraphSpacing: 3 },
-      quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, align: 'left' },
+      heading3: { fontFamily: '黑体', fontSize: 16, bold: false, lineHeight: 1.5, align: 'left', spacingBefore: 8, spacingAfter: 6 },
+      heading4: { fontFamily: '黑体', fontSize: 14, bold: false, lineHeight: 1.5, align: 'left', spacingBefore: 6, spacingAfter: 4 },
+      paragraph: { fontFamily: '仿宋', fontSize: 16, bold: false, lineHeight: 1.5, align: 'left', firstLineIndent: 2, paragraphSpacing: 3 },
+      quote: { fontFamily: '楷体', fontSize: 16, bold: false, lineHeight: 1.5, align: 'left' },
     },
     page: {
       margin: {
-        top: 2.0,
-        right: 2.0,
-        bottom: 2.0,
-        left: 2.0
+        top: 3.7,
+        right: 2.8,
+        bottom: 2.5,
+        left: 2.8
       },
       size: 'A4'
     }

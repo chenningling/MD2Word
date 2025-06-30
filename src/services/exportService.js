@@ -518,24 +518,16 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
 
 // 创建代码块
 const createCodeBlock = (token, settings) => {
-  console.log('创建代码块, token:', JSON.stringify({
-    type: token.type,
-    lang: token.lang,
-    text: token.text ? (token.text.length > 50 ? token.text.substring(0, 50) + '...' : token.text) : '无内容'
-  }));
-  
-  const codeText = token.text || '';
-  // 按换行符分割代码文本
-  const codeLines = codeText.split('\n');
-  console.log(`代码块有 ${codeLines.length} 行`);
-  
-  // 创建代码块容器
-  const codeElements = [];
+  // 分割代码行
+  const codeLines = token.text.split('\n');
   
   // 行间距（Word中使用240为单倍行距的基准）
   const lineSpacingTwips = Math.round(settings.lineHeight * 240);
   
-  // 为每一行代码创建单独的段落
+  // 创建代码块元素
+  const codeElements = [];
+  
+  // 处理每一行代码
   codeLines.forEach((line, index) => {
     codeElements.push(
       new Paragraph({
@@ -552,7 +544,7 @@ const createCodeBlock = (token, settings) => {
           before: index === 0 ? 120 : 0,      // 6磅
           after: index === codeLines.length - 1 ? 120 : 0,  // 6磅
           line: lineSpacingTwips,
-          lineRule: 'exact'
+          lineRule: 'auto' // 使用多倍行距，而不是固定行距
         },
         shading: {
           type: 'solid',
@@ -590,7 +582,7 @@ const createCodeBlock = (token, settings) => {
           before: 120,  // 6磅
           after: 120,   // 6磅
           line: lineSpacingTwips,
-          lineRule: 'exact'
+          lineRule: 'auto' // 使用多倍行距，而不是固定行距
         },
         shading: {
           type: 'solid',
@@ -684,7 +676,7 @@ const createHeading = (token, contentSettings) => {
       before: spacingBeforeTwips,
       after: spacingAfterTwips,
       line: lineSpacingTwips,
-      lineRule: 'exact' // 使用确切的行间距，而不是最小值
+      lineRule: 'auto' // 使用多倍行距，而不是固定行距
     }
   });
 };
@@ -731,7 +723,7 @@ const createParagraph = (token, settings) => {
       before: 0,
       after: spacingAfterTwips,
       line: lineSpacingTwips,
-      lineRule: 'exact' // 使用确切的行间距，而不是最小值
+      lineRule: 'auto' // 使用多倍行距，而不是固定行距
     },
     indent: {
       firstLine: firstLineIndentTwips
@@ -767,7 +759,7 @@ const createBlockquote = (token, settings) => {
       before: 120, // 6磅
       after: 120,  // 6磅
       line: lineSpacingTwips,
-      lineRule: 'exact'
+      lineRule: 'auto' // 使用多倍行距，而不是固定行距
     },
     indent: {
       left: convertInchesToTwip(0.5)
@@ -809,7 +801,7 @@ const createList = (token, settings, nestLevel = 0) => {
             before: 40,  // 2磅
             after: 40,   // 2磅
             line: lineSpacingTwips,
-            lineRule: 'exact'
+            lineRule: 'auto' // 使用多倍行距，而不是固定行距
           },
           numbering: {
             reference: isOrdered ? 'ordered-list' : 'unordered-list',
@@ -854,7 +846,7 @@ const createList = (token, settings, nestLevel = 0) => {
                 before: 40,  // 2磅
                 after: 40,   // 2磅
                 line: lineSpacingTwips,
-                lineRule: 'exact'
+                lineRule: 'auto' // 使用多倍行距，而不是固定行距
               },
               indent: {
                 left: leftIndent
@@ -1344,8 +1336,6 @@ const convertAlignment = (align) => {
       return AlignmentType.LEFT;
   }
 };
-
-
 
 // 创建图片元素
 const createImageElement = (token) => {
