@@ -330,6 +330,25 @@ const MarkdownGuide = () => {
       syntax: '![图片描述](图片URL)',
       result: <span style={{color: '#1890ff'}}>[图片]</span>,
       description: '![描述](URL)'
+    },
+    {
+      key: '4',
+      syntax: '```\n代码块内容\n```',
+      result: (
+        <div style={{
+          backgroundColor: '#f6f8fa',
+          border: '1px solid #e1e4e8',
+          borderRadius: '3px',
+          padding: '6px 8px',
+          fontFamily: 'SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace',
+          fontSize: '12px',
+          lineHeight: '1.4',
+          overflowX: 'auto'
+        }}>
+          代码块内容
+        </div>
+      ),
+      description: '三个反引号包围'
     }
   ];
   

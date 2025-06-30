@@ -778,6 +778,27 @@ const FormatSettings = ({ visible, toggleSettings }) => {
               {renderElementSettings('heading4', '四级标题')}
               {renderElementSettings('quote', '引用文本')}
             </StyledCollapse>
+            
+            {/* 特定模板提示信息 */}
+            {['academic', 'legal', 'business'].includes(selectedTemplate) && (
+              <div style={{ 
+                marginTop: '16px', 
+                padding: '10px 12px', 
+                backgroundColor: '#fffbe6', 
+                border: '1px solid #ffe58f', 
+                borderRadius: '4px',
+                display: 'flex',
+                alignItems: 'flex-start'
+              }}>
+                <InfoCircleOutlined style={{ color: '#faad14', marginRight: '8px', marginTop: '3px' }} />
+                <div>
+                  <Text strong style={{ fontSize: '14px' }}>模板使用提示</Text>
+                  <div style={{ fontSize: '13px', color: 'rgba(0,0,0,0.65)', marginTop: '4px' }}>
+                    当前预设模板仅供参考，不代表权威的标准化排版规范。请根据您的实际工作需求和单位要求对格式进行适当调整。
+                  </div>
+                </div>
+              </div>
+            )}
           </TabPane>
           
           <TabPane tab="页面设置" key="page">

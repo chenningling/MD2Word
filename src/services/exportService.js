@@ -4,6 +4,41 @@ import { marked } from 'marked';
 import { dataUriToUint8Array, downloadImage, isImageUrl } from '../utils/imageUtils';
 import axios from 'axios';
 
+// 提取文档标题作为文件名
+const extractDocumentTitle = (tokens) => {
+  // 查找第一个一级标题
+  const firstHeading = tokens.find(token => token.type === 'heading' && token.depth === 1);
+  
+  if (firstHeading) {
+    // 使用一级标题作为文件名
+    return firstHeading.text;
+  } else {
+    // 查找第一个段落文本
+    const firstParagraph = tokens.find(token => token.type === 'paragraph');
+    if (firstParagraph) {
+      // 提取段落文本
+      let paragraphText = '';
+      if (firstParagraph.tokens) {
+        // 合并段落中的所有文本
+        paragraphText = firstParagraph.tokens
+          .filter(t => t.type === 'text' || t.type === 'strong' || t.type === 'em')
+          .map(t => t.text || '')
+          .join('');
+      } else if (firstParagraph.text) {
+        paragraphText = firstParagraph.text;
+      } else if (firstParagraph.raw) {
+        paragraphText = firstParagraph.raw;
+      }
+      
+      // 截取前10个字符
+      return paragraphText.substring(0, 10);
+    }
+  }
+  
+  // 默认文件名
+  return 'markdown-document';
+};
+
 // 将Markdown转换为Word文档
 export const exportToWord = async (markdown, formatSettings) => {
   try {
@@ -13,6 +48,10 @@ export const exportToWord = async (markdown, formatSettings) => {
     // 解析Markdown为tokens
     const tokens = marked.lexer(markdown);
     console.log('解析的Markdown tokens:', tokens);
+    
+    // 提取文档标题作为文件名
+    const documentTitle = extractDocumentTitle(tokens);
+    const fileName = `${documentTitle || 'markdown-document'}.docx`;
     
     // 检查表格内容
     const tableTokes = tokens.filter(token => token.type === 'table');
@@ -44,7 +83,7 @@ export const exportToWord = async (markdown, formatSettings) => {
 
     // 导出文档
     const buffer = await Packer.toBlob(doc);
-    saveAs(buffer, 'markdown-document.docx');
+    saveAs(buffer, fileName);
     console.log('Word文档导出成功!');
   } catch (error) {
     console.error('导出Word文档时发生错误:', error);
