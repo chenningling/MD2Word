@@ -108,3 +108,6 @@ npm start
 
 ## 开发者信息
 本项目基于Create React App构建，详细信息请参考[Create React App文档](https://facebook.github.io/create-react-app/docs/getting-started)。
+
+## 许可证
+本项目采用MIT许可证，详情请查看 [LICENSE](LICENSE) 文件。

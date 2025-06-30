@@ -52,6 +52,12 @@ MD2Word is a tool that quickly converts Markdown text into properly formatted Wo
 npm install
 ```
 
+### Configure OSS Service
+This project uses Alibaba Cloud OSS to store images. You need to create your own OSS configuration file:
+
+1. Copy `src/services/ossConfig.js.example` to `src/services/ossConfig.js`
+2. Fill in your Alibaba Cloud OSS configuration information in `ossConfig.js`
+
 ### Start Development Server
 ```
 npm start
@@ -97,5 +103,11 @@ npm start
 - Chart Generation: Mermaid
 - Image Storage: Alibaba Cloud OSS
 
+## Contribution Guidelines
+Contributions and suggestions are welcome! Please fork this repository and submit a pull request.
+
 ## Developer Information
-This project is built based on Create React App. For detailed information, please refer to the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started). 
+This project is built based on Create React App. For detailed information, please refer to the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
