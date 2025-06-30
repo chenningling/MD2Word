@@ -1,5 +1,7 @@
 # MD2Word - Markdown转Word排版助手
 
+[中文](README.md) | [English](README_EN.md)
+
 MD2Word是一款将Markdown文本快速转换为规范Word文档的工具。用户可以在左侧编辑器中输入Markdown格式的内容，实时在右侧预览Word效果，并可以导出为精确排版的Word文档。
 
 ## 主要功能
@@ -8,24 +10,40 @@ MD2Word是一款将Markdown文本快速转换为规范Word文档的工具。用�
 - 支持完整的Markdown语法
 - 实时语法高亮
 - 自动保存编辑内容
+- **图片处理功能**：
+  - 支持粘贴剪贴板中的图片
+  - 支持上传本地图片
+  - 自动调整图片尺寸，优化在Word中的显示效果
+  - 支持JPG、PNG、GIF、BMP、TIFF、WEBP等多种图片格式
 
 ### 文本转Markdown
 - 支持将普通文本通过AI转换为Markdown格式
 - 集成多个AI平台（DeepSeek、Kimi、通义千问）的一键跳转
 - 自动构建并复制提示词到剪贴板
 - 提供转换步骤引导
+- 支持自动倒计时跳转，提升操作效率
 
 ### Word预览与导出
 - 实时预览Word排版效果
 - 支持多种格式元素（标题、段落、列表、表格、代码块等）
 - 支持Mermaid流程图渲染
 - 导出为.docx格式文件
+- 支持图片导出，保持图片质量和布局
+- **预览缩放功能**：可调整预览区域的缩放比例，方便查看文档细节
 
 ### 排版格式设置
 - 提供多种预设模板（默认样式、研究论文、法律文书、公司公文）
 - 支持自定义和保存模板
 - 可调整字体、字号、行间距、对齐方式、缩进等详细排版参数
 - 支持页面边距设置
+- **中文字号系统**：支持初号、小初、一号、小一等中文专业排版字号
+- **自定义模板管理**：可保存、编辑和删除自定义模板
+
+### 界面优化
+- 响应式布局设计
+- 可调整编辑器与预览区域宽度比例
+- 可调整左侧工具栏和右侧设置面板的宽度
+- 界面布局自动保存，下次打开恢复上次设置
 
 ## 快速开始
 
@@ -37,11 +55,6 @@ npm install
 ### 启动开发服务器
 ```
 npm start
-```
-
-### 构建生产版本
-```
-npm run build
 ```
 
 ## 使用指南
@@ -60,10 +73,17 @@ npm run build
 5. 在AI平台中粘贴提示词并发送
 6. 复制AI生成的Markdown内容到MD2Word的编辑器中
 
+### 图片插入方法
+1. **粘贴图片**：直接复制图片，然后在编辑器中粘贴（Ctrl+V）
+2. **上传本地图片**：点击编辑器左上角的图片图标，选择本地图片文件
+3. 支持的图片格式：JPG、PNG、GIF、BMP、TIFF、WEBP
+
 ### 排版设置
 - 点击右上角「排版格式设置」按钮
 - 选择预设模板或自定义格式
 - 可以保存自定义模板以便重复使用
+- 调整标题、正文、引用等元素的字体、字号、行间距等参数
+- 设置页面边距和其他页面属性
 
 ## 技术栈
 - 前端框架：React.js
@@ -75,77 +95,8 @@ npm run build
 - Markdown解析：marked
 - 代码高亮：Prism.js
 - 图表生成：Mermaid
+- 图片存储：阿里云OSS
 
 ## 开发者信息
-本项目基于Create React App构建，详细信息请参考[Create React App文档](https://facebook.github.io/create-react-app/docs/getting-started)。
-
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+本项目基于Create React App构建，详细信息请参考[Create React App文档](https://facebook.github.io/
+create-react-app/docs/getting-started)。

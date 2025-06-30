@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MD2Word",
+  "name": "MD2Word - Word快速排版助手",
   "icons": [
     {
       "src": "favicon.ico",

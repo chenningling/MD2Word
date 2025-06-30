@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import styled from 'styled-components';
@@ -130,10 +130,10 @@ const placeholderText = `# 欢迎使用 MD2Word 排版助手
 - **格式设置**：点击右上角「排版格式设置」，可以选择预设模板或自定义格式
 - **图片功能**：
   - 直接粘贴剪贴板中的图片
-  - 右键菜单选择"插入本地图片"
+  - 编辑器左上角选择"插入本地图片"
   - 支持图片导出到Word文档
 
-祝您使用愉快！如有任何问题，请参考左侧的Markdown基本语法指南。
+祝您使用愉快！如有任何问题，请点击「帮助反馈」联系作者。
 `;
 
 const MarkdownEditor = () => {
@@ -141,6 +141,7 @@ const MarkdownEditor = () => {
   const isInitialized = useRef(false);
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
   // 获取编辑器实例
   const handleEditorCreated = (editor) => {
@@ -161,9 +162,18 @@ const MarkdownEditor = () => {
   
   // 恢复默认文案的处理函数
   const handleRestoreDefault = () => {
-    if (window.confirm('确定要恢复默认文案吗？当前内容将被替换。')) {
-      updateMarkdown(placeholderText);
-    }
+    setConfirmModalVisible(true);
+  };
+  
+  // 确认恢复默认文案
+  const confirmRestore = () => {
+    updateMarkdown(placeholderText);
+    setConfirmModalVisible(false);
+  };
+  
+  // 取消恢复默认文案
+  const cancelRestore = () => {
+    setConfirmModalVisible(false);
   };
   
   // 处理粘贴事件
@@ -328,6 +338,19 @@ const MarkdownEditor = () => {
           onChange={handleFileChange}
         />
       </EditorContent>
+      
+      {/* 自定义确认对话框 */}
+      <Modal
+        title="温馨提醒"
+        open={confirmModalVisible}
+        onOk={confirmRestore}
+        onCancel={cancelRestore}
+        okText="确定"
+        cancelText="取消"
+        centered
+      >
+        <p>确定要恢复默认文案吗？当前内容将被替换。</p>
+      </Modal>
     </EditorContainer>
   );
 };
