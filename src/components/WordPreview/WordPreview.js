@@ -169,7 +169,7 @@ const WordDocument = styled.div`
   h1, h2, h3, h4, h5, h6 {
     font-family: ${props => getMappedFont(props.heading1.fontFamily)};
     font-weight: ${props => props.heading1.bold ? 'bold' : 'normal'};
-    line-height: ${props => props.heading1.lineHeight};
+    line-height: ${props => props.heading1.lineHeightUnit === 'pt' ? `${props.heading1.lineHeight}pt` : props.heading1.lineHeight};
     text-align: ${props => props.heading1.align};
     margin-top: ${props => props.heading1.spacingBefore ? `${props.heading1.spacingBefore}pt` : '12pt'};
     margin-bottom: ${props => props.heading1.spacingAfter ? `${props.heading1.spacingAfter}pt` : '8pt'};
@@ -183,7 +183,7 @@ const WordDocument = styled.div`
     font-size: ${props => props.heading2.fontSize}pt;
     font-family: ${props => getMappedFont(props.heading2.fontFamily)};
     font-weight: ${props => props.heading2.bold ? 'bold' : 'normal'};
-    line-height: ${props => props.heading2.lineHeight};
+    line-height: ${props => props.heading2.lineHeightUnit === 'pt' ? `${props.heading2.lineHeight}pt` : props.heading2.lineHeight};
     text-align: ${props => props.heading2.align};
     margin-top: ${props => props.heading2.spacingBefore ? `${props.heading2.spacingBefore}pt` : '10pt'};
     margin-bottom: ${props => props.heading2.spacingAfter ? `${props.heading2.spacingAfter}pt` : '6pt'};
@@ -193,7 +193,7 @@ const WordDocument = styled.div`
     font-size: ${props => props.heading3.fontSize}pt;
     font-family: ${props => getMappedFont(props.heading3.fontFamily)};
     font-weight: ${props => props.heading3.bold ? 'bold' : 'normal'};
-    line-height: ${props => props.heading3.lineHeight};
+    line-height: ${props => props.heading3.lineHeightUnit === 'pt' ? `${props.heading3.lineHeight}pt` : props.heading3.lineHeight};
     text-align: ${props => props.heading3.align};
     margin-top: ${props => props.heading3.spacingBefore ? `${props.heading3.spacingBefore}pt` : '8pt'};
     margin-bottom: ${props => props.heading3.spacingAfter ? `${props.heading3.spacingAfter}pt` : '6pt'};
@@ -203,7 +203,7 @@ const WordDocument = styled.div`
     font-size: ${props => props.heading4.fontSize}pt;
     font-family: ${props => getMappedFont(props.heading4.fontFamily)};
     font-weight: ${props => props.heading4.bold ? 'bold' : 'normal'};
-    line-height: ${props => props.heading4.lineHeight};
+    line-height: ${props => props.heading4.lineHeightUnit === 'pt' ? `${props.heading4.lineHeight}pt` : props.heading4.lineHeight};
     text-align: ${props => props.heading4.align};
     margin-top: ${props => props.heading4.spacingBefore ? `${props.heading4.spacingBefore}pt` : '6pt'};
     margin-bottom: ${props => props.heading4.spacingAfter ? `${props.heading4.spacingAfter}pt` : '4pt'};
@@ -213,7 +213,7 @@ const WordDocument = styled.div`
     font-family: ${props => getMappedFont(props.paragraph.fontFamily)};
     font-size: ${props => props.paragraph.fontSize}pt;
     font-weight: ${props => props.paragraph.bold ? 'bold' : 'normal'};
-    line-height: ${props => props.paragraph.lineHeight};
+    line-height: ${props => props.paragraph.lineHeightUnit === 'pt' ? `${props.paragraph.lineHeight}pt` : props.paragraph.lineHeight};
     text-align: ${props => props.paragraph.align};
     margin-bottom: ${props => props.paragraph.paragraphSpacing ? `${props.paragraph.paragraphSpacing}pt` : '6pt'};
     text-indent: ${props => props.paragraph.firstLineIndent ? `${props.paragraph.firstLineIndent}em` : '0'};
@@ -223,7 +223,7 @@ const WordDocument = styled.div`
     font-family: ${props => getMappedFont(props.quote.fontFamily)};
     font-size: ${props => props.quote.fontSize}pt;
     font-weight: ${props => props.quote.bold ? 'bold' : 'normal'};
-    line-height: ${props => props.quote.lineHeight};
+    line-height: ${props => props.quote.lineHeightUnit === 'pt' ? `${props.quote.lineHeight}pt` : props.quote.lineHeight};
     text-align: ${props => props.quote.align};
     border-left: 4px solid #ddd;
     padding-left: 1em;
@@ -258,7 +258,7 @@ const WordDocument = styled.div`
   ul, ol {
     font-family: ${props => getMappedFont(props.paragraph.fontFamily)};
     font-size: ${props => props.paragraph.fontSize}pt;
-    line-height: ${props => props.paragraph.lineHeight};
+    line-height: ${props => props.paragraph.lineHeightUnit === 'pt' ? `${props.paragraph.lineHeight}pt` : props.paragraph.lineHeight};
     margin-bottom: 1em;
     padding-left: 2em;
   }

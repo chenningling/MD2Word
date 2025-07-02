@@ -560,8 +560,15 @@ const createCodeBlock = (token, settings) => {
   // 分割代码行
   const codeLines = token.text.split('\n');
   
-  // 行间距（Word中使用240为单倍行距的基准）
-  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  // 行间距支持倍数和磅数
+  let lineSpacingTwips, lineRule;
+  if (settings.lineHeightUnit === 'pt') {
+    lineSpacingTwips = Math.round(settings.lineHeight * 20);
+    lineRule = 'exact';
+  } else {
+    lineSpacingTwips = Math.round(settings.lineHeight * 240);
+    lineRule = 'auto';
+  }
   
   // 创建代码块元素
   const codeElements = [];
@@ -579,11 +586,10 @@ const createCodeBlock = (token, settings) => {
           })
         ],
         spacing: {
-          // 只有第一行需要上边距，最后一行需要下边距
           before: index === 0 ? 120 : 0,      // 6磅
           after: index === codeLines.length - 1 ? 120 : 0,  // 6磅
           line: lineSpacingTwips,
-          lineRule: 'auto' // 使用多倍行距，而不是固定行距
+          lineRule
         },
         shading: {
           type: 'solid',
@@ -621,7 +627,7 @@ const createCodeBlock = (token, settings) => {
           before: 120,  // 6磅
           after: 120,   // 6磅
           line: lineSpacingTwips,
-          lineRule: 'auto' // 使用多倍行距，而不是固定行距
+          lineRule
         },
         shading: {
           type: 'solid',
@@ -686,15 +692,21 @@ const createHeading = (token, contentSettings) => {
   }
   
   // 处理标题内容
-  // 传递一个明确的标志，表示这是标题内容
   const inlineTokens = parseInlineTokens(token.text, settings, true);
   
   // 段前/段后间距（Word中使用twip单位，1磅约等于20twip）
   const spacingBeforeTwips = settings.spacingBefore ? settings.spacingBefore * 20 : 0;
   const spacingAfterTwips = settings.spacingAfter ? settings.spacingAfter * 20 : 0;
   
-  // 行间距（Word中使用240为单倍行距的基准）
-  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  // 行间距支持倍数和磅数
+  let lineSpacingTwips, lineRule;
+  if (settings.lineHeightUnit === 'pt') {
+    lineSpacingTwips = Math.round(settings.lineHeight * 20);
+    lineRule = 'exact';
+  } else {
+    lineSpacingTwips = Math.round(settings.lineHeight * 240);
+    lineRule = 'auto';
+  }
   
   console.log(`标题${level}设置:`, {
     spacingBefore: settings.spacingBefore,
@@ -715,7 +727,7 @@ const createHeading = (token, contentSettings) => {
       before: spacingBeforeTwips,
       after: spacingAfterTwips,
       line: lineSpacingTwips,
-      lineRule: 'auto' // 使用多倍行距，而不是固定行距
+      lineRule
     }
   });
 };
@@ -742,8 +754,15 @@ const createParagraph = (token, settings) => {
   // 段落间距（Word中使用twip单位，1磅约等于20twip）
   const spacingAfterTwips = settings.paragraphSpacing ? settings.paragraphSpacing * 20 : 0;
   
-  // 行间距（Word中使用240为单倍行距的基准）
-  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  // 行间距支持倍数和磅数
+  let lineSpacingTwips, lineRule;
+  if (settings.lineHeightUnit === 'pt') {
+    lineSpacingTwips = Math.round(settings.lineHeight * 20);
+    lineRule = 'exact';
+  } else {
+    lineSpacingTwips = Math.round(settings.lineHeight * 240);
+    lineRule = 'auto';
+  }
   
   console.log('段落设置:', {
     firstLineIndent: settings.firstLineIndent,
@@ -751,7 +770,8 @@ const createParagraph = (token, settings) => {
     paragraphSpacing: settings.paragraphSpacing,
     spacingAfterTwips,
     lineHeight: settings.lineHeight,
-    lineSpacingTwips
+    lineSpacingTwips,
+    lineRule
   });
   
   // 创建段落
@@ -762,7 +782,7 @@ const createParagraph = (token, settings) => {
       before: 0,
       after: spacingAfterTwips,
       line: lineSpacingTwips,
-      lineRule: 'auto' // 使用多倍行距，而不是固定行距
+      lineRule
     },
     indent: {
       firstLine: firstLineIndentTwips
@@ -775,8 +795,15 @@ const createBlockquote = (token, settings) => {
   // 转换对齐方式
   const alignment = convertAlignment(settings.align);
 
-  // 行间距（Word中使用240为单倍行距的基准）
-  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  // 行间距支持倍数和磅数
+  let lineSpacingTwips, lineRule;
+  if (settings.lineHeightUnit === 'pt') {
+    lineSpacingTwips = Math.round(settings.lineHeight * 20);
+    lineRule = 'exact';
+  } else {
+    lineSpacingTwips = Math.round(settings.lineHeight * 240);
+    lineRule = 'auto';
+  }
   
   // 确定引用内容
   let textRuns;
@@ -798,7 +825,7 @@ const createBlockquote = (token, settings) => {
       before: 120, // 6磅
       after: 120,  // 6磅
       line: lineSpacingTwips,
-      lineRule: 'auto' // 使用多倍行距，而不是固定行距
+      lineRule
     },
     indent: {
       left: convertInchesToTwip(0.5)
@@ -818,8 +845,15 @@ const createBlockquote = (token, settings) => {
 const createList = (token, settings, nestLevel = 0) => {
   const paragraphs = [];
   
-  // 行间距（Word中使用240为单倍行距的基准）
-  const lineSpacingTwips = Math.round(settings.lineHeight * 240);
+  // 行间距支持倍数和磅数
+  let lineSpacingTwips, lineRule;
+  if (settings.lineHeightUnit === 'pt') {
+    lineSpacingTwips = Math.round(settings.lineHeight * 20);
+    lineRule = 'exact';
+  } else {
+    lineSpacingTwips = Math.round(settings.lineHeight * 240);
+    lineRule = 'auto';
+  }
   
   // 确定列表类型
   const isOrdered = token.ordered;
@@ -840,7 +874,7 @@ const createList = (token, settings, nestLevel = 0) => {
             before: 40,  // 2磅
             after: 40,   // 2磅
             line: lineSpacingTwips,
-            lineRule: 'auto' // 使用多倍行距，而不是固定行距
+            lineRule
           },
           numbering: {
             reference: isOrdered ? 'ordered-list' : 'unordered-list',
@@ -885,7 +919,7 @@ const createList = (token, settings, nestLevel = 0) => {
                 before: 40,  // 2磅
                 after: 40,   // 2磅
                 line: lineSpacingTwips,
-                lineRule: 'auto' // 使用多倍行距，而不是固定行距
+                lineRule
               },
               indent: {
                 left: leftIndent

@@ -627,14 +627,24 @@ const FormatSettings = ({ visible, toggleSettings }) => {
         </FormItem>
         
         <FormItem label="行间距">
-          <InputNumber 
-            value={settings.lineHeight} 
-            onChange={(value) => handleContentSettingChange(elementType, 'lineHeight', value)}
-            min={1}
-            max={3}
-            step={0.1}
-            style={{ width: '100%' }}
-          />
+          <div style={{ display: 'flex', gap: 8 }}>
+            <InputNumber 
+              value={settings.lineHeight} 
+              onChange={(value) => handleContentSettingChange(elementType, 'lineHeight', value)}
+              min={settings.lineHeightUnit === 'pt' ? 6 : 1}
+              max={settings.lineHeightUnit === 'pt' ? 72 : 3}
+              step={settings.lineHeightUnit === 'pt' ? 1 : 0.1}
+              style={{ flex: 1 }}
+            />
+            <Select
+              value={settings.lineHeightUnit || 'multiple'}
+              style={{ width: 80 }}
+              onChange={unit => handleContentSettingChange(elementType, 'lineHeightUnit', unit)}
+            >
+              <Option value="multiple">倍数</Option>
+              <Option value="pt">磅数</Option>
+            </Select>
+          </div>
         </FormItem>
         
         <FormItem label="对齐方式">
