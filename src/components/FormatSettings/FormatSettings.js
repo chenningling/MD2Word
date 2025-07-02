@@ -306,6 +306,8 @@ const CollapseHint = styled.div`
   display: flex;
   align-items: center;
   padding: 4px 0;
+  white-space: nowrap; // 确保文本在一行显示
+  overflow: hidden; // 防止内容溢出
   
   .anticon {
     margin-right: 6px;
@@ -767,7 +769,7 @@ const FormatSettings = ({ visible, toggleSettings }) => {
             
             <CollapseHint>
               <InfoCircleOutlined />
-              <Text type="secondary">点击元素面板可展开编辑对应的格式设置</Text>
+              <Text type="secondary">点击元素面板展开编辑格式</Text>
             </CollapseHint>
             
             <StyledCollapse defaultActiveKey={[]}>

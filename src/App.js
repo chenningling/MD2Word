@@ -136,19 +136,18 @@ function App() {
   
   // 新增宽度状态
   const [sideContentWidth, setSideContentWidth] = useState(380); // 默认左侧内容区域宽度
-  const [settingsWidth, setSettingsWidth] = useState(300); // 默认设置面板宽度
+  const [settingsWidth, setSettingsWidth] = useState(320); // 默认设置面板宽度
 
   const toggleSettings = () => {
-    // 如果打开设置面板，则关闭左侧内容区域
+    // 只负责开关显示，不再每次都setSettingsWidth
     if (!settingsVisible && sideContentVisible) {
       setSideContentVisible(false);
     }
     setSettingsVisible(!settingsVisible);
   };
 
-  // 新增打开左侧内容区域的函数
+  // 修改openSideContent逻辑：展开时不再重置宽度
   const openSideContent = (contentType) => {
-    // 如果打开左侧内容，则关闭右侧设置面板
     if (settingsVisible) {
       setSettingsVisible(false);
     }
@@ -177,40 +176,29 @@ function App() {
   // 新增左侧内容区域宽度调整处理函数
   const handleSideContentResize = (clientX) => {
     if (!contentLayoutRef.current) return;
-    
     const newWidth = clientX - 80; // 减去左侧导航条宽度
     // 限制宽度范围
     const clampedWidth = Math.min(Math.max(newWidth, 300), 600);
     setSideContentWidth(clampedWidth);
-    localStorage.setItem('sideContentWidth', clampedWidth.toString());
+    // 不再写入localStorage
   };
 
   // 新增设置面板宽度调整处理函数
   const handleSettingsResize = (clientX) => {
     if (!contentLayoutRef.current) return;
-    
     const containerRect = contentLayoutRef.current.getBoundingClientRect();
     const newWidth = containerRect.right - clientX;
     // 限制宽度范围
     const clampedWidth = Math.min(Math.max(newWidth, 250), 500);
     setSettingsWidth(clampedWidth);
-    localStorage.setItem('settingsWidth', clampedWidth.toString());
+    // 不再写入localStorage
   };
 
-  // 保存宽度设置到localStorage
+  // 只保留editorWidth的localStorage自动恢复
   useEffect(() => {
     const savedEditorWidth = localStorage.getItem('editorWidth');
-    const savedSideContentWidth = localStorage.getItem('sideContentWidth');
-    const savedSettingsWidth = localStorage.getItem('settingsWidth');
-    
     if (savedEditorWidth) {
       setEditorWidth(parseFloat(savedEditorWidth));
-    }
-    if (savedSideContentWidth) {
-      setSideContentWidth(parseFloat(savedSideContentWidth));
-    }
-    if (savedSettingsWidth) {
-      setSettingsWidth(parseFloat(savedSettingsWidth));
     }
   }, []);
 

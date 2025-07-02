@@ -28,3 +28,10 @@ src/services/ossConfig.js
 
 # macOS系统文件
 **/.DS_Store
+
+# 忽略所有自动生成的通信相关文件
+md2word-api/node_modules/
+md2word-api/some-auto-generated-folder/
+
+# 忽略所有 zip 格式的打包文件
+*.zip

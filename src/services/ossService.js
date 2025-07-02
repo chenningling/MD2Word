@@ -213,9 +213,23 @@ export const uploadImageFromLocal = async (file) => {
 /**
  * 将图片URL转换为Markdown图片语法
  * @param {string} url - 图片URL
- * @param {string} [alt='图片'] - 图片替代文本
  * @returns {string} Markdown图片语法
  */
-export const imageUrlToMarkdown = (url, alt = '图片') => {
-  return `![${alt}](${url})`;
+export const imageUrlToMarkdown = (url) => {
+  if (!url) return '';
+  
+  // 从URL中提取文件名
+  const fileName = url.split('/').pop().split('?')[0];
+  
+  // 生成简洁的图片描述
+  // 如果是我们新格式的文件名（时间戳-随机字符.扩展名），则使用"图片"作为描述
+  // 否则使用原始文件名
+  let description;
+  if (/^\d+-[a-z0-9]+\.[a-zA-Z0-9]+$/.test(fileName)) {
+    description = '图片';
+  } else {
+    description = fileName || '图片';
+  }
+  
+  return `![${description}](${url})`;
 };

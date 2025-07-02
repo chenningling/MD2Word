@@ -8,6 +8,7 @@ import { Button, Tooltip, message, Modal } from 'antd';
 import { ReloadOutlined, PictureOutlined } from '@ant-design/icons';
 import { uploadImageFromClipboard, uploadImageFromLocal, imageUrlToMarkdown } from '../../services/ossService';
 import { getWordSupportedImageFormats } from '../../utils/imageUtils';
+import { uploadImage } from '../../services/apiService';
 
 const EditorContainer = styled.div`
   flex: 1;
@@ -177,48 +178,67 @@ const MarkdownEditor = () => {
   };
   
   // 处理粘贴事件
-  const handlePaste = useCallback(async (e) => {
+  const handlePaste = async (e) => {
     try {
-      // 检查是否粘贴了图片
-      const imageUrl = await uploadImageFromClipboard(e);
-      if (imageUrl) {
-        e.preventDefault(); // 阻止默认粘贴行为
-        
-        // 获取当前光标位置
-        const editor = editorRef.current;
-        if (editor) {
-          const mdImage = imageUrlToMarkdown(imageUrl);
-          
-          // 在光标位置插入Markdown图片语法
-          const doc = editor.state.doc;
-          const selection = editor.state.selection.main;
-          const transaction = editor.state.update({
-            changes: {
-              from: selection.from,
-              to: selection.to,
-              insert: mdImage
-            }
-          });
-          editor.dispatch(transaction);
-          
-          message.success('图片上传成功');
+      // 检查是否包含图片
+      const items = e.clipboardData.items;
+      let imageFile = null;
+      
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image/') !== -1) {
+          imageFile = items[i].getAsFile();
+          break;
         }
       }
-    } catch (error) {
-      console.error('粘贴图片处理失败:', error);
       
-      // 提供更具体的错误信息
-      if (error.message && error.message.includes('不支持的图片格式')) {
-        message.error(error.message);
-      } else if (error.message && error.message.includes('CORS')) {
-        message.error('图片上传失败：跨域请求被拒绝，请检查OSS的CORS设置');
-      } else if (error.status === 403) {
-        message.error('图片上传失败：没有权限访问OSS，请检查AccessKey权限');
-      } else {
-        message.error('图片上传失败，请重试');
+      if (!imageFile) return; // 不是图片，不处理
+      
+      // 阻止默认粘贴行为
+      e.preventDefault();
+      
+      // 显示上传中状态
+      const loadingMessage = message.loading('正在上传图片...', 0);
+      
+      try {
+        // 使用新的API服务上传图片
+        const imageUrl = await uploadImage(imageFile);
+        
+        // 关闭加载提示
+        loadingMessage();
+        
+        if (imageUrl) {
+          // 获取当前光标位置
+          const editor = editorRef.current;
+          if (editor) {
+            const mdImage = imageUrlToMarkdown(imageUrl);
+            
+            // 在光标位置插入Markdown图片语法
+            const selection = editor.state.selection.main;
+            const transaction = editor.state.update({
+              changes: {
+                from: selection.from,
+                to: selection.to,
+                insert: mdImage
+              }
+            });
+            editor.dispatch(transaction);
+            
+            message.success('图片上传成功');
+          }
+        }
+      } catch (uploadError) {
+        // 关闭加载提示
+        loadingMessage();
+        
+        // 提供更具体的错误信息
+        message.error('图片上传失败：' + (uploadError.message || '请重试'));
+        
+        throw uploadError;
       }
+    } catch (error) {
+      console.error('粘贴图片失败:', error);
     }
-  }, []);
+  };
   
   // 处理插入本地图片
   const handleInsertLocalImage = () => {
@@ -235,8 +255,8 @@ const MarkdownEditor = () => {
       const loadingMessage = message.loading('正在上传图片...', 0);
       
       try {
-        // 上传图片
-        const imageUrl = await uploadImageFromLocal(file);
+        // 使用新的API服务上传图片
+        const imageUrl = await uploadImage(file);
         
         // 关闭加载提示
         loadingMessage();
@@ -267,25 +287,12 @@ const MarkdownEditor = () => {
         loadingMessage();
         
         // 提供更具体的错误信息
-        if (uploadError.message && uploadError.message.includes('不支持的图片格式')) {
-          message.error(uploadError.message);
-        } else if (uploadError.message && uploadError.message.includes('CORS')) {
-          message.error('图片上传失败：跨域请求被拒绝，请检查OSS的CORS设置');
-        } else if (uploadError.status === 403) {
-          message.error('图片上传失败：没有权限访问OSS，请检查AccessKey权限');
-        } else {
-          message.error('图片上传失败，请重试');
-        }
+        message.error('图片上传失败：' + (uploadError.message || '请重试'));
         
         throw uploadError;
       }
     } catch (error) {
       console.error('本地图片上传失败:', error);
-    } finally {
-      // 重置文件输入框，允许选择相同文件
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
     }
   };
 

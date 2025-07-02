@@ -34,13 +34,15 @@ const AIButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
   height: 40px;
   width: 100%;
+  padding: 0 8px;
+  font-size: 13px;
   
   .ai-logo {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     object-fit: contain;
   }
 `;
@@ -278,7 +280,7 @@ ${text}
           disabled={isEmpty}
         >
           <img className="ai-logo" src="/images/deepseek-logo.png" alt="DeepSeek" />
-          发送给 DeepSeek 转换
+          发送DeepSeek转换
         </AIButton>
         
         <AIButton
@@ -286,7 +288,7 @@ ${text}
           disabled={isEmpty}
         >
           <img className="ai-logo" src="/images/kimi-logo.png" alt="Kimi" />
-          发送给 Kimi 转换
+          发送Kimi转换
         </AIButton>
         
         <AIButton
@@ -294,7 +296,7 @@ ${text}
           disabled={isEmpty}
         >
           <img className="ai-logo" src="/images/tongyi-logo.png" alt="通义千问" />
-          发送给 通义千问 转换
+          发送通义千问转换
         </AIButton>
         
         <AIButton
@@ -302,7 +304,7 @@ ${text}
           disabled={isEmpty}
         >
           <img className="ai-logo" src="/images/doubao-logo.png" alt="豆包" />
-          发送给 豆包 转换
+          发送豆包转换
         </AIButton>
       </ButtonsContainer>
       
