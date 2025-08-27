@@ -752,13 +752,13 @@ const FormatSettings = ({ visible, toggleSettings }) => {
             {/* 西文/数字默认字体设置 */}
             <div style={{
               marginBottom: '16px',
-              padding: '12px',
+              padding: '10px',
               background: '#f5f5f5',
               border: '1px solid #e8e8e8',
               borderRadius: '4px'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-                <Text strong>数字/西文字体统一</Text>
+                <Text strong>数字/西文默认字体</Text>
                 <Switch
                   checked={formatSettings.latin?.enabled ?? true}
                   onChange={(checked) => {
@@ -770,8 +770,8 @@ const FormatSettings = ({ visible, toggleSettings }) => {
                   }}
                 />
               </div>
-              <div style={{ fontSize: 12, color: '#888', marginBottom: 8 }}>
-                开启后，文章中的英文字母与数字将统一使用 <span style={{ fontWeight: 500, color: '#666' }}>{formatSettings.latin?.fontFamily ?? 'Times New Roman'}</span> 字体。
+              <div style={{ fontSize: 12, color: '#888', marginBottom: 6 }}>
+                开启后，文章中的西文与数字将统一默认使用 <span style={{ fontWeight: 500, color: '#666' }}>{formatSettings.latin?.fontFamily ?? 'Times New Roman'}</span> 字体。
                 <Button 
                   type="link" 
                   size="small" 
@@ -797,7 +797,7 @@ const FormatSettings = ({ visible, toggleSettings }) => {
                   background: 'rgba(255, 255, 255, 0.8)',
                   borderRadius: '4px',
                   border: '1px solid #e8e8e8',
-                  marginBottom: 8
+                  marginBottom: 6
                 }}>
                   <div style={{ width: 80, color: 'rgba(0,0,0,0.65)', fontSize: 12 }}>西文字体</div>
                   <Select
