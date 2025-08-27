@@ -1,4 +1,6 @@
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip, Table, TableRow, TableCell, WidthType, BorderStyle, HorizontalPositionAlign, HorizontalPositionRelativeFrom, ThematicBreak, Shading, ExternalHyperlink, ImageRun } from 'docx';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip, Table, TableRow, TableCell, WidthType, BorderStyle, HorizontalPositionAlign, HorizontalPositionRelativeFrom, ThematicBreak, Shading, ExternalHyperlink, ImageRun, ImportedXmlComponent } from 'docx';
+import JSZip from 'jszip';
+import { XMLParser, XMLBuilder } from 'fast-xml-parser';
 import { saveAs } from 'file-saver';
 import { marked } from 'marked';
 import { dataUriToUint8Array, downloadImage, isImageUrl } from '../utils/imageUtils';
@@ -114,13 +116,89 @@ export const exportToWord = async (markdown, formatSettings) => {
     // 创建Word文档
     const doc = createWordDocument(processedTokens, formatSettings);
 
-    // 导出文档
+    // 导出文档为 Blob
     const buffer = await Packer.toBlob(doc);
-    saveAs(buffer, fileName);
+
+    // 对 docx 做后处理：将正文段落实体写入 w:firstLineChars
+    const processedBlob = await postProcessDocx(buffer);
+
+    saveAs(processedBlob, fileName);
     console.log('Word文档导出成功!');
   } catch (error) {
     console.error('导出Word文档时发生错误:', error);
     alert('导出失败，请查看控制台获取详细信息。');
+  }
+};
+
+// docx 后处理：对 word/document.xml 的正文段落写入字符单位缩进
+const postProcessDocx = async (blob) => {
+  try {
+    const zip = await JSZip.loadAsync(blob);
+    const docXmlFile = zip.file('word/document.xml');
+    if (!docXmlFile) {
+      console.warn('未找到 word/document.xml，跳过字符缩进后处理');
+      return blob;
+    }
+
+    const xmlString = await docXmlFile.async('string');
+
+    const parser = new XMLParser({
+      ignoreAttributes: false,
+      attributeNamePrefix: '@_',
+      preserveOrder: false,
+    });
+    const json = parser.parse(xmlString);
+
+    // 处理段落：仅对使用 paragraph-2-chars/4-chars/no-indent 的段落写入 firstLineChars
+    const doc = json['w:document'];
+    if (!doc) return blob;
+    const body = doc['w:body'];
+    if (!body) return blob;
+    const paragraphs = body['w:p'];
+
+    const ensureFirstLineChars = (pPr, chars) => {
+      if (!pPr['w:ind']) pPr['w:ind'] = {};
+      pPr['w:ind']['@_w:firstLineChars'] = String(chars);
+      // 确保距离单位首行缩进为0，不干扰字符单位
+      if (pPr['w:ind']['@_w:firstLine'] !== undefined) {
+        pPr['w:ind']['@_w:firstLine'] = '0';
+      }
+    };
+
+    const ensureParagraphProcessed = (p) => {
+      if (!p['w:pPr']) return;
+      const pPr = p['w:pPr'];
+      const pStyle = pPr['w:pStyle'];
+      const styleId = pStyle && pStyle['@_w:val'];
+      if (styleId === 'paragraph-2-chars') {
+        ensureFirstLineChars(pPr, 200);
+      } else if (styleId === 'paragraph-4-chars') {
+        ensureFirstLineChars(pPr, 400);
+      } else if (styleId === 'paragraph-no-indent') {
+        ensureFirstLineChars(pPr, 0);
+      }
+    };
+
+    if (Array.isArray(paragraphs)) {
+      paragraphs.forEach((p) => ensureParagraphProcessed(p));
+    } else if (paragraphs) {
+      ensureParagraphProcessed(paragraphs);
+    }
+
+    const builder = new XMLBuilder({
+      ignoreAttributes: false,
+      attributeNamePrefix: '@_',
+    });
+    const newXml = builder.build(json);
+
+    // 写回 zip
+    zip.file('word/document.xml', newXml);
+    const outBlob = await zip.generateAsync({ type: 'blob' });
+    console.log('docx后处理完成：已写入 firstLineChars 到正文段落');
+    return outBlob;
+  } catch (e) {
+    console.warn('docx后处理失败，返回原始文档：', e);
+    return blob;
   }
 };
 
@@ -404,6 +482,35 @@ const createWordDocument = (tokens, formatSettings) => {
       };
   }
 
+  // 创建自定义段落样式（避免与导入的 firstLineChars 样式同名冲突，这里返回空数组）
+  const createParagraphStyles = (contentSettings) => {
+    return [];
+  };
+
+  // 额外注入OOXML样式，使Word以“字符”单位显示（w:firstLineChars）
+  const createImportedIndentStyles = (contentSettings) => {
+    const xmlComponents = [];
+
+    const makeStyleXml = (styleId, name, firstLineChars) => `
+      <w:style w:type="paragraph" w:styleId="${styleId}" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        <w:name w:val="${name}"/>
+        <w:basedOn w:val="Normal"/>
+        <w:uiPriority w:val="1"/>
+        <w:qFormat/>
+        <w:pPr>
+          <w:ind w:firstLineChars="${firstLineChars}" w:firstLine="0"/>
+        </w:pPr>
+      </w:style>
+    `;
+
+    // 2字符 = 200；4字符 = 400；无缩进 = 0
+    xmlComponents.push(ImportedXmlComponent.fromXmlString(makeStyleXml('paragraph-2-chars', '段落-首行缩进2字符', 200)));
+    xmlComponents.push(ImportedXmlComponent.fromXmlString(makeStyleXml('paragraph-4-chars', '段落-首行缩进4字符', 400)));
+    xmlComponents.push(ImportedXmlComponent.fromXmlString(makeStyleXml('paragraph-no-indent', '段落-无缩进', 0)));
+
+    return xmlComponents;
+  };
+
   // 创建文档
   const doc = new Document({
     numbering: {
@@ -512,6 +619,20 @@ const createWordDocument = (tokens, formatSettings) => {
         }
       ]
     },
+    styles: {
+      paragraphStyles: createParagraphStyles(content),
+      importedStyles: createImportedIndentStyles(content)
+    },
+    customProperties: [
+      {
+        name: "首行缩进设置",
+        value: `段落首行缩进：${content.paragraph.firstLineIndent}字符`
+      },
+      {
+        name: "文档格式说明",
+        value: "本文档使用MD2Word排版助手生成，段落首行缩进基于字符数计算"
+      }
+    ],
     sections: [
       {
         properties: {
@@ -524,6 +645,11 @@ const createWordDocument = (tokens, formatSettings) => {
       }
     ]
   });
+  
+  // 调试：输出样式注入情况
+  try {
+    console.log('样式已注入（importedStyles）：paragraph-2-chars / paragraph-4-chars / paragraph-no-indent');
+  } catch (_) {}
 
   return doc;
 };
@@ -806,9 +932,33 @@ const createParagraph = (token, settings) => {
     lineRule
   });
   
+  // 根据首行缩进选择对应的样式
+  const getParagraphStyleId = (firstLineIndent) => {
+    switch (firstLineIndent) {
+      case 0:
+        return 'paragraph-no-indent';
+      case 2:
+        return 'paragraph-2-chars';
+      case 4:
+        return 'paragraph-4-chars';
+      default:
+        return undefined; // 其它数值时，不使用字符样式
+    }
+  };
+
+  const chosenStyleId = getParagraphStyleId(settings.firstLineIndent);
+  try {
+    console.log('创建段落：' + JSON.stringify({
+      chosenStyleId,
+      firstLineIndent: settings.firstLineIndent,
+      willSetIndentAtParagraphLevel: !chosenStyleId,
+    }));
+  } catch (_) {}
+
   // 创建段落
   return new Paragraph({
     children: inlineTokens,
+    style: chosenStyleId,
     alignment: convertAlignment(settings.align),
     spacing: {
       before: 0,
@@ -816,9 +966,8 @@ const createParagraph = (token, settings) => {
       line: lineSpacingTwips,
       lineRule
     },
-    indent: {
-      firstLine: firstLineIndentTwips
-    }
+    // 使用字符样式时，不设置段落级 firstLine，避免覆盖样式中的 firstLineChars
+    indent: chosenStyleId ? undefined : { firstLine: firstLineIndentTwips }
   });
 };
 
