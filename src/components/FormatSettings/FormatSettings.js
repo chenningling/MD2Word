@@ -233,25 +233,30 @@ const getFormatSummary = (settings, elementType) => {
       6.5: '小六',
       5.5: '七号'
     };
-    
     // 如果是标准字号，返回中文名称，否则返回数字+pt
     return fontSizeMap[fontSize] ? `${fontSizeMap[fontSize]} (${fontSize}pt)` : `${fontSize}pt`;
+  };
+
+  // 行间距单位显示
+  const getLineHeightWithUnit = (settings) => {
+    if (settings.lineHeightUnit === 'pt') {
+      return `${settings.lineHeight}磅`;
+    } else {
+      // 默认或multiple
+      return `${settings.lineHeight}倍`;
+    }
   };
   
   // 基本信息
   const basicInfo = `${settings.fontFamily} ${getChineseFontSizeName(settings.fontSize)} ${settings.bold ? '粗体' : ''}`;
-  
   // 对齐和行间距
-  const layoutInfo = `${getAlignLabel(settings.align)} · 行距${settings.lineHeight}`;
-  
+  const layoutInfo = `${getAlignLabel(settings.align)} · 行距${getLineHeightWithUnit(settings)}`;
   // 特殊设置
   let specialInfo = '';
-  
   // 标题特有设置
   if (elementType.startsWith('heading')) {
     specialInfo = `段前${settings.spacingBefore}磅 · 段后${settings.spacingAfter}磅`;
   }
-  
   // 段落特有设置
   if (elementType === 'paragraph') {
     const indentMap = {
@@ -261,7 +266,6 @@ const getFormatSummary = (settings, elementType) => {
     };
     specialInfo = `${indentMap[settings.firstLineIndent] || '无缩进'} · 段间距${settings.paragraphSpacing}磅`;
   }
-  
   return [basicInfo, layoutInfo, specialInfo].filter(Boolean).join(' · ');
 };
 
@@ -639,7 +643,17 @@ const FormatSettings = ({ visible, toggleSettings }) => {
             <Select
               value={settings.lineHeightUnit || 'multiple'}
               style={{ width: 80 }}
-              onChange={unit => handleContentSettingChange(elementType, 'lineHeightUnit', unit)}
+              onChange={unit => {
+                // 新增：切换单位时自动调整默认值
+                let newValue = settings.lineHeight;
+                if (unit === 'pt' && settings.lineHeightUnit !== 'pt') {
+                  newValue = 20;
+                } else if (unit === 'multiple' && settings.lineHeightUnit !== 'multiple') {
+                  newValue = 1.5;
+                }
+                handleContentSettingChange(elementType, 'lineHeightUnit', unit);
+                handleContentSettingChange(elementType, 'lineHeight', newValue);
+              }}
             >
               <Option value="multiple">倍数</Option>
               <Option value="pt">磅数</Option>
