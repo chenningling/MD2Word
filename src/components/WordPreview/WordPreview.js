@@ -7,38 +7,13 @@ import 'prismjs/themes/prism.css';
 import { renderMermaidToPng, isMermaidCode } from '../../utils/mermaidUtils';
 import { InfoCircleOutlined, ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Tooltip, Button, Dropdown, Space } from 'antd';
+import { getMappedFont } from '../../utils/fontUtils';
 
 // 导入字体
 import '@fontsource/source-serif-pro';
 import '@fontsource/source-sans-pro';
 import '@fontsource/source-code-pro';
 
-// 字体映射，将常用中文字体名映射到已加载的Web字体或系统字体
-const FONT_MAPPING = {
-  '宋体': 'SimSun, "Source Serif Pro", serif',
-  '微软雅黑': 'Microsoft YaHei, "Source Sans Pro", sans-serif',
-  '黑体': 'SimHei, "Source Sans Pro", sans-serif',
-  '仿宋': 'FangSong, "Source Serif Pro", serif',
-  '楷体': 'KaiTi, "Source Serif Pro", serif',
-  '小标宋体': 'STZhongsong, SimSun, "Source Serif Pro", serif',
-  '华文宋体': 'STSong, "Source Serif Pro", serif',
-  '华文楷体': 'STKaiti, "Source Serif Pro", serif',
-  '华文黑体': 'STHeiti, "Source Sans Pro", sans-serif',
-  '方正书宋': 'FZShuSong, "Source Serif Pro", serif',
-  '方正黑体': 'FZHei, "Source Sans Pro", sans-serif',
-  'Arial': 'Arial, "Source Sans Pro", sans-serif',
-  'Times New Roman': '"Times New Roman", "Source Serif Pro", serif',
-  'Calibri': 'Calibri, "Source Sans Pro", sans-serif',
-  'Cambria': 'Cambria, "Source Serif Pro", serif',
-  'Georgia': 'Georgia, "Source Serif Pro", serif',
-  'Helvetica': 'Helvetica, "Source Sans Pro", sans-serif',
-  'Courier New': '"Courier New", "Source Code Pro", monospace'
-};
-
-// 获取映射后的字体名
-const getMappedFont = (fontFamily) => {
-  return FONT_MAPPING[fontFamily] || `${fontFamily}, sans-serif`;
-};
 
 const PreviewContainer = styled.div`
   flex: 1;

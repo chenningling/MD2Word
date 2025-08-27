@@ -3,6 +3,7 @@ import { Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, M
 import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined, RedoOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
+import { FONT_OPTIONS, getPreviewFontFamily } from '../../utils/fontUtils';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -120,26 +121,7 @@ const templates = [
   { id: 'business', name: '企业公文' },
 ];
 
-// 字体列表
-const fonts = [
-  { value: '宋体', label: '宋体' },
-  { value: '微软雅黑', label: '微软雅黑' },
-  { value: '黑体', label: '黑体' },
-  { value: '仿宋', label: '仿宋' },
-  { value: '楷体', label: '楷体' },
-  { value: '小标宋体', label: '小标宋体' },
-  { value: '华文宋体', label: '华文宋体' },
-  { value: '华文楷体', label: '华文楷体' },
-  { value: '华文黑体', label: '华文黑体' },
-  { value: '方正书宋', label: '方正书宋' },
-  { value: '方正黑体', label: '方正黑体' },
-  { value: 'Arial', label: 'Arial' },
-  { value: 'Times New Roman', label: 'Times New Roman' },
-  { value: 'Calibri', label: 'Calibri' },
-  { value: 'Cambria', label: 'Cambria' },
-  { value: 'Georgia', label: 'Georgia' },
-  { value: 'Helvetica', label: 'Helvetica' },
-];
+// 字体列表迁移至字体工具
 
 // 中文字号映射表
 const chineseFontSizes = [
@@ -168,36 +150,10 @@ const alignOptions = [
   { value: 'justify', label: '两端对齐' },
 ];
 
-// 添加自定义字体选项组件
+// 添加自定义字体选项组件（使用公共映射）
 const FontOption = ({ value, children }) => {
-  // 字体映射，与WordPreview.js中保持一致
-  const FONT_MAPPING = {
-    '宋体': 'SimSun, "Source Serif Pro", serif',
-    '微软雅黑': 'Microsoft YaHei, "Source Sans Pro", sans-serif',
-    '黑体': 'SimHei, "Source Sans Pro", sans-serif',
-    '仿宋': 'FangSong, "Source Serif Pro", serif',
-    '楷体': 'KaiTi, "Source Serif Pro", serif',
-    '小标宋体': 'STZhongsong, SimSun, "Source Serif Pro", serif',
-    '华文宋体': 'STSong, "Source Serif Pro", serif',
-    '华文楷体': 'STKaiti, "Source Serif Pro", serif',
-    '华文黑体': 'STHeiti, "Source Sans Pro", sans-serif',
-    '方正书宋': 'FZShuSong, "Source Serif Pro", serif',
-    '方正黑体': 'FZHei, "Source Sans Pro", sans-serif',
-    'Arial': 'Arial, "Source Sans Pro", sans-serif',
-    'Times New Roman': '"Times New Roman", "Source Serif Pro", serif',
-    'Calibri': 'Calibri, "Source Sans Pro", sans-serif',
-    'Cambria': 'Cambria, "Source Serif Pro", serif',
-    'Georgia': 'Georgia, "Source Serif Pro", serif',
-    'Helvetica': 'Helvetica, "Source Sans Pro", sans-serif',
-  };
-  
-  const fontFamily = FONT_MAPPING[value] || `${value}, sans-serif`;
-  
-  return (
-    <div style={{ fontFamily: fontFamily }}>
-      {children}
-    </div>
-  );
+  const fontFamily = getPreviewFontFamily(value);
+  return <div style={{ fontFamily }}>{children}</div>;
 };
 
 // 添加一个辅助函数，生成格式摘要
@@ -526,7 +482,7 @@ const FormatSettings = ({ visible, toggleSettings }) => {
             style={{ width: '100%' }}
             optionLabelProp="label"
           >
-            {fonts.map(font => (
+            {FONT_OPTIONS.map(font => (
               <Option key={font.value} value={font.value} label={font.label}>
                 <FontOption value={font.value}>{font.label}</FontOption>
               </Option>
