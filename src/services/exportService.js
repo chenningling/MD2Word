@@ -4,6 +4,39 @@ import { marked } from 'marked';
 import { dataUriToUint8Array, downloadImage, isImageUrl } from '../utils/imageUtils';
 import axios from 'axios';
 
+// 计算首行缩进的辅助函数
+const calculateFirstLineIndent = (settings) => {
+  const fontSizeInPoints = settings.fontSize;
+  const charCount = settings.firstLineIndent || 0;
+  
+  if (charCount === 0) return 0;
+  
+  // 根据字体类型确定字符宽度系数
+  const chineseFonts = ['宋体', '微软雅黑', '黑体', '仿宋', '楷体', '小标宋体', '华文宋体', '华文楷体', '华文黑体', '方正书宋', '方正黑体'];
+  const isChineseFont = chineseFonts.includes(settings.fontFamily);
+  
+  // 字符宽度系数：中文字体为1.0，英文字体为0.5
+  const charWidthRatio = isChineseFont ? 1.0 : 0.5;
+  
+  // 计算字符宽度（以英寸为单位）
+  const charWidthInInches = (fontSizeInPoints * charWidthRatio) / 72;
+  
+  // 转换为twip
+  const firstLineIndentTwips = convertInchesToTwip(charWidthInInches * charCount);
+  
+  console.log('首行缩进计算详情:', {
+    fontSizeInPoints,
+    charCount,
+    fontFamily: settings.fontFamily,
+    isChineseFont,
+    charWidthRatio,
+    charWidthInInches,
+    firstLineIndentTwips
+  });
+  
+  return firstLineIndentTwips;
+};
+
 // 提取文档标题作为文件名
 const extractDocumentTitle = (tokens) => {
   // 查找第一个一级标题
@@ -747,9 +780,8 @@ const createParagraph = (token, settings) => {
     inlineTokens = [new TextRun({ text: '' })];
   }
   
-  // 计算首行缩进值（Word中使用twip单位，1字符约等于120twip）
-  // 中文字符宽度约为英文的2倍，所以乘以240
-  const firstLineIndentTwips = settings.firstLineIndent ? settings.firstLineIndent * 240 : 0;
+  // 使用新的首行缩进计算方法
+  const firstLineIndentTwips = calculateFirstLineIndent(settings);
   
   // 段落间距（Word中使用twip单位，1磅约等于20twip）
   const spacingAfterTwips = settings.paragraphSpacing ? settings.paragraphSpacing * 20 : 0;

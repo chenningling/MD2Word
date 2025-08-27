@@ -216,7 +216,20 @@ const WordDocument = styled.div`
     line-height: ${props => props.paragraph.lineHeightUnit === 'pt' ? `${props.paragraph.lineHeight}pt` : props.paragraph.lineHeight};
     text-align: ${props => props.paragraph.align};
     margin-bottom: ${props => props.paragraph.paragraphSpacing ? `${props.paragraph.paragraphSpacing}pt` : '6pt'};
-    text-indent: ${props => props.paragraph.firstLineIndent ? `${props.paragraph.firstLineIndent}em` : '0'};
+    text-indent: ${props => {
+      const charCount = props.paragraph.firstLineIndent || 0;
+      if (charCount === 0) return '0';
+      
+      // 根据字体类型确定字符宽度系数
+      const chineseFonts = ['宋体', '微软雅黑', '黑体', '仿宋', '楷体', '小标宋体', '华文宋体', '华文楷体', '华文黑体', '方正书宋', '方正黑体'];
+      const isChineseFont = chineseFonts.includes(props.paragraph.fontFamily);
+      const charWidthRatio = isChineseFont ? 1.0 : 0.5;
+      
+      // 计算字符宽度（以pt为单位）
+      const charWidthInPoints = props.paragraph.fontSize * charWidthRatio;
+      
+      return `${charWidthInPoints * charCount}pt`;
+    }};
   }
   
   blockquote {
