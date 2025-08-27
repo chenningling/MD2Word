@@ -432,7 +432,8 @@ const getImageDimensions = (dataUrl) => {
 
 // 创建Word文档
 const createWordDocument = (tokens, formatSettings) => {
-  const { content, page } = formatSettings;
+  const { content, page, latin } = formatSettings;
+  const latinSettings = latin || { enabled: false, fontFamily: 'Times New Roman' };
   
   // 设置页面边距（将厘米转换为英寸，再转换为twip）
   const margins = {
@@ -641,7 +642,7 @@ const createWordDocument = (tokens, formatSettings) => {
             size: pageSize
           }
         },
-        children: parseTokensToDocxElements(tokens, content)
+        children: parseTokensToDocxElements(tokens, content, latinSettings)
       }
     ]
   });
@@ -655,7 +656,7 @@ const createWordDocument = (tokens, formatSettings) => {
 };
 
 // 将tokens解析为Word文档元素
-const parseTokensToDocxElements = (tokens, contentSettings) => {
+const parseTokensToDocxElements = (tokens, contentSettings, latinSettings) => {
   console.log(`开始解析 ${tokens.length} 个tokens为Word文档元素`);
   console.log('tokens类型统计:', tokens.reduce((acc, token) => {
     acc[token.type] = (acc[token.type] || 0) + 1;
@@ -669,13 +670,13 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
     
     switch (token.type) {
       case 'heading':
-        elements.push(createHeading(token, contentSettings));
+        elements.push(createHeading(token, contentSettings, latinSettings));
         break;
       case 'paragraph':
-        elements.push(createParagraph(token, contentSettings.paragraph));
+        elements.push(createParagraph(token, contentSettings.paragraph, latinSettings));
         break;
       case 'blockquote':
-        elements.push(createBlockquote(token, contentSettings.quote));
+        elements.push(createBlockquote(token, contentSettings.quote, latinSettings));
         break;
       case 'code':
         console.log('处理代码块用于Word导出:', token.lang, token.text ? token.text.substring(0, 30) + '...' : '无内容');
@@ -684,10 +685,10 @@ const parseTokensToDocxElements = (tokens, contentSettings) => {
         elements.push(...codeElements);
         break;
       case 'list':
-        elements.push(...createList(token, contentSettings.paragraph));
+        elements.push(...createList(token, contentSettings.paragraph, 0, latinSettings));
         break;
       case 'table':
-        elements.push(createTable(token, contentSettings.paragraph));
+        elements.push(createTable(token, contentSettings.paragraph, latinSettings));
         break;
       case 'hr':
         elements.push(createHorizontalRule());
@@ -836,7 +837,7 @@ const createHorizontalRule = () => {
 };
 
 // 创建标题
-const createHeading = (token, contentSettings) => {
+const createHeading = (token, contentSettings, latinSettings) => {
   const level = token.depth;
   const headingType = `heading${level}`;
   const settings = contentSettings[headingType];
@@ -851,7 +852,7 @@ const createHeading = (token, contentSettings) => {
   }
   
   // 处理标题内容
-  const inlineTokens = parseInlineTokens(token.text, settings, true);
+  const inlineTokens = parseInlineTokens(token.text, settings, true, latinSettings);
   
   // 段前/段后间距（Word中使用twip单位，1磅约等于20twip）
   const spacingBeforeTwips = settings.spacingBefore ? settings.spacingBefore * 20 : 0;
@@ -892,16 +893,16 @@ const createHeading = (token, contentSettings) => {
 };
 
 // 创建段落
-const createParagraph = (token, settings) => {
+const createParagraph = (token, settings, latinSettings) => {
   // 处理段落内容
   let inlineTokens;
   
   if (token.tokens) {
     // 如果有tokens数组，使用processTokensToTextRuns处理
-    inlineTokens = processTokensToTextRuns(token.tokens, settings);
+    inlineTokens = processTokensToTextRuns(token.tokens, settings, false, latinSettings);
   } else if (token.text || token.raw) {
     // 否则使用parseInlineTokens处理文本
-    inlineTokens = parseInlineTokens(String(token.text || token.raw || ''), settings);
+    inlineTokens = parseInlineTokens(String(token.text || token.raw || ''), settings, false, latinSettings);
   } else {
     inlineTokens = [new TextRun({ text: '' })];
   }
@@ -972,7 +973,7 @@ const createParagraph = (token, settings) => {
 };
 
 // 创建引用块
-const createBlockquote = (token, settings) => {
+const createBlockquote = (token, settings, latinSettings) => {
   // 转换对齐方式
   const alignment = convertAlignment(settings.align);
 
@@ -991,12 +992,12 @@ const createBlockquote = (token, settings) => {
   
   if (token.tokens) {
     // 如果有tokens数组，使用processTokensToTextRuns处理
-    textRuns = processTokensToTextRuns(token.tokens, settings);
+    textRuns = processTokensToTextRuns(token.tokens, settings, false, latinSettings);
   } else {
     // 确保token.text是字符串
     const textContent = String(token.text || token.raw || '');
     // 处理引用中的内联格式
-    textRuns = parseInlineTokens(textContent, settings);
+    textRuns = parseInlineTokens(textContent, settings, false, latinSettings);
   }
 
   return new Paragraph({
@@ -1023,7 +1024,7 @@ const createBlockquote = (token, settings) => {
 };
 
 // 创建列表
-const createList = (token, settings, nestLevel = 0) => {
+const createList = (token, settings, nestLevel = 0, latinSettings) => {
   const paragraphs = [];
   
   // 行间距支持倍数和磅数
@@ -1045,7 +1046,7 @@ const createList = (token, settings, nestLevel = 0) => {
     const itemText = String(item.text || '');
     
     // 处理列表项中的内联格式，不再添加前缀，让Word自动处理
-    const textRuns = parseInlineTokens(itemText, settings);
+    const textRuns = parseInlineTokens(itemText, settings, false, latinSettings);
     
           // 创建带有正确列表格式的段落
       paragraphs.push(
@@ -1070,7 +1071,7 @@ const createList = (token, settings, nestLevel = 0) => {
       item.tokens.forEach(token => {
         if (token.type === 'list') {
           // 递归处理嵌套列表，增加嵌套级别
-          const nestedParagraphs = createList(token, settings, nestLevel + 1);
+          const nestedParagraphs = createList(token, settings, nestLevel + 1, latinSettings);
           paragraphs.push(...nestedParagraphs);
         } 
         else if (token.type === 'blockquote') {
@@ -1081,12 +1082,12 @@ const createList = (token, settings, nestLevel = 0) => {
           
           if (token.tokens) {
             // 如果有tokens数组，使用processTokensToTextRuns处理
-            textRuns = processTokensToTextRuns(token.tokens, settings);
+            textRuns = processTokensToTextRuns(token.tokens, settings, false, latinSettings);
           } else {
             // 确保token.text是字符串
             const quoteText = String(token.text || token.raw || '');
             // 处理引用中的内联格式
-            textRuns = parseInlineTokens(quoteText, settings);
+            textRuns = parseInlineTokens(quoteText, settings, false, latinSettings);
           }
           
           // 创建引用段落，增加左缩进以对齐列表项
@@ -1139,7 +1140,7 @@ const createList = (token, settings, nestLevel = 0) => {
 };
 
 // 创建表格
-const createTable = (token, settings) => {
+const createTable = (token, settings, latinSettings) => {
   console.log('创建表格:', token);
   
   // 表格行
@@ -1201,10 +1202,10 @@ const createTable = (token, settings) => {
         let children;
         if (cell && cell.tokens && cell.tokens.length > 0) {
           // 处理单元格中的格式化内容
-          children = processTokensToTextRuns(cell.tokens, settings);
+          children = processTokensToTextRuns(cell.tokens, settings, false, latinSettings);
         } else if (hasBold || hasItalic) {
           // 如果有格式标记，使用parseInlineTokens处理
-          children = parseInlineTokens(cellContent, settings);
+          children = parseInlineTokens(cellContent, settings, false, latinSettings);
         } else {
           // 否则直接创建TextRun
           children = [
@@ -1248,7 +1249,7 @@ const createTable = (token, settings) => {
 };
 
 // 处理tokens数组转换为TextRun数组
-const processTokensToTextRuns = (tokens, settings, isHeading = false) => {
+const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSettings) => {
   const textRuns = [];
   
   tokens.forEach(token => {
@@ -1321,17 +1322,8 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false) => {
       case 'text':
       default:
         if (token.text) {
-          textRuns.push(
-            new TextRun({
-              text: token.text,
-              font: { name: settings.fontFamily },
-              size: Math.round(settings.fontSize * 2),
-              // 如果是标题或者设置了粗体，则使用粗体
-              bold: isHeading ? settings.bold : settings.bold,
-              color: "000000", // 设置为黑色
-              italics: false // 如果是标题，确保不使用斜体
-            })
-          );
+          const runs = splitLatinRuns(token.text, settings, isHeading, latinSettings);
+          textRuns.push(...runs);
         }
         break;
     }
@@ -1355,8 +1347,67 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false) => {
   return textRuns;
 };
 
+// 将一段文本按西文/数字与非西文拆分为多个 TextRun
+const splitLatinRuns = (text, settings, isHeading, latinSettings) => {
+  const result = [];
+  const enableLatin = latinSettings && latinSettings.enabled;
+  if (!enableLatin) {
+    result.push(new TextRun({
+      text,
+      font: { name: settings.fontFamily },
+      size: Math.round(settings.fontSize * 2),
+      bold: isHeading ? settings.bold : settings.bold,
+      color: "000000",
+      italics: false
+    }));
+    return result;
+  }
+  const regex = /[A-Za-z0-9]+/g;
+  let lastIndex = 0;
+  let m;
+  while ((m = regex.exec(text)) !== null) {
+    if (m.index > lastIndex) {
+      const chunk = text.slice(lastIndex, m.index);
+      if (chunk) {
+        result.push(new TextRun({
+          text: chunk,
+          font: { name: settings.fontFamily },
+          size: Math.round(settings.fontSize * 2),
+          bold: isHeading ? settings.bold : settings.bold,
+          color: "000000",
+          italics: false
+        }));
+      }
+    }
+    const latinChunk = m[0];
+    result.push(new TextRun({
+      text: latinChunk,
+      font: { name: latinSettings.fontFamily || 'Times New Roman' },
+      size: Math.round(settings.fontSize * 2),
+      bold: isHeading ? settings.bold : settings.bold,
+      color: "000000",
+      italics: false
+    }));
+    lastIndex = m.index + m[0].length;
+  }
+  if (lastIndex < text.length) {
+    const tail = text.slice(lastIndex);
+    if (tail) {
+      result.push(new TextRun({
+        text: tail,
+        font: { name: settings.fontFamily },
+        size: Math.round(settings.fontSize * 2),
+        bold: isHeading ? settings.bold : settings.bold,
+        color: "000000",
+        italics: false
+      }));
+    }
+  }
+  return result;
+};
+
 // 解析内联格式
-const parseInlineTokens = (text, settings, isHeading = false) => {
+const parseInlineTokens = (text, settings, isHeading = false, latinSettings) => {
   // 确保text是字符串
   const textContent = String(text || '');
   console.log('处理内联格式:', textContent, isHeading ? '(标题)' : '');
@@ -1366,7 +1417,7 @@ const parseInlineTokens = (text, settings, isHeading = false) => {
   
   // 如果解析成功并且包含内联标记，使用processTokensToTextRuns处理
   if (inlineTokens && inlineTokens.length > 0 && inlineTokens[0].type === 'paragraph' && inlineTokens[0].tokens) {
-    return processTokensToTextRuns(inlineTokens[0].tokens, settings, isHeading);
+    return processTokensToTextRuns(inlineTokens[0].tokens, settings, isHeading, latinSettings);
   }
   
   // 简化处理方式，直接使用正则表达式查找和替换
@@ -1521,17 +1572,8 @@ const parseInlineTokens = (text, settings, isHeading = false) => {
       case 'normal':
       default:
         if (segment.text.trim()) {
-          textRuns.push(
-            new TextRun({
-              text: segment.text,
-              font: { name: settings.fontFamily },
-              size: Math.round(settings.fontSize * 2),
-              // 如果是标题或者设置了粗体，则使用粗体
-              bold: isHeading ? settings.bold : settings.bold,
-              color: "000000", // 设置为黑色
-              italics: false // 如果是标题，确保不使用斜体
-            })
-          );
+          const runs = splitLatinRuns(segment.text, settings, isHeading, latinSettings);
+          textRuns.push(...runs);
         }
         break;
     }
@@ -1539,17 +1581,7 @@ const parseInlineTokens = (text, settings, isHeading = false) => {
   
   // 如果没有生成任何TextRun，添加一个包含原始文本的TextRun
   if (textRuns.length === 0) {
-    textRuns.push(
-      new TextRun({
-        text: textContent,
-        font: { name: settings.fontFamily },
-        size: Math.round(settings.fontSize * 2),
-        // 如果是标题或者设置了粗体，则使用粗体
-        bold: isHeading ? settings.bold : settings.bold,
-        color: "000000", // 设置为黑色
-        italics: false // 确保不使用斜体
-      })
-    );
+    textRuns.push(...splitLatinRuns(textContent, settings, isHeading, latinSettings));
   }
   
   return textRuns;

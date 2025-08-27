@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, Modal, Input, message } from 'antd';
+import { Tabs, Select, Form, InputNumber, Button, Radio, Collapse, Typography, Modal, Input, message, Switch } from 'antd';
 import { CloseOutlined, SaveOutlined, PlusOutlined, DeleteOutlined, RedoOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
@@ -746,6 +746,53 @@ const FormatSettings = ({ visible, toggleSettings }) => {
                 )}
               </StyledSelect>
             </TemplateSelect>
+            
+            {/* 西文/数字默认字体设置 */}
+            <div style={{
+              marginBottom: '16px',
+              padding: '12px',
+              background: '#fafafa',
+              border: '1px solid #f0f0f0',
+              borderRadius: '4px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+                <Text strong>西文/数字默认字体</Text>
+                <Switch
+                  checked={formatSettings.latin?.enabled ?? true}
+                  onChange={(checked) => {
+                    const newSettings = { ...formatSettings };
+                    newSettings.latin = newSettings.latin || { enabled: true, fontFamily: 'Times New Roman' };
+                    newSettings.latin.enabled = checked;
+                    updateFormatSettings(newSettings);
+                    if (selectedTemplate) setIsSettingsChanged(true);
+                  }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <div style={{ width: 120, color: 'rgba(0,0,0,0.65)' }}>西文字体</div>
+                <Select
+                  style={{ flex: 1 }}
+                  value={formatSettings.latin?.fontFamily ?? 'Times New Roman'}
+                  onChange={(value) => {
+                    const newSettings = { ...formatSettings };
+                    newSettings.latin = newSettings.latin || { enabled: true, fontFamily: 'Times New Roman' };
+                    newSettings.latin.fontFamily = value;
+                    updateFormatSettings(newSettings);
+                    if (selectedTemplate) setIsSettingsChanged(true);
+                  }}
+                  optionLabelProp="label"
+                >
+                  {FONT_OPTIONS.map(font => (
+                    <Option key={`latin-${font.value}`} value={font.value} label={font.label}>
+                      <div style={{ fontFamily: getPreviewFontFamily(font.value) }}>{font.label}</div>
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+              <div style={{ fontSize: 12, color: '#888', marginTop: 6 }}>
+                开启后，文章中的英文字母与数字将默认使用该字体。
+              </div>
+            </div>
             
             <CollapseHint>
               <InfoCircleOutlined />

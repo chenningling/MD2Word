@@ -304,6 +304,11 @@ const WordDocument = styled.div`
   .font-preview {
     transition: all 0.2s ease;
   }
+  
+  /* 西文/数字片段字体 */
+  .latin-run {
+    font-family: ${props => getMappedFont(props.latinFont || 'Times New Roman')};
+  }
 `;
 
 const WordPreview = () => {
@@ -362,7 +367,7 @@ const WordPreview = () => {
     };
   }, []);
   
-  // 处理Markdown内容，包括Mermaid图表渲染
+  // 处理Markdown内容，包括Mermaid图表渲染与西文字体包裹
   useEffect(() => {
     const processMarkdown = async () => {
       try {
@@ -468,6 +473,56 @@ const WordPreview = () => {
           }
         }
         
+        // 西文/数字字体包裹：仅在开启时执行，跳过代码相关容器
+        const enableLatin = formatSettings?.latin?.enabled;
+        if (enableLatin) {
+          const skipSelectors = 'pre, code, kbd, samp, script, style';
+          const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+              // 跳过空白文本
+              if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+              // 跳过位于禁用容器内的文本
+              let p = node.parentElement;
+              while (p) {
+                if (p.matches && p.matches(skipSelectors)) return NodeFilter.FILTER_REJECT;
+                p = p.parentElement;
+              }
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+          const latinRegex = /[A-Za-z0-9]+/g;
+          const textNodes = [];
+          let n;
+          while ((n = walker.nextNode())) textNodes.push(n);
+          textNodes.forEach(node => {
+            const text = node.nodeValue;
+            latinRegex.lastIndex = 0;
+            const parts = [];
+            let lastIndex = 0;
+            let m;
+            while ((m = latinRegex.exec(text)) !== null) {
+              if (m.index > lastIndex) parts.push({ t: text.slice(lastIndex, m.index), latin: false });
+              parts.push({ t: m[0], latin: true });
+              lastIndex = m.index + m[0].length;
+            }
+            if (lastIndex < text.length) parts.push({ t: text.slice(lastIndex), latin: false });
+            if (parts.length <= 1) return;
+            const frag = document.createDocumentFragment();
+            parts.forEach(p => {
+              if (!p.t) return;
+              if (p.latin) {
+                const span = document.createElement('span');
+                span.className = 'latin-run';
+                span.textContent = p.t;
+                frag.appendChild(span);
+              } else {
+                frag.appendChild(document.createTextNode(p.t));
+              }
+            });
+            node.parentNode && node.parentNode.replaceChild(frag, node);
+          });
+        }
+
         setProcessedHtml(tempDiv.innerHTML);
       } catch (error) {
         console.error('处理Markdown内容失败:', error);
@@ -485,7 +540,7 @@ const WordPreview = () => {
     }
   }, [processedHtml]);
 
-  const { content, page } = formatSettings;
+  const { content, page, latin } = formatSettings;
   
   // 缩放下拉菜单项
   const zoomMenuItems = zoomOptions.map(option => ({
@@ -542,6 +597,7 @@ const WordPreview = () => {
           paragraph={content.paragraph}
           quote={content.quote}
           zoom={zoom}
+          latinFont={latin?.fontFamily}
           dangerouslySetInnerHTML={{ __html: processedHtml }}
         />
       </PreviewContent>

@@ -11,6 +11,11 @@ const defaultFormatSettings = {
     paragraph: { fontFamily: '宋体', fontSize: 12, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left', firstLineIndent: 2, paragraphSpacing: 6 },
     quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left' },
   },
+  // 新增：西文/数字默认字体设置
+  latin: {
+    enabled: true,
+    fontFamily: 'Times New Roman'
+  },
   page: {
     margin: {
       top: 2.54,
@@ -36,6 +41,10 @@ const predefinedTemplates = {
       paragraph: { fontFamily: '宋体', fontSize: 12, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'justify', firstLineIndent: 2, paragraphSpacing: 6 },
       quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left' },
     },
+    latin: {
+      enabled: true,
+      fontFamily: 'Times New Roman'
+    },
     page: {
       margin: {
         top: 2.5,
@@ -57,6 +66,10 @@ const predefinedTemplates = {
       paragraph: { fontFamily: '仿宋', fontSize: 12, bold: false, lineHeight: 1.8, lineHeightUnit: 'multiple', align: 'justify', firstLineIndent: 2, paragraphSpacing: 0 },
       quote: { fontFamily: '楷体', fontSize: 12, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left' },
     },
+    latin: {
+      enabled: true,
+      fontFamily: 'Times New Roman'
+    },
     page: {
       margin: {
         top: 2.5,
@@ -77,6 +90,10 @@ const predefinedTemplates = {
       heading4: { fontFamily: '黑体', fontSize: 14, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left', spacingBefore: 6, spacingAfter: 4 },
       paragraph: { fontFamily: '仿宋', fontSize: 16, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left', firstLineIndent: 2, paragraphSpacing: 3 },
       quote: { fontFamily: '楷体', fontSize: 16, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left' },
+    },
+    latin: {
+      enabled: true,
+      fontFamily: 'Times New Roman'
     },
     page: {
       margin: {
