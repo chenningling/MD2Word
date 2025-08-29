@@ -154,18 +154,36 @@ export const exportToWord = async (markdown, formatSettings) => {
   }
 };
 
-// docx 后处理：对 word/document.xml 的正文段落写入字符单位缩进
+// docx 后处理：对 word/document.xml 的正文段落写入字符单位缩进并替换 OMML 占位符
 const postProcessDocx = async (blob) => {
   try {
     const zip = await JSZip.loadAsync(blob);
     const docXmlFile = zip.file('word/document.xml');
     if (!docXmlFile) {
-      console.warn('未找到 word/document.xml，跳过字符缩进后处理');
+      console.warn('未找到 word/document.xml，跳过后处理');
       return blob;
     }
 
-    const xmlString = await docXmlFile.async('string');
+    let xmlString = await docXmlFile.async('string');
+    
+    // 1. 替换 OMML 占位符为真正的 OMML
+    if (currentExportOmmlResults && currentExportOmmlResults.length > 0) {
+      console.log(`[OMML Post-process] 开始替换 ${currentExportOmmlResults.length} 个公式占位符`);
+      
+      for (const ommlResult of currentExportOmmlResults) {
+        if (ommlResult.success && ommlResult.omml) {
+          const placeholder = `__OMML_PLACEHOLDER_${ommlResult.id}__`;
+          const ommlXml = ommlResult.omml;
+          
+          if (xmlString.includes(placeholder)) {
+            xmlString = xmlString.replace(placeholder, ommlXml);
+            console.log(`[OMML Post-process] 替换占位符: ${ommlResult.id}`);
+          }
+        }
+      }
+    }
 
+    // 2. 处理字符缩进（原有逻辑）
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: '@_',
@@ -218,7 +236,7 @@ const postProcessDocx = async (blob) => {
     // 写回 zip
     zip.file('word/document.xml', newXml);
     const outBlob = await zip.generateAsync({ type: 'blob' });
-    console.log('docx后处理完成：已写入 firstLineChars 到正文段落');
+    console.log('docx后处理完成：已写入 firstLineChars 和 OMML 公式');
     return outBlob;
   } catch (e) {
     console.warn('docx后处理失败，返回原始文档：', e);
@@ -728,9 +746,40 @@ const processOmmlInText = (text, ommlResults) => {
     
     if (ommlResult && ommlResult.success && ommlResult.omml) {
       try {
-        // 创建 OMML 组件并添加到元素数组
-        const ommlComponent = ImportedXmlComponent.fromXmlString(ommlResult.omml);
-        elements.push(ommlComponent);
+        // 清理和验证 OMML XML
+        let cleanOmml = ommlResult.omml.trim();
+        
+        // 确保 OMML 格式正确
+        if (!cleanOmml.startsWith('<m:oMath')) {
+          console.warn('[Export OMML] OMML 格式不正确，尝试包装:', cleanOmml.substring(0, 50));
+          cleanOmml = `<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">${cleanOmml}</m:oMath>`;
+        }
+        
+        // 验证 XML 命名空间
+        if (!cleanOmml.includes('xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"')) {
+          cleanOmml = cleanOmml.replace('<m:oMath', '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"');
+        }
+        
+        console.log('[Export OMML] 准备创建 OMML 组件:', {
+          formulaId,
+          ommlLength: cleanOmml.length,
+          ommlPreview: cleanOmml.substring(0, 100)
+        });
+        
+        // 创建正确的 Word XML 结构来包装 OMML
+        // 参考标准 Word 文档格式，OMML 应该直接嵌入，不需要额外包装
+        const wordXmlMath = cleanOmml;
+        
+        console.log('[Export OMML] 生成的 Word XML:', {
+          formulaId,
+          xmlPreview: wordXmlMath.substring(0, 150)
+        });
+        
+        // 暂时使用占位符文本，稍后通过后处理替换为真正的 OMML
+        const placeholderText = `__OMML_PLACEHOLDER_${formulaId}__`;
+        elements.push(new TextRun({ text: placeholderText }));
+        
+        console.log('[Export OMML] 使用占位符，稍后后处理替换:', placeholderText);
         processedFormulas++;
         
         console.log('[Export OMML] OMML 公式已添加', {
@@ -740,11 +789,12 @@ const processOmmlInText = (text, ommlResults) => {
       } catch (error) {
         console.error('[Export OMML] OMML 组件创建失败', {
           formulaId,
-          error: error.message
+          error: error.message,
+          ommlData: ommlResult.omml?.substring(0, 200)
         });
         
         // 失败时使用降级文本
-        const fallbackText = ommlResult.fallbackText || `[公式错误: ${formulaId}]`;
+        const fallbackText = ommlResult.latex || `[公式错误: ${formulaId}]`;
         elements.push(new TextRun({ text: fallbackText }));
       }
     } else {

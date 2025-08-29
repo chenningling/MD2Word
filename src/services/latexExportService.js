@@ -228,9 +228,15 @@ class LatexExportService {
       for (const formula of batch) {
         const cacheKey = `${formula.latex}_${formula.type}`;
         if (this.conversionCache.has(cacheKey)) {
+          const cachedResult = this.conversionCache.get(cacheKey);
           cachedResults.push({
             id: formula.id,
-            ...this.conversionCache.get(cacheKey)
+            success: cachedResult.success,
+            latex: cachedResult.latex || formula.latex,
+            omml: cachedResult.omml,
+            mathml: cachedResult.mathml,
+            isDisplayMode: cachedResult.isDisplayMode,
+            conversionTime: cachedResult.conversionTime
           });
           this.stats.cacheHits++;
         } else {
@@ -286,6 +292,8 @@ class LatexExportService {
                 success: result.success,
                 omml: result.omml,
                 mathml: result.mathml,
+                isDisplayMode: result.isDisplayMode,
+                latex: result.latex,
                 conversionTime: result.conversionTime
               });
             }
@@ -432,10 +440,23 @@ class LatexExportService {
     const sortedFormulas = [...formulas].sort((a, b) => b.startIndex - a.startIndex);
     
     for (const formula of sortedFormulas) {
-      // 查找对应的转换结果
+      // 查找对应的转换结果 - 改进匹配逻辑
       const conversionResult = Array.from(formulaMap.values())
-        .find(result => result.latex === formula.latex && 
-                       (result.isDisplayMode === (formula.type === FORMULA_TYPES.BLOCK)));
+        .find(result => {
+          const latexMatches = result.latex === formula.latex;
+          const typeMatches = result.isDisplayMode === (formula.type === FORMULA_TYPES.BLOCK);
+          
+          console.log(`[LaTeX Export] 匹配检查: ${formula.latex.substring(0, 20)} | LaTeX匹配: ${latexMatches} | 类型匹配: ${typeMatches} | result.isDisplayMode: ${result.isDisplayMode} | formula.type: ${formula.type}`);
+          
+          return latexMatches && typeMatches;
+        });
+      
+      console.log(`[LaTeX Export] 公式匹配结果:`, {
+        formula: formula.latex.substring(0, 30),
+        found: !!conversionResult,
+        success: conversionResult?.success,
+        availableResults: Array.from(formulaMap.values()).length
+      });
       
       if (conversionResult && conversionResult.success) {
         // 替换为 OMML 标记
@@ -457,6 +478,20 @@ class LatexExportService {
         processedText = beforeText + fallbackText + afterText;
         
         console.warn(`[LaTeX Export] 公式转换失败，使用降级文本: ${formula.latex.substring(0, 30)} → ${fallbackText}`);
+        console.warn(`[LaTeX Export] 调试信息:`, {
+          conversionResult: conversionResult ? {
+            id: conversionResult.id,
+            success: conversionResult.success,
+            isDisplayMode: conversionResult.isDisplayMode,
+            hasOmml: !!conversionResult.omml
+          } : null,
+          formula: {
+            latex: formula.latex,
+            type: formula.type,
+            expectedDisplayMode: formula.type === FORMULA_TYPES.BLOCK
+          },
+          availableResultsCount: Array.from(formulaMap.values()).length
+        });
       }
     }
     

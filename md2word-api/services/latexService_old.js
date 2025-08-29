@@ -8,6 +8,9 @@ const mjAPI = require("mathjax-node");
 const fs = require('fs');
 const path = require('path');
 
+// 导入 XSLT 处理器（使用 Saxon-JS）
+const SaxonJS = require('saxon-js');
+
 // LaTeX 转换服务类
 class LatexConversionService {
   constructor() {
@@ -223,6 +226,11 @@ class LatexConversionService {
     try {
       console.log('[LaTeX Service] 开始 MathML → OMML 转换');
       
+      // 读取 XSL 文件
+      const xslContent = fs.readFileSync(this.xslPath, 'utf8');
+      
+      // 使用简单的字符串处理方式实现基础转换
+      // 因为 saxon-js 在 Node.js 环境中可能有兼容性问题
       const ommlResult = this.simpleMathmlToOmml(mathml);
       
       if (ommlResult) {
@@ -245,110 +253,101 @@ class LatexConversionService {
   }
 
   /**
-   * 简化的 MathML 到 OMML 转换（重写版本）
+   * 简化的 MathML 到 OMML 转换（基础实现）
    * @param {string} mathml - MathML 字符串
    * @returns {string|null} OMML 字符串
    */
   simpleMathmlToOmml(mathml) {
     try {
-      console.log('[LaTeX Service] 开始 MathML → OMML 转换');
+      console.log('[LaTeX Service] 使用简化 MathML → OMML 转换');
       
-      // 移除 math 根标签和属性，规范化空白字符
+      // 移除 MathML 的命名空间声明和根标签，提取内容
       let content = mathml
         .replace(/<math[^>]*>/g, '')
         .replace(/<\/math>/g, '')
-        .replace(/\s+/g, ' ')
+        .replace(/xmlns[^=]*="[^"]*"/g, '')
         .trim();
       
-      console.log('[LaTeX Service] 预处理后的内容:', content);
+      // 改进的 MathML 元素到 OMML 的映射，按优先级排序
+      const mappings = [
+        // 分数 - 先处理复杂结构
+        [/<mfrac><mrow>(.*?)<\/mrow><mrow>(.*?)<\/mrow><\/mfrac>/g, '<m:f><m:num>$1</m:num><m:den>$2</m:den></m:f>'],
+        [/<mfrac>([^<>]*)<\/mfrac>/g, '<m:f><m:num>$1</m:num><m:den></m:den></m:f>'],
+        
+        // 上标 - 按复杂度排序，先处理具体情况
+        [/<msup><mrow>(.*?)<\/mrow><mrow>(.*?)<\/mrow><\/msup>/g, '<m:sSup><m:e>$1</m:e><m:sup>$2</m:sup></m:sSup>'],
+        [/<msup><mi>([^<]*)<\/mi><mn>([^<]*)<\/mn><\/msup>/g, '<m:sSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sup><m:r><m:t>$2</m:t></m:r></m:sup></m:sSup>'],
+        [/<msup><mi>([^<]*)<\/mi><mrow>(.*?)<\/mrow><\/msup>/g, '<m:sSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sup>$2</m:sup></m:sSup>'],
+        [/<msup><mrow>(.*?)<\/mrow><mn>([^<]*)<\/mn><\/msup>/g, '<m:sSup><m:e>$1</m:e><m:sup><m:r><m:t>$2</m:t></m:r></m:sup></m:sSup>'],
+        
+        // 下标 - 按复杂度排序
+        [/<msub><mrow>(.*?)<\/mrow><mrow>(.*?)<\/mrow><\/msub>/g, '<m:sSub><m:e>$1</m:e><m:sub>$2</m:sub></m:sSub>'],
+        [/<msub><mi>([^<]*)<\/mi><mn>([^<]*)<\/mn><\/msub>/g, '<m:sSub><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub><m:r><m:t>$2</m:t></m:r></m:sub></m:sSub>'],
+        [/<msub><mi>([^<]*)<\/mi><mrow>(.*?)<\/mrow><\/msub>/g, '<m:sSub><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub>$2</m:sub></m:sSub>'],
+        
+        // 上下标
+        [/<msubsup><mrow>(.*?)<\/mrow><mrow>(.*?)<\/mrow><mrow>(.*?)<\/mrow><\/msubsup>/g, '<m:sSubSup><m:e>$1</m:e><m:sub>$2</m:sub><m:sup>$3</m:sup></m:sSubSup>'],
+        [/<msubsup><mi>([^<]*)<\/mi><mrow>(.*?)<\/mrow><mrow>(.*?)<\/mrow><\/msubsup>/g, '<m:sSubSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub>$2</m:sub><m:sup>$3</m:sup></m:sSubSup>'],
+        
+        // 根号
+        [/<msqrt>(.*?)<\/msqrt>/g, '<m:rad><m:deg></m:deg><m:e>$1</m:e></m:rad>'],
+        [/<mroot><mrow>(.*?)<\/mrow><mrow>(.*?)<\/mrow><\/mroot>/g, '<m:rad><m:deg>$2</m:deg><m:e>$1</m:e></m:rad>'],
+        
+        // 积分符号和特殊符号
+        [/<mo>∫<\/mo>/g, '<m:r><m:t>∫</m:t></m:r>'],
+        [/<mo>∑<\/mo>/g, '<m:r><m:t>∑</m:t></m:r>'],
+        [/<mo>∏<\/mo>/g, '<m:r><m:t>∏</m:t></m:r>'],
+        [/<mo>∂<\/mo>/g, '<m:r><m:t>∂</m:t></m:r>'],
+        [/<mo>∇<\/mo>/g, '<m:r><m:t>∇</m:t></m:r>'],
+        
+        // 括号和分隔符
+        [/<mo>\(<\/mo>/g, '<m:r><m:t>(</m:t></m:r>'],
+        [/<mo>\)<\/mo>/g, '<m:r><m:t>)</m:t></m:r>'],
+        [/<mo>\[<\/mo>/g, '<m:r><m:t>[</m:t></m:r>'],
+        [/<mo>\]<\/mo>/g, '<m:r><m:t>]</m:t></m:r>'],
+        [/<mo>\{<\/mo>/g, '<m:r><m:t>{</m:t></m:r>'],
+        [/<mo>\}<\/mo>/g, '<m:r><m:t>}</m:t></m:r>'],
+        
+        // 基础元素 - 必须在上标/下标处理之后
+        [/<mi>([^<]*)<\/mi>/g, '<m:r><m:t>$1</m:t></m:r>'],
+        [/<mn>([^<]*)<\/mn>/g, '<m:r><m:t>$1</m:t></m:r>'],
+        [/<mo>([^<]*)<\/mo>/g, '<m:r><m:t>$1</m:t></m:r>'],
+        [/<mtext>([^<]*)<\/mtext>/g, '<m:r><m:t>$1</m:t></m:r>'],
+        
+        // 行和组 - 需要在最后处理
+        [/<mrow>(.*?)<\/mrow>/g, '$1'],
+        [/<mstyle[^>]*>(.*?)<\/mstyle>/g, '$1']
+      ];
       
-      // 多轮转换，确保所有嵌套结构都被处理
-      for (let iteration = 0; iteration < 3; iteration++) {
-        const beforeContent = content;
+      // 首先预处理，将空白字符规范化
+      ommlContent = content.replace(/\s+/g, ' ').trim();
+      
+      console.log('[LaTeX Service] 开始转换，原始内容:', ommlContent);
+      
+      // 逐步应用转换规则，每次转换后检查结果
+      for (let i = 0; i < mappings.length; i++) {
+        const [pattern, replacement] = mappings[i];
+        const beforeLength = ommlContent.length;
+        ommlContent = ommlContent.replace(pattern, replacement);
         
-        console.log(`[LaTeX Service] 转换轮次 ${iteration + 1}，内容长度: ${content.length}`);
-        
-        // 1. 处理积分符号（使用 nary 结构）
-        content = content.replace(/<msubsup>\s*<mo[^>]*>&#x222B;.*?<\/mo>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<\/msubsup>/g,
-          '<m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>$1</m:t></m:r></m:sub><m:sup><m:r><m:t>$2</m:t></m:r></m:sup><m:e/></m:nary>');
-        
-        // 处理求和符号（使用 nary 结构）
-        content = content.replace(/<msubsup>\s*<mo[^>]*>&#x2211;[^<]*<\/mo>\s*<mi>([^<]*)<\/mi>\s*<mi>([^<]*)<\/mi>\s*<\/msubsup>/g,
-          '<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>$1</m:t></m:r></m:sub><m:sup><m:r><m:t>$2</m:t></m:r></m:sup><m:e/></m:nary>');
-        
-        // 处理其他上下标组合
-        content = content.replace(/<msubsup>\s*<mo[^>]*>([^<]*)<\/mo>\s*<mi>([^<]*)<\/mi>\s*<mi>([^<]*)<\/mi>\s*<\/msubsup>/g,
-          '<m:sSubSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub><m:r><m:t>$2</m:t></m:r></m:sub><m:sup><m:r><m:t>$3</m:t></m:r></m:sup></m:sSubSup>');
-        
-        // 注意：清理标签的逻辑移到转换后
-        
-        // 2. 处理上标（支持多行格式）
-        content = content.replace(/<msup>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mn>\s*([^<]*)\s*<\/mn>\s*<\/msup>/g, 
-          '<m:sSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sup><m:r><m:t>$2</m:t></m:r></m:sup></m:sSup>');
-        
-        // 3. 处理下标
-        content = content.replace(/<msub>\s*<mi>([^<]*)<\/mi>\s*<mn>([^<]*)<\/mn>\s*<\/msub>/g,
-          '<m:sSub><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub><m:r><m:t>$2</m:t></m:r></m:sub></m:sSub>');
-        
-        // 4. 处理分数
-        content = content.replace(/<mfrac>\s*<mrow>([^<]*)<\/mrow>\s*<mrow>([^<]*)<\/mrow>\s*<\/mfrac>/g,
-          '<m:f><m:num>$1</m:num><m:den>$2</m:den></m:f>');
-        content = content.replace(/<mfrac>\s*<mi>([^<]*)<\/mi>\s*<mn>([^<]*)<\/mn>\s*<\/mfrac>/g,
-          '<m:f><m:num><m:r><m:t>$1</m:t></m:r></m:num><m:den><m:r><m:t>$2</m:t></m:r></m:den></m:f>');
-        
-        // 5. 处理根号
-        content = content.replace(/<msqrt>(.*?)<\/msqrt>/g, '<m:rad><m:deg></m:deg><m:e>$1</m:e></m:rad>');
-        
-        // 6. 处理特殊符号（包括 Unicode 编码）
-        content = content.replace(/<mo>&#x222B;.*?<\/mo>/g, '<m:r><m:t>∫</m:t></m:r>');
-        content = content.replace(/<mo>&#x2212;.*?<\/mo>/g, '<m:r><m:t>−</m:t></m:r>');
-        content = content.replace(/<mo>∫<\/mo>/g, '<m:r><m:t>∫</m:t></m:r>');
-        content = content.replace(/<mo>∑<\/mo>/g, '<m:r><m:t>∑</m:t></m:r>');
-        content = content.replace(/<mo>∂<\/mo>/g, '<m:r><m:t>∂</m:t></m:r>');
-        content = content.replace(/<mo>∇<\/mo>/g, '<m:r><m:t>∇</m:t></m:r>');
-        
-        // 7. 处理括号（包括 stretchy 属性）
-        content = content.replace(/<mo[^>]*>\(<\/mo>/g, '<m:r><m:t>(</m:t></m:r>');
-        content = content.replace(/<mo[^>]*>\)<\/mo>/g, '<m:r><m:t>)</m:t></m:r>');
-        
-        // 8. 处理基础元素
-        content = content.replace(/<mi>([^<]*)<\/mi>/g, '<m:r><m:t>$1</m:t></m:r>');
-        content = content.replace(/<mn>([^<]*)<\/mn>/g, '<m:r><m:t>$1</m:t></m:r>');
-        content = content.replace(/<mo>([^<]*)<\/mo>/g, '<m:r><m:t>$1</m:t></m:r>');
-        content = content.replace(/<mtext>([^<]*)<\/mtext>/g, '<m:r><m:t>$1</m:t></m:r>');
-        
-        // 9. 移除包装标签
-        content = content.replace(/<mrow>(.*?)<\/mrow>/g, '$1');
-        content = content.replace(/<mstyle[^>]*>(.*?)<\/mstyle>/g, '$1');
-        
-        // 如果没有变化，退出循环
-        if (content === beforeContent) {
-          console.log(`[LaTeX Service] 转换在第 ${iteration + 1} 轮完成，无更多变化`);
-          break;
+        if (ommlContent.length !== beforeLength) {
+          console.log(`[LaTeX Service] 应用规则 ${i + 1}: ${pattern.toString().substring(0, 50)}...`);
+          console.log(`[LaTeX Service] 转换后: ${ommlContent.substring(0, 100)}...`);
         }
       }
       
-      // 最终清理：移除任何残留的 MathML 标签
-      content = content
-        .replace(/<\/?msubsup[^>]*>/g, '') // 移除残留的 msubsup 标签
-        .replace(/<\/?msup[^>]*>/g, '') // 移除残留的 msup 标签
-        .replace(/<\/?msub[^>]*>/g, '') // 移除残留的 msub 标签
-        .replace(/<!--.*?-->/g, '') // 移除注释
-        .replace(/\s+/g, ' ') // 压缩空白
+      console.log('[LaTeX Service] 所有规则应用完成');
+      
+      // 清理任何残留的 MathML 标签和多余空白
+      ommlContent = ommlContent
+        .replace(/<\/?m[a-z]+[^>]*>/g, '') // 移除任何残留的 MathML 标签
+        .replace(/\s+/g, ' ') // 压缩空白字符
         .trim();
       
-      console.log('[LaTeX Service] 转换后的内容:', content);
-      
-      // 检查转换结果
-      if (!content || !content.includes('<m:')) {
-        console.warn('[LaTeX Service] 转换结果无效，没有生成有效的 OMML');
-        return null;
-      }
-      
       // 包装在 OMML 根元素中
-      const omml = `<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">${content}</m:oMath>`;
+      const omml = `<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">${ommlContent}</m:oMath>`;
       
-      console.log('[LaTeX Service] OMML 转换完成', {
+      console.log('[LaTeX Service] 简化转换完成', {
         mathmlLength: mathml.length,
         ommlLength: omml.length,
         ommlPreview: omml.substring(0, 200)

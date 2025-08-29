@@ -262,80 +262,42 @@ class LatexConversionService {
       
       console.log('[LaTeX Service] 预处理后的内容:', content);
       
-      // 多轮转换，确保所有嵌套结构都被处理
-      for (let iteration = 0; iteration < 3; iteration++) {
-        const beforeContent = content;
-        
-        console.log(`[LaTeX Service] 转换轮次 ${iteration + 1}，内容长度: ${content.length}`);
-        
-        // 1. 处理积分符号（使用 nary 结构）
-        content = content.replace(/<msubsup>\s*<mo[^>]*>&#x222B;.*?<\/mo>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<\/msubsup>/g,
-          '<m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>$1</m:t></m:r></m:sub><m:sup><m:r><m:t>$2</m:t></m:r></m:sup><m:e/></m:nary>');
-        
-        // 处理求和符号（使用 nary 结构）
-        content = content.replace(/<msubsup>\s*<mo[^>]*>&#x2211;[^<]*<\/mo>\s*<mi>([^<]*)<\/mi>\s*<mi>([^<]*)<\/mi>\s*<\/msubsup>/g,
-          '<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>$1</m:t></m:r></m:sub><m:sup><m:r><m:t>$2</m:t></m:r></m:sup><m:e/></m:nary>');
-        
-        // 处理其他上下标组合
-        content = content.replace(/<msubsup>\s*<mo[^>]*>([^<]*)<\/mo>\s*<mi>([^<]*)<\/mi>\s*<mi>([^<]*)<\/mi>\s*<\/msubsup>/g,
-          '<m:sSubSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub><m:r><m:t>$2</m:t></m:r></m:sub><m:sup><m:r><m:t>$3</m:t></m:r></m:sup></m:sSubSup>');
-        
-        // 注意：清理标签的逻辑移到转换后
-        
-        // 2. 处理上标（支持多行格式）
-        content = content.replace(/<msup>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mn>\s*([^<]*)\s*<\/mn>\s*<\/msup>/g, 
-          '<m:sSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sup><m:r><m:t>$2</m:t></m:r></m:sup></m:sSup>');
-        
-        // 3. 处理下标
-        content = content.replace(/<msub>\s*<mi>([^<]*)<\/mi>\s*<mn>([^<]*)<\/mn>\s*<\/msub>/g,
-          '<m:sSub><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub><m:r><m:t>$2</m:t></m:r></m:sub></m:sSub>');
-        
-        // 4. 处理分数
-        content = content.replace(/<mfrac>\s*<mrow>([^<]*)<\/mrow>\s*<mrow>([^<]*)<\/mrow>\s*<\/mfrac>/g,
-          '<m:f><m:num>$1</m:num><m:den>$2</m:den></m:f>');
-        content = content.replace(/<mfrac>\s*<mi>([^<]*)<\/mi>\s*<mn>([^<]*)<\/mn>\s*<\/mfrac>/g,
-          '<m:f><m:num><m:r><m:t>$1</m:t></m:r></m:num><m:den><m:r><m:t>$2</m:t></m:r></m:den></m:f>');
-        
-        // 5. 处理根号
-        content = content.replace(/<msqrt>(.*?)<\/msqrt>/g, '<m:rad><m:deg></m:deg><m:e>$1</m:e></m:rad>');
-        
-        // 6. 处理特殊符号（包括 Unicode 编码）
-        content = content.replace(/<mo>&#x222B;.*?<\/mo>/g, '<m:r><m:t>∫</m:t></m:r>');
-        content = content.replace(/<mo>&#x2212;.*?<\/mo>/g, '<m:r><m:t>−</m:t></m:r>');
-        content = content.replace(/<mo>∫<\/mo>/g, '<m:r><m:t>∫</m:t></m:r>');
-        content = content.replace(/<mo>∑<\/mo>/g, '<m:r><m:t>∑</m:t></m:r>');
-        content = content.replace(/<mo>∂<\/mo>/g, '<m:r><m:t>∂</m:t></m:r>');
-        content = content.replace(/<mo>∇<\/mo>/g, '<m:r><m:t>∇</m:t></m:r>');
-        
-        // 7. 处理括号（包括 stretchy 属性）
-        content = content.replace(/<mo[^>]*>\(<\/mo>/g, '<m:r><m:t>(</m:t></m:r>');
-        content = content.replace(/<mo[^>]*>\)<\/mo>/g, '<m:r><m:t>)</m:t></m:r>');
-        
-        // 8. 处理基础元素
-        content = content.replace(/<mi>([^<]*)<\/mi>/g, '<m:r><m:t>$1</m:t></m:r>');
-        content = content.replace(/<mn>([^<]*)<\/mn>/g, '<m:r><m:t>$1</m:t></m:r>');
-        content = content.replace(/<mo>([^<]*)<\/mo>/g, '<m:r><m:t>$1</m:t></m:r>');
-        content = content.replace(/<mtext>([^<]*)<\/mtext>/g, '<m:r><m:t>$1</m:t></m:r>');
-        
-        // 9. 移除包装标签
-        content = content.replace(/<mrow>(.*?)<\/mrow>/g, '$1');
-        content = content.replace(/<mstyle[^>]*>(.*?)<\/mstyle>/g, '$1');
-        
-        // 如果没有变化，退出循环
-        if (content === beforeContent) {
-          console.log(`[LaTeX Service] 转换在第 ${iteration + 1} 轮完成，无更多变化`);
-          break;
-        }
-      }
+      // 按顺序转换 MathML 元素到 OMML
+      // 1. 先处理上标（最重要的修复）
+      content = content.replace(/<msup>\s*<mi>([^<]*)<\/mi>\s*<mn>([^<]*)<\/mn>\s*<\/msup>/g, 
+        '<m:sSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sup><m:r><m:t>$2</m:t></m:r></m:sup></m:sSup>');
       
-      // 最终清理：移除任何残留的 MathML 标签
-      content = content
-        .replace(/<\/?msubsup[^>]*>/g, '') // 移除残留的 msubsup 标签
-        .replace(/<\/?msup[^>]*>/g, '') // 移除残留的 msup 标签
-        .replace(/<\/?msub[^>]*>/g, '') // 移除残留的 msub 标签
-        .replace(/<!--.*?-->/g, '') // 移除注释
-        .replace(/\s+/g, ' ') // 压缩空白
-        .trim();
+      // 2. 处理下标
+      content = content.replace(/<msub>\s*<mi>([^<]*)<\/mi>\s*<mn>([^<]*)<\/mn>\s*<\/msub>/g,
+        '<m:sSub><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub><m:r><m:t>$2</m:t></m:r></m:sub></m:sSub>');
+      
+      // 3. 处理分数
+      content = content.replace(/<mfrac>\s*<mrow>([^<]*)<\/mrow>\s*<mrow>([^<]*)<\/mrow>\s*<\/mfrac>/g,
+        '<m:f><m:num>$1</m:num><m:den>$2</m:den></m:f>');
+      content = content.replace(/<mfrac>\s*<mi>([^<]*)<\/mi>\s*<mn>([^<]*)<\/mn>\s*<\/mfrac>/g,
+        '<m:f><m:num><m:r><m:t>$1</m:t></m:r></m:num><m:den><m:r><m:t>$2</m:t></m:r></m:den></m:f>');
+      
+      // 4. 处理根号
+      content = content.replace(/<msqrt>(.*?)<\/msqrt>/g, '<m:rad><m:deg></m:deg><m:e>$1</m:e></m:rad>');
+      
+      // 5. 处理积分等特殊符号
+      content = content.replace(/<mo>∫<\/mo>/g, '<m:r><m:t>∫</m:t></m:r>');
+      content = content.replace(/<mo>∑<\/mo>/g, '<m:r><m:t>∑</m:t></m:r>');
+      content = content.replace(/<mo>∂<\/mo>/g, '<m:r><m:t>∂</m:t></m:r>');
+      content = content.replace(/<mo>∇<\/mo>/g, '<m:r><m:t>∇</m:t></m:r>');
+      
+      // 6. 处理基础元素
+      content = content.replace(/<mi>([^<]*)<\/mi>/g, '<m:r><m:t>$1</m:t></m:r>');
+      content = content.replace(/<mn>([^<]*)<\/mn>/g, '<m:r><m:t>$1</m:t></m:r>');
+      content = content.replace(/<mo>([^<]*)<\/mo>/g, '<m:r><m:t>$1</m:t></m:r>');
+      content = content.replace(/<mtext>([^<]*)<\/mtext>/g, '<m:r><m:t>$1</m:t></m:r>');
+      
+      // 7. 移除包装标签
+      content = content.replace(/<mrow>(.*?)<\/mrow>/g, '$1');
+      content = content.replace(/<mstyle[^>]*>(.*?)<\/mstyle>/g, '$1');
+      
+      // 8. 清理空白字符
+      content = content.replace(/\s+/g, ' ').trim();
       
       console.log('[LaTeX Service] 转换后的内容:', content);
       
