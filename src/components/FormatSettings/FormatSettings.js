@@ -118,7 +118,7 @@ const templates = [
   { id: 'default', name: '默认样式' },
   { id: 'academic', name: '研究论文' },
   { id: 'legal', name: '法律文书' },
-  { id: 'business', name: '企业公文' },
+  { id: 'business', name: '单位公文' },
 ];
 
 // 字体列表迁移至字体工具

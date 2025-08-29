@@ -84,12 +84,12 @@ const predefinedTemplates = {
   business: {
     template: 'business',
     content: {
-      heading1: { fontFamily: '小标宋体', fontSize: 22, bold: true, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'center', spacingBefore: 12, spacingAfter: 8 },
-      heading2: { fontFamily: '黑体', fontSize: 16, bold: true, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left', spacingBefore: 10, spacingAfter: 6 },
-      heading3: { fontFamily: '黑体', fontSize: 16, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left', spacingBefore: 8, spacingAfter: 6 },
-      heading4: { fontFamily: '黑体', fontSize: 14, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left', spacingBefore: 6, spacingAfter: 4 },
-      paragraph: { fontFamily: '仿宋', fontSize: 16, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left', firstLineIndent: 2, paragraphSpacing: 3 },
-      quote: { fontFamily: '楷体', fontSize: 16, bold: false, lineHeight: 1.5, lineHeightUnit: 'multiple', align: 'left' },
+      heading1: { fontFamily: '小标宋体', fontSize: 22, bold: false, lineHeight: 32, lineHeightUnit: 'pt', align: 'center', spacingBefore: 0, spacingAfter: 0 },
+      heading2: { fontFamily: '黑体', fontSize: 16, bold: false, lineHeight: 32, lineHeightUnit: 'pt', align: 'left', spacingBefore: 0, spacingAfter: 0 },
+      heading3: { fontFamily: '楷体GB2313', fontSize: 16, bold: false, lineHeight: 32, lineHeightUnit: 'pt', align: 'left', spacingBefore: 0, spacingAfter: 0 },
+      heading4: { fontFamily: '仿宋GB2312', fontSize: 14, bold: true, lineHeight: 32, lineHeightUnit: 'pt', align: 'left', spacingBefore: 0, spacingAfter: 0 },
+      paragraph: { fontFamily: '仿宋GB2312', fontSize: 16, bold: false, lineHeight: 28, lineHeightUnit: 'pt', align: 'justify', firstLineIndent: 2, paragraphSpacing: 0 },
+      quote: { fontFamily: '楷体', fontSize: 16, bold: false, lineHeight: 28, lineHeightUnit: 'pt', align: 'left' },
     },
     latin: {
       enabled: true,
@@ -98,8 +98,8 @@ const predefinedTemplates = {
     page: {
       margin: {
         top: 3.7,
-        right: 2.8,
-        bottom: 2.5,
+        right: 2.6,
+        bottom: 3.5,
         left: 2.8
       },
       size: 'A4'
