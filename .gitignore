@@ -35,3 +35,27 @@ md2word-api/some-auto-generated-folder/
 
 # 忽略所有 zip 格式的打包文件
 *.zip
+
+# 部署产物与打包目录
+/deploy-package/
+/打包文件/
+/md2word-deploy-fixed-20250829_141527/
+
+# 后端运行时与上传目录（不进版本库）
+md2word-api/uploads/
+uploads/
+
+
+# 临时与检查目录
+tmp-*/
+tmp-check/
+tmp-fixed-*/
+tmp-inspect*/
+tmp-user-file/
+tmp-user-fixed/
+tmp-wps/
+
+# 测试导出目录
+test-export*/
+test-export-full*/
+test-export-full-unzip/

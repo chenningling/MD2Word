@@ -529,9 +529,10 @@ const createWordDocument = (tokens, formatSettings) => {
                   indent: { left: convertInchesToTwip(0.5), hanging: convertInchesToTwip(0.25) }
                 },
                 run: {
-                  // 增大字体大小，使圆点更大
-                  size: 24, // 12pt字体大小的2倍
-                  bold: true // 加粗显示
+                  // 使用段落字体大小
+                  size: Math.round(content.paragraph.fontSize * 2),
+                  bold: true, // 加粗显示
+                  font: { name: content.paragraph.fontFamily }
                 }
               }
             },
@@ -545,8 +546,9 @@ const createWordDocument = (tokens, formatSettings) => {
                   indent: { left: convertInchesToTwip(1.0), hanging: convertInchesToTwip(0.25) }
                 },
                 run: {
-                  size: 20, // 比一级列表小一些，但不要太小
-                  bold: true
+                  size: Math.round(content.paragraph.fontSize * 2),
+                  bold: true,
+                  font: { name: content.paragraph.fontFamily }
                 }
               }
             },
@@ -560,8 +562,9 @@ const createWordDocument = (tokens, formatSettings) => {
                   indent: { left: convertInchesToTwip(1.5), hanging: convertInchesToTwip(0.25) }
                 },
                 run: {
-                  size: 18, // 比二级列表再小一些
-                  bold: true
+                  size: Math.round(content.paragraph.fontSize * 2),
+                  bold: true,
+                  font: { name: content.paragraph.fontFamily }
                 }
               }
             }
@@ -580,9 +583,10 @@ const createWordDocument = (tokens, formatSettings) => {
                   indent: { left: convertInchesToTwip(0.5), hanging: convertInchesToTwip(0.25) }
                 },
                 run: {
-                  // 增大字体大小，使数字更明显
-                  size: 22, // 11pt字体大小的2倍
-                  bold: true // 加粗显示
+                  // 数字标号使用段落字体大小和西文字体
+                  size: Math.round(content.paragraph.fontSize * 2),
+                  bold: content.paragraph.bold, // 跟随段落粗体设置
+                  font: { name: latinSettings.enabled ? (latinSettings.fontFamily || 'Times New Roman') : content.paragraph.fontFamily }
                 }
               }
             },
@@ -596,8 +600,9 @@ const createWordDocument = (tokens, formatSettings) => {
                   indent: { left: convertInchesToTwip(1.0), hanging: convertInchesToTwip(0.25) }
                 },
                 run: {
-                  size: 20, // 略小于一级列表
-                  bold: true
+                  size: Math.round(content.paragraph.fontSize * 2),
+                  bold: content.paragraph.bold,
+                  font: { name: latinSettings.enabled ? (latinSettings.fontFamily || 'Times New Roman') : content.paragraph.fontFamily }
                 }
               }
             },
@@ -611,8 +616,9 @@ const createWordDocument = (tokens, formatSettings) => {
                   indent: { left: convertInchesToTwip(1.5), hanging: convertInchesToTwip(0.25) }
                 },
                 run: {
-                  size: 18, // 略小于二级列表
-                  bold: true
+                  size: Math.round(content.paragraph.fontSize * 2),
+                  bold: content.paragraph.bold,
+                  font: { name: latinSettings.enabled ? (latinSettings.fontFamily || 'Times New Roman') : content.paragraph.fontFamily }
                 }
               }
             }
@@ -1255,67 +1261,75 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSetti
   tokens.forEach(token => {
     switch (token.type) {
       case 'strong':
-        textRuns.push(
-          new TextRun({
-            text: token.text,
-            bold: true,
-            font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2),
-            color: "000000", // 设置为黑色
-            italics: false // 确保不使用斜体
-          })
-        );
+        // 加粗文本也要应用西文字体设置
+        if (token.text) {
+          const runs = splitLatinRuns(token.text, settings, isHeading, latinSettings, { 
+            bold: true, 
+            italics: false 
+          });
+          textRuns.push(...runs);
+        }
         break;
       case 'em':
-        textRuns.push(
-          new TextRun({
-            text: token.text,
-            italics: true,
-            font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2),
-            color: "000000" // 设置为黑色
-          })
-        );
+        // 斜体文本也要应用西文字体设置
+        if (token.text) {
+          const runs = splitLatinRuns(token.text, settings, isHeading, latinSettings, { 
+            italics: true 
+          });
+          textRuns.push(...runs);
+        }
         break;
       case 'del':
-        textRuns.push(
-          new TextRun({
-            text: token.text,
-            strike: true,
-            font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2),
-            color: "000000" // 设置为黑色
-          })
-        );
+        // 删除线文本也要应用西文字体设置
+        if (token.text) {
+          const runs = splitLatinRuns(token.text, settings, isHeading, latinSettings, { 
+            strike: true, 
+            italics: false 
+          });
+          textRuns.push(...runs);
+        }
         break;
       case 'link':
-        textRuns.push(
-          new ExternalHyperlink({
-            children: [
-              new TextRun({
-                text: token.text,
-                style: "Hyperlink",
-                font: { name: settings.fontFamily },
-                size: Math.round(settings.fontSize * 2),
-                bold: isHeading ? settings.bold : undefined, // 如果是标题，应用粗体设置
-                italics: false // 确保不使用斜体
+        // 链接文本特殊处理：需要用ExternalHyperlink包装，但内部的TextRun要应用西文字体
+        if (token.text) {
+          const runs = splitLatinRuns(token.text, settings, isHeading, latinSettings, { 
+            style: "Hyperlink",
+            bold: isHeading ? settings.bold : undefined,
+            italics: false
+          });
+          
+          // 如果启用了西文字体且文本包含西文，创建多个超链接
+          if (runs.length > 1) {
+            runs.forEach(run => {
+              textRuns.push(
+                new ExternalHyperlink({
+                  children: [run],
+                  link: token.href
+                })
+              );
+            });
+          } else {
+            textRuns.push(
+              new ExternalHyperlink({
+                children: runs,
+                link: token.href
               })
-            ],
-            link: token.href
-          })
-        );
+            );
+          }
+        }
         break;
       case 'codespan':
+        // 行内代码不应用西文字体设置，保持等宽字体
         textRuns.push(
           new TextRun({
             text: token.text,
             font: { name: 'Courier New' },
             size: Math.round(settings.fontSize * 2),
-            color: "000000", // 设置为黑色
+            color: "000000",
             shading: { 
-              fill: "F0F0F0" // 浅灰色背景
+              fill: "F0F0F0"
             },
-            italics: false // 确保不使用斜体
+            italics: false
           })
         );
         break;
@@ -1348,61 +1362,69 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSetti
 };
 
 // 将一段文本按西文/数字与非西文拆分为多个 TextRun
-const splitLatinRuns = (text, settings, isHeading, latinSettings) => {
+const splitLatinRuns = (text, settings, isHeading, latinSettings, additionalStyles = {}) => {
   const result = [];
   const enableLatin = latinSettings && latinSettings.enabled;
+  
+  // 基础样式设置
+  const baseStyle = {
+    font: { name: settings.fontFamily },
+    size: Math.round(settings.fontSize * 2),
+    bold: isHeading ? settings.bold : settings.bold,
+    color: "000000",
+    italics: false,
+    ...additionalStyles
+  };
+  
   if (!enableLatin) {
     result.push(new TextRun({
       text,
-      font: { name: settings.fontFamily },
-      size: Math.round(settings.fontSize * 2),
-      bold: isHeading ? settings.bold : settings.bold,
-      color: "000000",
-      italics: false
+      ...baseStyle
     }));
     return result;
   }
-  const regex = /[A-Za-z0-9]+/g;
+  
+  // 优化正则表达式，确保能正确匹配所有西文字符、数字和常见符号
+  const regex = /[A-Za-z0-9@._\-]+/g;
   let lastIndex = 0;
   let m;
+  
   while ((m = regex.exec(text)) !== null) {
+    // 添加西文字符前的中文内容
     if (m.index > lastIndex) {
       const chunk = text.slice(lastIndex, m.index);
       if (chunk) {
         result.push(new TextRun({
           text: chunk,
-          font: { name: settings.fontFamily },
-          size: Math.round(settings.fontSize * 2),
-          bold: isHeading ? settings.bold : settings.bold,
-          color: "000000",
-          italics: false
+          ...baseStyle
         }));
       }
     }
+    
+    // 添加西文字符，使用西文字体
     const latinChunk = m[0];
-    result.push(new TextRun({
-      text: latinChunk,
-      font: { name: latinSettings.fontFamily || 'Times New Roman' },
-      size: Math.round(settings.fontSize * 2),
-      bold: isHeading ? settings.bold : settings.bold,
-      color: "000000",
-      italics: false
-    }));
+    if (latinChunk) {
+      result.push(new TextRun({
+        text: latinChunk,
+        ...baseStyle,
+        font: { name: latinSettings.fontFamily || 'Times New Roman' }
+      }));
+    }
+    
     lastIndex = m.index + m[0].length;
   }
+  
+  // 添加剩余的中文内容
   if (lastIndex < text.length) {
     const tail = text.slice(lastIndex);
     if (tail) {
       result.push(new TextRun({
         text: tail,
-        font: { name: settings.fontFamily },
-        size: Math.round(settings.fontSize * 2),
-        bold: isHeading ? settings.bold : settings.bold,
-        color: "000000",
-        italics: false
+        ...baseStyle
       }));
     }
   }
+  
   return result;
 };
 
@@ -1505,69 +1527,77 @@ const parseInlineTokens = (text, settings, isHeading = false, latinSettings) => 
   segments.forEach(segment => {
     switch (segment.type) {
       case 'bold':
-        textRuns.push(
-          new TextRun({
-            text: segment.text,
-            bold: true,
-            font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2),
-            color: "000000", // 设置为黑色
-            italics: false // 确保不使用斜体
-          })
-        );
+        // 加粗文本也要应用西文字体设置
+        if (segment.text.trim()) {
+          const runs = splitLatinRuns(segment.text, settings, isHeading, latinSettings, { 
+            bold: true, 
+            italics: false 
+          });
+          textRuns.push(...runs);
+        }
         break;
       case 'italic':
-        textRuns.push(
-          new TextRun({
-            text: segment.text,
-            italics: true,
-            font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2),
-            color: "000000" // 设置为黑色
-          })
-        );
+        // 斜体文本也要应用西文字体设置
+        if (segment.text.trim()) {
+          const runs = splitLatinRuns(segment.text, settings, isHeading, latinSettings, { 
+            italics: true 
+          });
+          textRuns.push(...runs);
+        }
         break;
       case 'strike':
-        textRuns.push(
-          new TextRun({
-            text: segment.text,
-            strike: true,
-            font: { name: settings.fontFamily },
-            size: Math.round(settings.fontSize * 2),
-            color: "000000" // 设置为黑色
-          })
-        );
+        // 删除线文本也要应用西文字体设置
+        if (segment.text.trim()) {
+          const runs = splitLatinRuns(segment.text, settings, isHeading, latinSettings, { 
+            strike: true, 
+            italics: false 
+          });
+          textRuns.push(...runs);
+        }
         break;
       case 'code':
+        // 行内代码不应用西文字体设置，保持等宽字体
         textRuns.push(
           new TextRun({
             text: segment.text,
             font: { name: 'Courier New' },
             size: Math.round(settings.fontSize * 2),
-            color: "000000", // 设置为黑色
+            color: "000000",
             shading: { 
-              fill: "F0F0F0" // 浅灰色背景
+              fill: "F0F0F0"
             },
-            italics: false // 确保不使用斜体
+            italics: false
           })
         );
         break;
       case 'link':
-        textRuns.push(
-          new ExternalHyperlink({
-            children: [
-              new TextRun({
-                text: segment.text,
-                style: "Hyperlink",
-                font: { name: settings.fontFamily },
-                size: Math.round(settings.fontSize * 2),
-                bold: isHeading ? settings.bold : undefined, // 如果是标题，应用粗体设置
-                italics: false // 确保不使用斜体
+        // 链接文本特殊处理：需要用ExternalHyperlink包装，但内部的TextRun要应用西文字体
+        if (segment.text.trim()) {
+          const runs = splitLatinRuns(segment.text, settings, isHeading, latinSettings, { 
+            style: "Hyperlink",
+            bold: isHeading ? settings.bold : undefined,
+            italics: false
+          });
+          
+          // 如果启用了西文字体且文本包含西文，创建多个超链接
+          if (runs.length > 1) {
+            runs.forEach(run => {
+              textRuns.push(
+                new ExternalHyperlink({
+                  children: [run],
+                  link: segment.url
+                })
+              );
+            });
+          } else {
+            textRuns.push(
+              new ExternalHyperlink({
+                children: runs,
+                link: segment.url
               })
-            ],
-            link: segment.url
-          })
-        );
+            );
+          }
+        }
         break;
       case 'normal':
       default:

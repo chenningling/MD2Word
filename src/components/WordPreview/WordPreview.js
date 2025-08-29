@@ -490,7 +490,7 @@ const WordPreview = () => {
               return NodeFilter.FILTER_ACCEPT;
             }
           });
-          const latinRegex = /[A-Za-z0-9]+/g;
+          const latinRegex = /[A-Za-z0-9@._\-]+/g;
           const textNodes = [];
           let n;
           while ((n = walker.nextNode())) textNodes.push(n);
@@ -501,22 +501,31 @@ const WordPreview = () => {
             let lastIndex = 0;
             let m;
             while ((m = latinRegex.exec(text)) !== null) {
-              if (m.index > lastIndex) parts.push({ t: text.slice(lastIndex, m.index), latin: false });
-              parts.push({ t: m[0], latin: true });
+              if (m.index > lastIndex) {
+                const chunk = text.slice(lastIndex, m.index);
+                if (chunk) parts.push({ t: chunk, latin: false });
+              }
+              // 确保西文内容不为空
+              if (m[0]) parts.push({ t: m[0], latin: true });
               lastIndex = m.index + m[0].length;
             }
-            if (lastIndex < text.length) parts.push({ t: text.slice(lastIndex), latin: false });
+            if (lastIndex < text.length) {
+              const tail = text.slice(lastIndex);
+              if (tail) parts.push({ t: tail, latin: false });
+            }
             if (parts.length <= 1) return;
             const frag = document.createDocumentFragment();
             parts.forEach(p => {
-              if (!p.t) return;
-              if (p.latin) {
-                const span = document.createElement('span');
-                span.className = 'latin-run';
-                span.textContent = p.t;
-                frag.appendChild(span);
-              } else {
-                frag.appendChild(document.createTextNode(p.t));
+              // 移除空字符串检查，确保数字0不被过滤
+              if (p.t !== undefined && p.t !== null) {
+                if (p.latin) {
+                  const span = document.createElement('span');
+                  span.className = 'latin-run';
+                  span.textContent = p.t;
+                  frag.appendChild(span);
+                } else {
+                  frag.appendChild(document.createTextNode(p.t));
+                }
               }
             });
             node.parentNode && node.parentNode.replaceChild(frag, node);
