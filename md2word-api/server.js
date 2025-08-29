@@ -6,6 +6,9 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./config');
 
+// 导入 LaTeX 转换路由
+const formulaRoutes = require('./routes/formula');
+
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 const port = config.port || 3001;
@@ -77,6 +80,9 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
+
+// LaTeX 公式转换路由
+app.use('/api/formula', formulaRoutes);
 
 app.listen(port, () => {
   console.log(`服务运行在端口 ${port}`);

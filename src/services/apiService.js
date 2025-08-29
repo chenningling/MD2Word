@@ -2,6 +2,11 @@
  * API服务 - 处理与后端API的交互
  */
 
+// API基础路径配置
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '' // 生产环境使用相对路径
+  : 'http://localhost:3001'; // 开发环境指向后端端口
+
 /**
  * 上传图片到服务器
  * @param {File|Blob} file - 文件对象
@@ -12,7 +17,7 @@ export const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
     
-    const response = await fetch('/api/upload', {
+    const response = await fetch(`${API_BASE_URL}/api/upload`, {
       method: 'POST',
       body: formData,
     });
@@ -36,7 +41,7 @@ export const uploadImage = async (file) => {
  */
 export const checkApiHealth = async () => {
   try {
-    const response = await fetch('/api/health');
+    const response = await fetch(`${API_BASE_URL}/api/health`);
     if (!response.ok) return false;
     
     const data = await response.json();

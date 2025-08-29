@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver';
 import { marked } from 'marked';
 import { dataUriToUint8Array, downloadImage, isImageUrl } from '../utils/imageUtils';
 import axios from 'axios';
+import { processLatexForExport, getLatexExportStats } from './latexExportService';
 
 // 计算首行缩进的辅助函数
 const calculateFirstLineIndent = (settings) => {
@@ -81,8 +82,20 @@ export const exportToWord = async (markdown, formatSettings) => {
     console.log('格式设置:', formatSettings);
 
     // 解析Markdown为tokens
-    const tokens = marked.lexer(markdown);
-    console.log('解析的Markdown tokens:', tokens);
+    const originalTokens = marked.lexer(markdown);
+    console.log('解析的Markdown tokens:', originalTokens);
+    
+    // 处理 LaTeX 公式
+    console.log('[Export] 开始处理 LaTeX 公式...');
+    const latexProcessResult = await processLatexForExport(markdown, originalTokens);
+    
+    const tokens = latexProcessResult.tokens;
+    console.log('[Export] LaTeX 处理完成:', {
+      hasFormulas: latexProcessResult.hasFormulas,
+      formulaCount: latexProcessResult.formulas?.length || 0,
+      conversionTime: latexProcessResult.conversionTime,
+      fallbackMode: latexProcessResult.fallbackMode || false
+    });
     
     // 提取文档标题作为文件名
     const documentTitle = extractDocumentTitle(tokens);
@@ -113,8 +126,19 @@ export const exportToWord = async (markdown, formatSettings) => {
     // 处理Mermaid流程图和图片
     const processedTokens = await processSpecialTokens(tokens);
 
+    // 设置当前导出的 OMML 结果，供后续处理使用
+    if (latexProcessResult.hasFormulas && latexProcessResult.formulas) {
+      setCurrentOmmlResults(latexProcessResult.formulas);
+    }
+
     // 创建Word文档
     const doc = createWordDocument(processedTokens, formatSettings);
+    
+    // 输出 LaTeX 处理统计信息
+    if (latexProcessResult.hasFormulas) {
+      const exportStats = getLatexExportStats();
+      console.log('[Export] LaTeX 导出统计:', exportStats);
+    }
 
     // 导出文档为 Blob
     const buffer = await Packer.toBlob(doc);
@@ -659,6 +683,117 @@ const createWordDocument = (tokens, formatSettings) => {
   } catch (_) {}
 
   return doc;
+};
+
+/**
+ * 处理文本中的 OMML 公式标记
+ * @param {string} text - 包含 OMML 标记的文本
+ * @param {Array} ommlResults - OMML 转换结果
+ * @returns {Array} 包含 TextRun 和 OMML 元素的数组
+ */
+const processOmmlInText = (text, ommlResults) => {
+  if (!text || !ommlResults || ommlResults.length === 0) {
+    return [new TextRun({ text: text || '' })];
+  }
+  
+  console.log('[Export OMML] 处理文本中的 OMML 标记', {
+    textLength: text.length,
+    ommlCount: ommlResults.length
+  });
+  
+  const elements = [];
+  let currentText = text;
+  let processedFormulas = 0;
+  
+  // 查找并替换所有 OMML 标记
+  const ommlPattern = /\{\{OMML_FORMULA_([^}]+)\}\}/g;
+  let match;
+  let lastIndex = 0;
+  
+  while ((match = ommlPattern.exec(currentText)) !== null) {
+    const formulaId = match[1];
+    const startIndex = match.index;
+    const endIndex = startIndex + match[0].length;
+    
+    // 添加公式前的文本
+    if (startIndex > lastIndex) {
+      const beforeText = currentText.substring(lastIndex, startIndex);
+      if (beforeText) {
+        elements.push(new TextRun({ text: beforeText }));
+      }
+    }
+    
+    // 查找对应的 OMML 结果
+    const ommlResult = ommlResults.find(result => result.id === formulaId);
+    
+    if (ommlResult && ommlResult.success && ommlResult.omml) {
+      try {
+        // 创建 OMML 组件并添加到元素数组
+        const ommlComponent = ImportedXmlComponent.fromXmlString(ommlResult.omml);
+        elements.push(ommlComponent);
+        processedFormulas++;
+        
+        console.log('[Export OMML] OMML 公式已添加', {
+          formulaId,
+          latex: ommlResult.latex?.substring(0, 30) || 'unknown'
+        });
+      } catch (error) {
+        console.error('[Export OMML] OMML 组件创建失败', {
+          formulaId,
+          error: error.message
+        });
+        
+        // 失败时使用降级文本
+        const fallbackText = ommlResult.fallbackText || `[公式错误: ${formulaId}]`;
+        elements.push(new TextRun({ text: fallbackText }));
+      }
+    } else {
+      // 没有找到对应的 OMML 结果，使用降级文本
+      const fallbackText = ommlResult?.fallbackText || `[公式: ${formulaId}]`;
+      elements.push(new TextRun({ text: fallbackText }));
+      
+      console.warn('[Export OMML] OMML 结果未找到，使用降级文本', {
+        formulaId,
+        fallbackText
+      });
+    }
+    
+    lastIndex = endIndex;
+  }
+  
+  // 添加剩余的文本
+  if (lastIndex < currentText.length) {
+    const remainingText = currentText.substring(lastIndex);
+    if (remainingText) {
+      elements.push(new TextRun({ text: remainingText }));
+    }
+  }
+  
+  console.log('[Export OMML] 文本 OMML 处理完成', {
+    processedFormulas,
+    totalElements: elements.length
+  });
+  
+  // 如果没有找到任何标记，返回原始文本
+  if (elements.length === 0) {
+    return [new TextRun({ text: currentText })];
+  }
+  
+  return elements;
+};
+
+// 全局变量存储当前导出的公式结果
+let currentExportOmmlResults = [];
+
+/**
+ * 设置当前导出的 OMML 结果
+ * @param {Array} ommlResults - OMML 转换结果数组
+ */
+const setCurrentOmmlResults = (ommlResults) => {
+  currentExportOmmlResults = ommlResults || [];
+  console.log('[Export OMML] 设置当前导出的 OMML 结果', {
+    count: currentExportOmmlResults.length
+  });
 };
 
 // 将tokens解析为Word文档元素
@@ -1254,7 +1389,7 @@ const createTable = (token, settings, latinSettings) => {
   });
 };
 
-// 处理tokens数组转换为TextRun数组
+// 处理tokens数组转换为TextRun数组，支持 OMML 公式标记
 const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSettings) => {
   const textRuns = [];
   
@@ -1336,8 +1471,16 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSetti
       case 'text':
       default:
         if (token.text) {
-          const runs = splitLatinRuns(token.text, settings, isHeading, latinSettings);
-          textRuns.push(...runs);
+          // 检查文本是否包含 OMML 标记
+          const ommlPattern = /\{\{OMML_FORMULA_[^}]+\}\}/g;
+          if (ommlPattern.test(token.text)) {
+            console.log('[Export OMML] Token 文本包含 OMML 标记');
+            const ommlElements = processOmmlInText(token.text, currentExportOmmlResults);
+            textRuns.push(...ommlElements);
+          } else {
+            const runs = splitLatinRuns(token.text, settings, isHeading, latinSettings);
+            textRuns.push(...runs);
+          }
         }
         break;
     }
@@ -1361,10 +1504,19 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSetti
   return textRuns;
 };
 
-// 将一段文本按西文/数字与非西文拆分为多个 TextRun
+// 将一段文本按西文/数字与非西文拆分为多个 TextRun，同时处理 OMML 公式标记
 const splitLatinRuns = (text, settings, isHeading, latinSettings, additionalStyles = {}) => {
   const result = [];
   const enableLatin = latinSettings && latinSettings.enabled;
+  
+  // 检查文本中是否包含 OMML 标记
+  const ommlPattern = /\{\{OMML_FORMULA_[^}]+\}\}/g;
+  const hasOmmlMarkers = ommlPattern.test(text);
+  
+  if (hasOmmlMarkers) {
+    console.log('[Export OMML] 文本包含 OMML 标记，使用专用处理');
+    return processOmmlInText(text, currentExportOmmlResults);
+  }
   
   // 基础样式设置
   const baseStyle = {
@@ -1428,11 +1580,18 @@ const splitLatinRuns = (text, settings, isHeading, latinSettings, additionalStyl
   return result;
 };
 
-// 解析内联格式
+// 解析内联格式，支持 OMML 公式标记
 const parseInlineTokens = (text, settings, isHeading = false, latinSettings) => {
   // 确保text是字符串
   const textContent = String(text || '');
   console.log('处理内联格式:', textContent, isHeading ? '(标题)' : '');
+  
+  // 优先检查是否包含 OMML 标记
+  const ommlPattern = /\{\{OMML_FORMULA_[^}]+\}\}/g;
+  if (ommlPattern.test(textContent)) {
+    console.log('[Export OMML] 内联文本包含 OMML 标记，使用专用处理');
+    return processOmmlInText(textContent, currentExportOmmlResults);
+  }
   
   // 使用marked解析内联标记
   const inlineTokens = marked.lexer(textContent, { gfm: true });

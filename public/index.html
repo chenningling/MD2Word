@@ -34,6 +34,26 @@
       s.parentNode.insertBefore(hm, s);
     })();
     </script>
+    <!-- MathJax 配置 -->
+    <script>
+      window.MathJax = {
+        loader: { load: ['[tex]/ams'] },
+        tex: { 
+          packages: { '[+]': ['ams'] }, 
+          tags: 'ams',
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']]
+        },
+        svg: { fontCache: 'none' },
+        startup: {
+          ready: () => {
+            console.log('[LaTeX] MathJax 初始化完成');
+            MathJax.startup.defaultReady();
+          }
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

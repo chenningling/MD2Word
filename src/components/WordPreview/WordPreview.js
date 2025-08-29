@@ -8,6 +8,9 @@ import { renderMermaidToPng, isMermaidCode } from '../../utils/mermaidUtils';
 import { InfoCircleOutlined, ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Tooltip, Button, Dropdown, Space } from 'antd';
 import { getMappedFont } from '../../utils/fontUtils';
+import { extractLatexFormulas, FORMULA_TYPES } from '../../utils/latexUtils';
+import { processLatexInPreview, getLatexPreviewStyles } from '../WordPreview/LaTeXRenderer';
+import { addDebugTools, waitAndTestMathJax } from '../../utils/latexDebug';
 
 // 导入字体
 import '@fontsource/source-serif-pro';
@@ -309,12 +312,84 @@ const WordDocument = styled.div`
   .latin-run {
     font-family: ${props => getMappedFont(props.latinFont || 'Times New Roman')};
   }
+  
+  /* LaTeX 公式样式 */
+  .latex-formula {
+    font-family: "Latin Modern Math", "STIX Two Math", "TeX Gyre Termes Math", serif;
+  }
+  
+  .latex-inline {
+    display: inline;
+    vertical-align: middle;
+    margin: 0 2px;
+  }
+  
+  .latex-block {
+    display: block;
+    text-align: center;
+    margin: 1em auto;
+    overflow-x: auto;
+  }
+  
+  .latex-error {
+    background-color: #ffe6e6;
+    border: 1px solid #ff9999;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: #cc0000;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  
+  .latex-placeholder {
+    background-color: #f0f0f0;
+    border: 1px dashed #ccc;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #666;
+    font-style: italic;
+    font-size: 0.9em;
+  }
+  
+  /* SVG 数学公式的样式优化 */
+  .latex-formula svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .latex-block svg {
+    margin: 0 auto;
+  }
+  
+  /* 响应式设计：小屏幕上的公式处理 */
+  @media (max-width: 768px) {
+    .latex-block {
+      font-size: 0.9em;
+      overflow-x: scroll;
+      padding: 0 10px;
+    }
+    
+    .latex-inline {
+      font-size: 0.95em;
+    }
+  }
 `;
 
 const WordPreview = () => {
   const { markdown, formatSettings } = useDocument();
   const [processedHtml, setProcessedHtml] = useState('');
   const [zoom, setZoom] = useState(1); // 默认缩放比例为1 (100%)
+  
+  // 在组件加载时添加调试工具
+  useEffect(() => {
+    addDebugTools();
+    
+    // 延迟测试 MathJax
+    setTimeout(async () => {
+      const success = await waitAndTestMathJax();
+      console.log('[Word Preview] MathJax 功能测试:', success ? '成功' : '失败');
+    }, 1000);
+  }, []);
   
   // 缩放级别选项
   const zoomOptions = [
@@ -367,15 +442,26 @@ const WordPreview = () => {
     };
   }, []);
   
-  // 处理Markdown内容，包括Mermaid图表渲染与西文字体包裹
+  // 处理Markdown内容，包括Mermaid图表渲染、LaTeX公式渲染与西文字体包裹
   useEffect(() => {
     const processMarkdown = async () => {
       try {
+        console.log('[Word Preview] 开始处理 Markdown 内容');
+        
+        // 第一步：提取 LaTeX 公式并替换为占位符
+        const latexFormulas = extractLatexFormulas(markdown);
+        let processedMarkdown = markdown;
+        
+        if (latexFormulas.length > 0) {
+          console.log(`[Word Preview] 发现 ${latexFormulas.length} 个 LaTeX 公式`);
+          // 暂时先不替换，让 marked 正常解析，后续在 HTML 中处理
+        }
+        
         // 设置marked选项
         marked.setOptions(markedOptions);
         
         // 先将markdown转换为HTML
-        const html = marked(markdown);
+        const html = marked(processedMarkdown);
         
         // 查找所有Mermaid占位符
         const tempDiv = document.createElement('div');
@@ -424,10 +510,10 @@ const WordPreview = () => {
         
         const mermaidPlaceholders = tempDiv.querySelectorAll('.mermaid-placeholder');
         
-        // 如果没有Mermaid图表，直接使用HTML
+        // 如果没有Mermaid图表，仍需要处理LaTeX公式
         if (mermaidPlaceholders.length === 0) {
-          setProcessedHtml(tempDiv.innerHTML);
-          return;
+          console.log('[Word Preview] 没有Mermaid图表，但需要处理LaTeX公式');
+          // 不要在这里直接返回，继续处理LaTeX公式
         }
         
         // 处理每个Mermaid图表
@@ -473,10 +559,83 @@ const WordPreview = () => {
           }
         }
         
-        // 西文/数字字体包裹：仅在开启时执行，跳过代码相关容器
+        // 第二步：处理 LaTeX 公式渲染
+        console.log(`[Word Preview] LaTeX 公式检查: 发现 ${latexFormulas.length} 个公式`);
+        console.log(`[Word Preview] 当前HTML长度: ${tempDiv.innerHTML.length}`);
+        console.log(`[Word Preview] HTML内容预览:`, tempDiv.innerHTML.substring(0, 200));
+        
+        // 内联 LaTeX 渲染实现（避免模块导入问题）
+        console.log('[Word Preview] 开始内联 LaTeX 公式处理');
+        try {
+          if (window.MathJax && window.MathJax.tex2svg) {
+            let processedHtml = tempDiv.innerHTML;
+            let formulaCount = 0;
+            
+            // 处理块级公式 $$...$$
+            const blockMatches = [...processedHtml.matchAll(/\$\$\s*\n?([\s\S]*?)\n?\s*\$\$/g)];
+            console.log(`[Word Preview] 发现 ${blockMatches.length} 个块级公式`);
+            
+            for (const match of blockMatches) {
+              try {
+                const fullMatch = match[0];
+                const latexCode = match[1].trim();
+                
+                if (!latexCode) continue;
+                
+                window.MathJax.texReset();
+                const result = window.MathJax.tex2svg(latexCode, { display: true });
+                
+                if (result && result.firstChild) {
+                  const svg = result.firstChild.outerHTML;
+                  const formulaHtml = `<div class="latex-formula latex-block">${svg}</div>`;
+                  processedHtml = processedHtml.replace(fullMatch, formulaHtml);
+                  formulaCount++;
+                  console.log(`[Word Preview] 块级公式渲染成功 #${formulaCount}:`, latexCode.substring(0, 30));
+                }
+              } catch (error) {
+                console.error('[Word Preview] 块级公式渲染失败:', error);
+              }
+            }
+            
+            // 处理行内公式 $...$
+            const inlineMatches = [...processedHtml.matchAll(/(?<!\$)\$(?!\$)([^$\n]*?[^$\s][^$\n]*?)\$(?!\$)/g)];
+            console.log(`[Word Preview] 发现 ${inlineMatches.length} 个行内公式`);
+            
+            for (const match of inlineMatches) {
+              try {
+                const fullMatch = match[0];
+                const latexCode = match[1].trim();
+                
+                if (!latexCode) continue;
+                
+                window.MathJax.texReset();
+                const result = window.MathJax.tex2svg(latexCode, { display: false });
+                
+                if (result && result.firstChild) {
+                  const svg = result.firstChild.outerHTML;
+                  const formulaHtml = `<span class="latex-formula latex-inline">${svg}</span>`;
+                  processedHtml = processedHtml.replace(fullMatch, formulaHtml);
+                  formulaCount++;
+                  console.log(`[Word Preview] 行内公式渲染成功 #${formulaCount}:`, latexCode.substring(0, 30));
+                }
+              } catch (error) {
+                console.error('[Word Preview] 行内公式渲染失败:', error);
+              }
+            }
+            
+            tempDiv.innerHTML = processedHtml;
+            console.log(`[Word Preview] LaTeX 公式处理完成，共渲染 ${formulaCount} 个公式`);
+          } else {
+            console.error('[Word Preview] MathJax 不可用，跳过 LaTeX 渲染');
+          }
+        } catch (error) {
+          console.error('[Word Preview] LaTeX 公式处理失败:', error);
+        }
+        
+        // 西文/数字字体包裹：仅在开启时执行，跳过代码相关容器和LaTeX公式
         const enableLatin = formatSettings?.latin?.enabled;
         if (enableLatin) {
-          const skipSelectors = 'pre, code, kbd, samp, script, style';
+          const skipSelectors = 'pre, code, kbd, samp, script, style, .latex-formula, .latex-error';
           const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT, {
             acceptNode(node) {
               // 跳过空白文本
@@ -532,7 +691,71 @@ const WordPreview = () => {
           });
         }
 
-        setProcessedHtml(tempDiv.innerHTML);
+        // 🎯 直接在这里进行 LaTeX 渲染处理 - 最简单有效的方法
+        let finalHtml = tempDiv.innerHTML;
+        console.log('[Word Preview] 最终 HTML 处理 - LaTeX 渲染');
+        
+        if (window.MathJax && window.MathJax.tex2svg) {
+          let formulaCount = 0;
+          
+          // 处理块级公式 $$...$$
+          const blockMatches = [...finalHtml.matchAll(/\$\$\s*\n?([\s\S]*?)\n?\s*\$\$/g)];
+          console.log(`[Word Preview] 最终处理 - 发现 ${blockMatches.length} 个块级公式`);
+          
+          for (const match of blockMatches) {
+            try {
+              const fullMatch = match[0];
+              const latexCode = match[1].trim();
+              
+              if (!latexCode) continue;
+              
+              window.MathJax.texReset();
+              const result = window.MathJax.tex2svg(latexCode, { display: true });
+              
+              if (result && result.firstChild) {
+                const svg = result.firstChild.outerHTML;
+                const formulaHtml = `<div class="latex-formula latex-block">${svg}</div>`;
+                finalHtml = finalHtml.replace(fullMatch, formulaHtml);
+                formulaCount++;
+                console.log(`[Word Preview] ✅ 块级公式渲染成功 #${formulaCount}:`, latexCode.substring(0, 50));
+              }
+            } catch (error) {
+              console.error('[Word Preview] ❌ 块级公式渲染失败:', error);
+            }
+          }
+          
+          // 处理行内公式 $...$
+          const inlineMatches = [...finalHtml.matchAll(/(?<!\$)\$(?!\$)([^$\n]*?[^$\s][^$\n]*?)\$(?!\$)/g)];
+          console.log(`[Word Preview] 最终处理 - 发现 ${inlineMatches.length} 个行内公式`);
+          
+          for (const match of inlineMatches) {
+            try {
+              const fullMatch = match[0];
+              const latexCode = match[1].trim();
+              
+              if (!latexCode) continue;
+              
+              window.MathJax.texReset();
+              const result = window.MathJax.tex2svg(latexCode, { display: false });
+              
+              if (result && result.firstChild) {
+                const svg = result.firstChild.outerHTML;
+                const formulaHtml = `<span class="latex-formula latex-inline">${svg}</span>`;
+                finalHtml = finalHtml.replace(fullMatch, formulaHtml);
+                formulaCount++;
+                console.log(`[Word Preview] ✅ 行内公式渲染成功 #${formulaCount}:`, latexCode.substring(0, 30));
+              }
+            } catch (error) {
+              console.error('[Word Preview] ❌ 行内公式渲染失败:', error);
+            }
+          }
+          
+          console.log(`[Word Preview] 🎉 LaTeX 处理完成！总计渲染 ${formulaCount} 个公式`);
+        } else {
+          console.error('[Word Preview] ❌ MathJax 不可用，跳过 LaTeX 渲染');
+        }
+
+        setProcessedHtml(finalHtml);
       } catch (error) {
         console.error('处理Markdown内容失败:', error);
         setProcessedHtml(`<p>渲染失败: ${error.message}</p>`);
@@ -540,7 +763,7 @@ const WordPreview = () => {
     };
     
     processMarkdown();
-  }, [markdown, markedOptions]);
+  }, [markdown, markedOptions, formatSettings]);
   
   // 在渲染后应用Prism语法高亮
   useEffect(() => {
