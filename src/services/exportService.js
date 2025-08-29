@@ -176,13 +176,35 @@ const postProcessDocx = async (blob) => {
           const ommlXml = ommlResult.omml;
           
           if (xmlString.includes(placeholder)) {
-            // 修复：只替换占位符文本，保持其他内容不变
-            // 使用简单的文本替换，确保不影响其他内容
-            const replacement = `<w:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:cs="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr>${ommlXml}</w:r>`;
+            // 清理OMML XML，移除XML声明和多余的命名空间
+            let cleanOmml = ommlXml;
             
-            // 直接替换占位符文本，这样更安全
-            xmlString = xmlString.replace(placeholder, replacement);
-            console.log(`[OMML Post-process] 替换占位符: ${ommlResult.id}，保持其他内容不变`);
+            // 移除XML声明
+            cleanOmml = cleanOmml.replace(/<\?xml[^>]*\?>/g, '');
+            
+            // 移除多余的命名空间声明（保留必要的m:命名空间）
+            cleanOmml = cleanOmml.replace(/xmlns:mml="[^"]*"/g, '');
+            
+            // 定义替换内容 - 使用正确的Word XML结构
+            const replacement = `<w:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:cs="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr>${cleanOmml}</w:r>`;
+            
+            // 尝试多种匹配模式
+            let replaced = false;
+            
+            // 查找包含占位符的w:t标签，确保不会错误匹配其他内容
+            const placeholderRegex = new RegExp(`<w:t[^>]*>\\s*${placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*</w:t>`, 'gs');
+            
+            if (placeholderRegex.test(xmlString)) {
+              // 替换为正确的OMML结构
+              xmlString = xmlString.replace(placeholderRegex, replacement);
+              console.log(`[OMML Post-process] 替换占位符: ${ommlResult.id}，使用正确的OMML结构`);
+              replaced = true;
+            } else {
+              // 如果找不到w:t结构，使用简单的文本替换（降级方案）
+              xmlString = xmlString.replace(placeholder, replacement);
+              console.log(`[OMML Post-process] 使用降级方案替换占位符: ${ommlResult.id}`);
+              replaced = true;
+            }
           }
         }
       }
@@ -535,7 +557,7 @@ const createWordDocument = (tokens, formatSettings) => {
     return [];
   };
 
-  // 额外注入OOXML样式，使Word以“字符”单位显示（w:firstLineChars）
+  // 额外注入OOXML样式，使Word以"字符"单位显示（w:firstLineChars）
   const createImportedIndentStyles = (contentSettings) => {
     const xmlComponents = [];
 

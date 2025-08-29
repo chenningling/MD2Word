@@ -8,6 +8,9 @@ const mjAPI = require("mathjax-node");
 const fs = require('fs');
 const path = require('path');
 const SaxonJS = require('saxon-js');
+const { exec } = require('child_process');
+const util = require('util');
+const execAsync = util.promisify(exec);
 
 // LaTeX 转换服务类
 class LatexConversionService {
@@ -107,9 +110,18 @@ class LatexConversionService {
       }
 
       // 2. MathML → OMML 转换
-      const ommlResult = await this.simpleMathmlToOmml(mathmlResult.mathml);
-      if (!ommlResult) {
-        throw new Error('OMML 转换失败');
+      let ommlResult;
+      try {
+        // 优先尝试使用微软官方 XSL
+        ommlResult = await this.convertMathMLToOmmlWithMicrosoftXSL(mathmlResult.mathml);
+        console.log('[LaTeX Service] 使用微软官方 XSL 转换成功');
+      } catch (xslError) {
+        console.warn('[LaTeX Service] 微软 XSL 转换失败，回退到自制转换器:', xslError.message);
+        // 回退到自制转换器
+        ommlResult = await this.simpleMathmlToOmml(mathmlResult.mathml);
+        if (!ommlResult) {
+          throw new Error('OMML 转换失败');
+        }
       }
 
       const duration = Date.now() - startTime;
@@ -340,6 +352,54 @@ class LatexConversionService {
     } catch (error) {
       console.error('[LaTeX Service] 回退转换也失败:', error);
       return null;
+    }
+  }
+
+  /**
+   * 使用微软官方 XSL 转换 MathML 到 OMML
+   * @param {string} mathml - MathML 字符串
+   * @returns {Promise<string>} OMML 字符串
+   */
+  async convertMathMLToOmmlWithMicrosoftXSL(mathml) {
+    try {
+      console.log('[LaTeX Service] 使用微软官方 XSL 转换 MathML 到 OMML');
+      
+      // 创建临时 MathML 文件
+      const tempMathMLPath = path.join(__dirname, '..', 'temp_mathml.xml');
+      const mathmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+${mathml}`;
+      
+      fs.writeFileSync(tempMathMLPath, mathmlContent, 'utf8');
+      
+      // 使用 xsltproc 转换
+      const xslPath = path.join(__dirname, '..', 'MML2OMML.XSL');
+      const command = `xsltproc "${xslPath}" "${tempMathMLPath}"`;
+      
+      const { stdout, stderr } = await execAsync(command, { 
+        maxBuffer: 1024 * 1024,
+        timeout: 30000 
+      });
+      
+      // 清理临时文件
+      if (fs.existsSync(tempMathMLPath)) {
+        fs.unlinkSync(tempMathMLPath);
+      }
+      
+      if (stderr) {
+        console.warn('[LaTeX Service] xsltproc 警告:', stderr);
+      }
+      
+      // 验证结果
+      if (!stdout.includes('<m:oMath')) {
+        throw new Error('转换结果不是有效的 OMML 格式');
+      }
+      
+      console.log('[LaTeX Service] 微软 XSL 转换成功');
+      return stdout;
+      
+    } catch (error) {
+      console.error('[LaTeX Service] 微软 XSL 转换失败:', error.message);
+      throw error;
     }
   }
 
