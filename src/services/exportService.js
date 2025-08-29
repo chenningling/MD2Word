@@ -176,8 +176,13 @@ const postProcessDocx = async (blob) => {
           const ommlXml = ommlResult.omml;
           
           if (xmlString.includes(placeholder)) {
-            xmlString = xmlString.replace(placeholder, ommlXml);
-            console.log(`[OMML Post-process] 替换占位符: ${ommlResult.id}`);
+            // 修复：只替换占位符文本，保持其他内容不变
+            // 使用简单的文本替换，确保不影响其他内容
+            const replacement = `<w:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:cs="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr>${ommlXml}</w:r>`;
+            
+            // 直接替换占位符文本，这样更安全
+            xmlString = xmlString.replace(placeholder, replacement);
+            console.log(`[OMML Post-process] 替换占位符: ${ommlResult.id}，保持其他内容不变`);
           }
         }
       }
@@ -723,8 +728,8 @@ const processOmmlInText = (text, ommlResults) => {
   let currentText = text;
   let processedFormulas = 0;
   
-  // 查找并替换所有 OMML 标记
-  const ommlPattern = /\{\{OMML_FORMULA_([^}]+)\}\}/g;
+      // 查找并替换所有 OMML 标记
+    const ommlPattern = /__OMML_PLACEHOLDER_([^_]+)__/g;
   let match;
   let lastIndex = 0;
   
@@ -1522,7 +1527,7 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSetti
       default:
         if (token.text) {
           // 检查文本是否包含 OMML 标记
-          const ommlPattern = /\{\{OMML_FORMULA_[^}]+\}\}/g;
+          const ommlPattern = /__OMML_PLACEHOLDER_[^_]+__/g;
           if (ommlPattern.test(token.text)) {
             console.log('[Export OMML] Token 文本包含 OMML 标记');
             const ommlElements = processOmmlInText(token.text, currentExportOmmlResults);
@@ -1560,7 +1565,7 @@ const splitLatinRuns = (text, settings, isHeading, latinSettings, additionalStyl
   const enableLatin = latinSettings && latinSettings.enabled;
   
   // 检查文本中是否包含 OMML 标记
-  const ommlPattern = /\{\{OMML_FORMULA_[^}]+\}\}/g;
+  const ommlPattern = /__OMML_PLACEHOLDER_[^_]+__/g;
   const hasOmmlMarkers = ommlPattern.test(text);
   
   if (hasOmmlMarkers) {
@@ -1637,7 +1642,7 @@ const parseInlineTokens = (text, settings, isHeading = false, latinSettings) => 
   console.log('处理内联格式:', textContent, isHeading ? '(标题)' : '');
   
   // 优先检查是否包含 OMML 标记
-  const ommlPattern = /\{\{OMML_FORMULA_[^}]+\}\}/g;
+  const ommlPattern = /__OMML_PLACEHOLDER_[^_]+__/g;
   if (ommlPattern.test(textContent)) {
     console.log('[Export OMML] 内联文本包含 OMML 标记，使用专用处理');
     return processOmmlInText(textContent, currentExportOmmlResults);

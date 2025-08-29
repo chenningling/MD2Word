@@ -460,7 +460,7 @@ class LatexExportService {
       
       if (conversionResult && conversionResult.success) {
         // 替换为 OMML 标记
-        const ommlPlaceholder = `{{OMML_FORMULA_${conversionResult.id}}}`;
+        const ommlPlaceholder = `__OMML_PLACEHOLDER_${conversionResult.id}__`;
         
         const beforeText = processedText.substring(0, formula.startIndex);
         const afterText = processedText.substring(formula.endIndex);
