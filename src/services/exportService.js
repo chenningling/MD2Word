@@ -283,6 +283,25 @@ const postProcessDocx = async (blob) => {
 
     let xmlString = await docXmlFile.async('string');
     
+    // 📊 在任何处理之前检查原始Word文档结构
+    const originalParagraphCount = (xmlString.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || []).length;
+    console.log(`[Document Debug] 🚀 原始Word文档包含 ${originalParagraphCount} 个段落`);
+    
+    // 分析原始段落内容
+    const initialParagraphs = xmlString.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || [];
+    initialParagraphs.forEach((para, index) => {
+      const textContent = (para.match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || [])
+        .map(match => match.replace(/<w:t[^>]*>([^<]*)<\/w:t>/, '$1')).join('');
+      
+      if (textContent.includes('OMML_PLACEHOLDER')) {
+        console.log(`[Document Debug] 段落 ${index + 1}: 📊 包含占位符 - ${textContent.substring(0, 50)}...`);
+      } else if (textContent.trim()) {
+        console.log(`[Document Debug] 段落 ${index + 1}: 📝 文本内容 - "${textContent.substring(0, 50)}..."`);
+      } else {
+        console.log(`[Document Debug] 段落 ${index + 1}: 📄 空段落或样式段落`);
+      }
+    });
+    
     // 1. 替换 OMML 占位符为真正的 OMML
     if (currentExportOmmlResults && currentExportOmmlResults.length > 0) {
       console.log(`[OMML Post-process Debug] 开始替换 ${currentExportOmmlResults.length} 个公式占位符`);
@@ -362,8 +381,8 @@ const postProcessDocx = async (blob) => {
             console.log(`[OMML Post-process Debug] 清理后的OMML预览: ${cleanOmml.substring(0, 150)}`);
             
             // 新策略：替换整个包含占位符的段落，生成与参考文档完全一致的结构
-            // 查找包含占位符的整个段落
-            const paragraphRegex = new RegExp(`<w:p[^>]*>.*?${actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*?</w:p>`, 'gs');
+            // 查找包含占位符的整个段落 - 使用负向先行断言确保不跨段落匹配
+            const paragraphRegex = new RegExp(`<w:p[^>]*>(?:(?!<w:p\\b)[\\s\\S])*?${actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:(?!<w:p\\b)[\\s\\S])*?</w:p>`);
             
             console.log(`[OMML Post-process Debug] 查找包含占位符的段落: ${paragraphRegex.test(xmlString)}`);
             
@@ -376,6 +395,22 @@ const postProcessDocx = async (blob) => {
               // 重置正则状态用于替换
               paragraphRegex.lastIndex = 0;
               
+              // 📊 调试：查看正则表达式实际匹配的内容
+              const matchedContent = xmlString.match(paragraphRegex);
+              if (matchedContent && matchedContent[0]) {
+                const matched = matchedContent[0];
+                console.log(`[OMML Post-process Debug] 🔍 正则匹配的内容长度: ${matched.length}`);
+                console.log(`[OMML Post-process Debug] 🔍 匹配内容预览: ${matched.substring(0, 200)}...`);
+                
+                // 检查是否意外匹配了多个段落的内容
+                const paragraphCount = (matched.match(/<w:p\b/g) || []).length;
+                console.log(`[OMML Post-process Debug] 🔍 匹配内容包含 ${paragraphCount} 个段落开始标签`);
+                
+                if (paragraphCount > 1) {
+                  console.warn(`[OMML Post-process Debug] ⚠️ 警告：正则表达式匹配了多个段落！`);
+                }
+              }
+              
               // 创建与参考文档完全一致的段落结构：<w:p><m:oMath>...</w:p>
               const replacementParagraph = `<w:p>${cleanOmml}</w:p>`;
               
@@ -386,6 +421,7 @@ const postProcessDocx = async (blob) => {
               console.log(`[OMML Post-process Debug] 替换整个段落: ${ommlResult.id}，生成参考文档格式`);
               console.log(`[OMML Post-process Debug] 新段落结构: <w:p><m:oMath>...</w:p>`);
               console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
+              console.log(`[OMML Post-process Debug] 长度减少: ${beforeLength - afterLength} 字节`);
               replaced = true;
             } else {
               // 降级方案：查找包含占位符的w:t标签
@@ -510,20 +546,91 @@ const postProcessDocx = async (blob) => {
       console.log(`[OMML Post-process Debug] 段落分析完成: 共 ${paragraphMatches.length} 个段落，${formulaIndex} 个公式段落，${titleIndex} 个标题段落`);
     }
 
+    // 📊 在XML解析前统计段落总数
+    const originalParagraphs = xmlString.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || [];
+    console.log(`[OMML Protection] OMML替换后XML中有 ${originalParagraphs.length} 个段落`);
+    
+    // 📊 详细检查OMML替换后每个段落
+    originalParagraphs.forEach((para, index) => {
+      const textContent = (para.match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || [])
+        .map(match => match.replace(/<w:t[^>]*>([^<]*)<\/w:t>/, '$1')).join('');
+      
+      if (para.includes('<m:oMath')) {
+        console.log(`[OMML Protection] 段落 ${index + 1}: 📊 包含OMML公式`);
+      } else if (textContent.trim()) {
+        console.log(`[OMML Protection] 段落 ${index + 1}: 📝 文本 - "${textContent.substring(0, 30)}..."`);
+      } else {
+        console.log(`[OMML Protection] 段落 ${index + 1}: 📄 空段落`);
+      }
+    });
+    
     // 2. 处理字符缩进（原有逻辑）
+    
+    // 🛡️ 在XML解析前保护OMML内容，避免被XMLParser转义
+    const ommlProtectionMap = new Map();
+    let protectedXmlString = xmlString;  // 注意：这里使用的是已经替换过OMML的xmlString
+    let protectionCounter = 0;
+    
+    // 查找并保护所有OMML内容
+    const ommlMatches = xmlString.match(/<m:oMath[^>]*>.*?<\/m:oMath>/gs) || [];
+    console.log(`[OMML Protection] 在已替换OMML的XML中找到 ${ommlMatches.length} 个OMML需要保护`);
+    
+    if (ommlMatches.length > 0) {
+      ommlMatches.forEach((ommlContent, index) => {
+        const protectionKey = `__OMML_PROTECTED_${protectionCounter++}__`;
+        ommlProtectionMap.set(protectionKey, ommlContent);
+        protectedXmlString = protectedXmlString.replace(ommlContent, protectionKey);
+        console.log(`[OMML Protection] 保护OMML ${index + 1}: ${protectionKey} (长度: ${ommlContent.length})`);
+        console.log(`[OMML Protection] 被保护的内容预览: ${ommlContent.substring(0, 100)}...`);
+      });
+    } else {
+      console.warn(`[OMML Protection] ⚠️ 未找到OMML内容需要保护，可能OMML替换未成功`);
+    }
+    
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: '@_',
-      preserveOrder: true,  // 保持元素顺序，关键修复！
+      preserveOrder: false,  // 回退到false以保持JSON结构兼容性
+      processEntities: false,  // 添加此选项防止实体转义
+      parseTagValue: false,    // 添加此选项防止标签值被处理
     });
-    const json = parser.parse(xmlString);
+    const json = parser.parse(protectedXmlString);
+    
+    console.log(`[OMML Protection] XML解析完成，检查JSON结构`);
+    console.log(`[OMML Protection] JSON根键: ${Object.keys(json).join(', ')}`);
 
     // 处理段落：仅对使用 paragraph-2-chars/4-chars/no-indent 的段落写入 firstLineChars
     const doc = json['w:document'];
-    if (!doc) return blob;
+    if (!doc) {
+      console.error(`[OMML Protection] ❌ 未找到w:document，提前返回！JSON结构:`, Object.keys(json));
+      return blob;
+    }
+    console.log(`[OMML Protection] ✅ 找到w:document`);
+    
     const body = doc['w:body'];
-    if (!body) return blob;
+    if (!body) {
+      console.error(`[OMML Protection] ❌ 未找到w:body，提前返回！document结构:`, Object.keys(doc));
+      return blob;
+    }
+    console.log(`[OMML Protection] ✅ 找到w:body`);
+    
     const paragraphs = body['w:p'];
+    console.log(`[OMML Protection] 段落类型: ${typeof paragraphs}, 是否为数组: ${Array.isArray(paragraphs)}`);
+    
+    // 📊 详细分析段落处理情况
+    if (Array.isArray(paragraphs)) {
+      console.log(`[OMML Protection] 找到 ${paragraphs.length} 个段落数组`);
+      paragraphs.forEach((p, index) => {
+        console.log(`[OMML Protection] 段落 ${index + 1}: ${JSON.stringify(p).substring(0, 100)}...`);
+      });
+    } else if (paragraphs) {
+      console.log(`[OMML Protection] 找到单个段落对象: ${JSON.stringify(paragraphs).substring(0, 100)}...`);
+    } else {
+      console.warn(`[OMML Protection] ⚠️ 未找到任何段落内容`);
+    }
+    
+    // 📊 检查完整的body结构
+    console.log(`[OMML Protection] w:body的所有键: ${Object.keys(body).join(', ')}`);
 
     const ensureFirstLineChars = (pPr, chars) => {
       if (!pPr['w:ind']) pPr['w:ind'] = {};
@@ -557,9 +664,65 @@ const postProcessDocx = async (blob) => {
     const builder = new XMLBuilder({
       ignoreAttributes: false,
       attributeNamePrefix: '@_',
-      preserveOrder: true,  // 保持元素顺序，关键修复！
+      preserveOrder: false,  // 与parser保持一致
+      processEntities: false,  // 防止实体转义
     });
-    const newXml = builder.build(json);
+    let newXml = builder.build(json);
+    
+    console.log(`[OMML Protection] XMLBuilder构建完成，准备开始恢复阶段`);
+    console.log(`[OMML Protection] 构建后XML长度: ${newXml.length}`);
+    console.log(`[OMML Protection] 保护映射表大小: ${ommlProtectionMap.size}`);
+    
+    // 📊 检查XML重建后段落数量
+    const rebuiltParagraphs = newXml.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || [];
+    console.log(`[OMML Protection] XML重建后有 ${rebuiltParagraphs.length} 个段落`);
+    rebuiltParagraphs.forEach((para, index) => {
+      if (para.includes('__OMML_PROTECTED_')) {
+        console.log(`[OMML Protection] 重建段落 ${index + 1}: 📊 包含保护占位符`);
+      } else {
+        const textContent = (para.match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || [])
+          .map(match => match.replace(/<w:t[^>]*>([^<]*)<\/w:t>/, '$1')).join('');
+        if (textContent.trim()) {
+          console.log(`[OMML Protection] 重建段落 ${index + 1}: 📝 文本 - "${textContent.substring(0, 30)}..."`);
+        } else {
+          console.log(`[OMML Protection] 重建段落 ${index + 1}: 📄 空段落`);
+        }
+      }
+    });
+    
+    // 🔄 恢复被保护的OMML内容
+    console.log(`[OMML Protection] 开始恢复 ${ommlProtectionMap.size} 个被保护的OMML`);
+    console.log(`[OMML Protection] 恢复前XML长度: ${newXml.length}`);
+    
+    // 检查恢复前的XML内容
+    const xmlHasProtectionKeys = Array.from(ommlProtectionMap.keys()).some(key => newXml.includes(key));
+    console.log(`[OMML Protection] XML中是否包含保护键: ${xmlHasProtectionKeys}`);
+    
+    if (xmlHasProtectionKeys) {
+      ommlProtectionMap.forEach((ommlContent, protectionKey) => {
+        const beforeLength = newXml.length;
+        if (newXml.includes(protectionKey)) {
+          newXml = newXml.replace(protectionKey, ommlContent);
+          const afterLength = newXml.length;
+          console.log(`[OMML Protection] ✅ 恢复OMML: ${protectionKey} → OMML内容 (XML长度: ${beforeLength} → ${afterLength})`);
+        } else {
+          console.warn(`[OMML Protection] ⚠️ 保护键未找到: ${protectionKey}`);
+        }
+      });
+    } else {
+      console.warn(`[OMML Protection] ⚠️ 所有保护键都未在XML中找到，可能XML解析过程中丢失了`);
+      
+      // 检查是否有原始占位符
+      const hasOriginalPlaceholder = newXml.includes('OMML_PLACEHOLDER');
+      console.log(`[OMML Protection] XML中是否包含原始占位符: ${hasOriginalPlaceholder}`);
+      
+      if (hasOriginalPlaceholder) {
+        console.warn(`[OMML Protection] ⚠️ 检测到原始占位符仍存在，可能是占位符替换没有在保护阶段之前完成`);
+      }
+    }
+    
+    console.log(`[OMML Protection] 恢复后XML长度: ${newXml.length}`);
+    console.log(`[OMML Protection] OMML恢复完成`);
 
     // 写回 zip
     zip.file('word/document.xml', newXml);
