@@ -81,15 +81,42 @@ export const exportToWord = async (markdown, formatSettings) => {
     console.log('开始导出Word文档...');
     console.log('格式设置:', formatSettings);
 
-    // 解析Markdown为tokens
-    const originalTokens = marked.lexer(markdown);
+    // 处理 LaTeX 公式 - 在marked解析之前处理
+    console.log('[Export] 开始处理 LaTeX 公式...');
+    const latexProcessResult = await processLatexForExport(markdown, null);
+    
+    // 使用处理后的markdown解析tokens
+    const processedMarkdown = latexProcessResult.processedMarkdown || markdown;
+    console.log('[Export] 使用处理后的markdown:', processedMarkdown.substring(0, 100) + '...');
+    
+    // 解析处理后的Markdown为tokens
+    const originalTokens = marked.lexer(processedMarkdown);
     console.log('解析的Markdown tokens:', originalTokens);
     
-    // 处理 LaTeX 公式
-    console.log('[Export] 开始处理 LaTeX 公式...');
-    const latexProcessResult = await processLatexForExport(markdown, originalTokens);
+    // 详细检查tokens内容
+    console.log('[OMML Debug] 详细检查解析后的tokens:');
+    originalTokens.forEach((token, index) => {
+      console.log(`[OMML Debug] Token ${index}:`, {
+        type: token.type,
+        text: token.text?.substring(0, 100),
+        raw: token.raw?.substring(0, 100),
+        hasTokens: !!token.tokens,
+        tokensCount: token.tokens?.length || 0
+      });
+      
+      // 检查子tokens
+      if (token.tokens && Array.isArray(token.tokens)) {
+        token.tokens.forEach((subToken, subIndex) => {
+          console.log(`[OMML Debug]   SubToken ${subIndex}:`, {
+            type: subToken.type,
+            text: subToken.text?.substring(0, 100),
+            raw: subToken.raw?.substring(0, 100)
+          });
+        });
+      }
+    });
     
-    const tokens = latexProcessResult.tokens;
+    const tokens = latexProcessResult.tokens || originalTokens;
     console.log('[Export] LaTeX 处理完成:', {
       hasFormulas: latexProcessResult.hasFormulas,
       formulaCount: latexProcessResult.formulas?.length || 0,
@@ -126,6 +153,9 @@ export const exportToWord = async (markdown, formatSettings) => {
     // 处理Mermaid流程图和图片
     const processedTokens = await processSpecialTokens(tokens);
 
+    // 检查tokens中是否包含占位符
+    checkPlaceholdersInTokens(processedTokens, latexProcessResult.formulas);
+
     // 设置当前导出的 OMML 结果，供后续处理使用
     if (latexProcessResult.hasFormulas && latexProcessResult.formulas) {
       setCurrentOmmlResults(latexProcessResult.formulas);
@@ -143,6 +173,9 @@ export const exportToWord = async (markdown, formatSettings) => {
     // 导出文档为 Blob
     const buffer = await Packer.toBlob(doc);
 
+    // 检查生成的docx是否包含占位符
+    await checkPlaceholdersInDocx(buffer, latexProcessResult.formulas);
+
     // 对 docx 做后处理：将正文段落实体写入 w:firstLineChars
     const processedBlob = await postProcessDocx(buffer);
 
@@ -151,6 +184,90 @@ export const exportToWord = async (markdown, formatSettings) => {
   } catch (error) {
     console.error('导出Word文档时发生错误:', error);
     alert('导出失败，请查看控制台获取详细信息。');
+  }
+};
+
+// 检查tokens中的占位符
+const checkPlaceholdersInTokens = (tokens, formulas) => {
+  console.log('[OMML Debug] 检查tokens中的占位符...');
+  
+  const placeholderPattern = /<!--OMML_PLACEHOLDER_[^-]+-->/g;
+  
+  const checkTokenRecursively = (token) => {
+    // 检查token的文本内容
+    if (token.text) {
+      const placeholders = token.text.match(placeholderPattern) || [];
+      if (placeholders.length > 0) {
+        console.log(`[OMML Debug] Token中发现占位符:`, placeholders, token.type);
+      }
+    }
+    
+    if (token.raw) {
+      const placeholders = token.raw.match(placeholderPattern) || [];
+      if (placeholders.length > 0) {
+        console.log(`[OMML Debug] Token raw中发现占位符:`, placeholders, token.type);
+      }
+    }
+    
+    // 递归检查子tokens
+    if (token.tokens && Array.isArray(token.tokens)) {
+      token.tokens.forEach(checkTokenRecursively);
+    }
+  };
+  
+  tokens.forEach(checkTokenRecursively);
+  
+  // 总结期望的占位符
+  if (formulas && formulas.length > 0) {
+    console.log('[OMML Debug] 期望在tokens中找到的占位符:');
+    formulas.forEach(formula => {
+      if (formula.success) {
+        console.log(`[OMML Debug] - <!--OMML_PLACEHOLDER_${formula.id}-->`);
+      }
+    });
+  }
+};
+
+// 检查docx中的占位符
+const checkPlaceholdersInDocx = async (blob, formulas) => {
+  try {
+    console.log('[OMML Debug] 检查生成的docx中的占位符...');
+    
+    const zip = await JSZip.loadAsync(blob);
+    const docXmlFile = zip.file('word/document.xml');
+    if (!docXmlFile) {
+      console.warn('[OMML Debug] 未找到 word/document.xml');
+      return;
+    }
+
+    const xmlString = await docXmlFile.async('string');
+    console.log('[OMML Debug] document.xml长度:', xmlString.length);
+    
+    // 检查占位符
+    const placeholderPattern = /<!--OMML_PLACEHOLDER_[^-]+-->/g;
+    const placeholdersInXml = xmlString.match(placeholderPattern) || [];
+    console.log('[OMML Debug] XML中的占位符:', placeholdersInXml);
+    
+    // 检查期望的占位符
+    if (formulas && formulas.length > 0) {
+      formulas.forEach(formula => {
+        if (formula.success) {
+          const expectedPlaceholder = `<!--OMML_PLACEHOLDER_${formula.id}-->`;
+          const escapedPlaceholder = `&lt;!--OMML_PLACEHOLDER_${formula.id}--&gt;`;
+          const originalFound = xmlString.includes(expectedPlaceholder);
+          const escapedFound = xmlString.includes(escapedPlaceholder);
+          console.log(`[OMML Debug] 期望占位符 ${expectedPlaceholder}: ${originalFound ? '✅找到' : '❌未找到'}`);
+          console.log(`[OMML Debug] 转义占位符 ${escapedPlaceholder}: ${escapedFound ? '✅找到' : '❌未找到'}`);
+        }
+      });
+    }
+    
+    // 显示XML的一些片段来调试
+    const xmlPreview = xmlString.substring(0, 500);
+    console.log('[OMML Debug] XML开头预览:', xmlPreview);
+    
+  } catch (error) {
+    console.error('[OMML Debug] 检查占位符失败:', error);
   }
 };
 
@@ -172,7 +289,7 @@ const postProcessDocx = async (blob) => {
       console.log(`[OMML Post-process Debug] XML文档长度: ${xmlString.length}`);
       
       // 检查XML中是否包含占位符
-      const placeholderPattern = /__OMML_PLACEHOLDER_[^_]+__/g;
+      const placeholderPattern = /<!--OMML_PLACEHOLDER_[^-]+-->/g;
       const placeholdersInXml = xmlString.match(placeholderPattern) || [];
       console.log(`[OMML Post-process Debug] XML中找到 ${placeholdersInXml.length} 个占位符:`, placeholdersInXml);
       
@@ -186,13 +303,19 @@ const postProcessDocx = async (blob) => {
         });
         
         if (ommlResult.success && ommlResult.omml) {
-          const placeholder = `__OMML_PLACEHOLDER_${ommlResult.id}__`;
+          const placeholder = `<!--OMML_PLACEHOLDER_${ommlResult.id}-->`;
+          const escapedPlaceholder = `&lt;!--OMML_PLACEHOLDER_${ommlResult.id}--&gt;`;
           const ommlXml = ommlResult.omml;
           
           console.log(`[OMML Post-process Debug] 查找占位符: ${placeholder}`);
-          console.log(`[OMML Post-process Debug] XML中包含占位符: ${xmlString.includes(placeholder)}`);
+          console.log(`[OMML Post-process Debug] 查找转义占位符: ${escapedPlaceholder}`);
+          console.log(`[OMML Post-process Debug] XML中包含原始占位符: ${xmlString.includes(placeholder)}`);
+          console.log(`[OMML Post-process Debug] XML中包含转义占位符: ${xmlString.includes(escapedPlaceholder)}`);
           
-          if (xmlString.includes(placeholder)) {
+          // 优先查找转义后的占位符，如果没有则查找原始占位符
+          const actualPlaceholder = xmlString.includes(escapedPlaceholder) ? escapedPlaceholder : placeholder;
+          
+          if (xmlString.includes(actualPlaceholder)) {
             // 清理OMML XML，移除XML声明和多余的命名空间
             let cleanOmml = ommlXml;
             
@@ -212,7 +335,7 @@ const postProcessDocx = async (blob) => {
             let replaced = false;
             
             // 查找包含占位符的w:t标签，确保不会错误匹配其他内容
-            const placeholderRegex = new RegExp(`<w:t[^>]*>\\s*${placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*</w:t>`, 'gs');
+            const placeholderRegex = new RegExp(`<w:t[^>]*>\\s*${actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*</w:t>`, 'gs');
             
             console.log(`[OMML Post-process Debug] 测试正则匹配: ${placeholderRegex.test(xmlString)}`);
             
@@ -806,7 +929,7 @@ const processOmmlInText = (text, ommlResults) => {
   let processedFormulas = 0;
   
       // 查找并替换所有 OMML 标记
-    const ommlPattern = /__OMML_PLACEHOLDER_([^_]+)__/g;
+    const ommlPattern = /<!--OMML_PLACEHOLDER_([^-]+)-->/g;
   let match;
   let lastIndex = 0;
   
@@ -858,7 +981,7 @@ const processOmmlInText = (text, ommlResults) => {
         });
         
         // 暂时使用占位符文本，稍后通过后处理替换为真正的 OMML
-        const placeholderText = `__OMML_PLACEHOLDER_${formulaId}__`;
+        const placeholderText = `<!--OMML_PLACEHOLDER_${formulaId}-->`;
         elements.push(new TextRun({ text: placeholderText }));
         
         console.log('[Export OMML] 使用占位符，稍后后处理替换:', placeholderText);
@@ -968,6 +1091,19 @@ const parseTokensToDocxElements = (tokens, contentSettings, latinSettings) => {
         break;
       case 'image':
         elements.push(createImageElement(token));
+        break;
+      case 'html':
+        // 处理HTML token，特别是OMML占位符
+        if (token.text && token.text.includes('OMML_PLACEHOLDER_')) {
+          console.log(`[OMML Debug] 处理HTML token中的占位符: ${token.text.trim()}`);
+          // 创建包含占位符的段落，后续会被后处理替换
+          const placeholderParagraph = new Paragraph({
+            children: [new TextRun({ text: token.text.trim() })]
+          });
+          elements.push(placeholderParagraph);
+        } else {
+          console.warn(`未处理的HTML token: ${token.text?.substring(0, 50)}`);
+        }
         break;
       default:
         console.warn(`未处理的token类型: ${token.type}`);
@@ -1604,7 +1740,7 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSetti
       default:
         if (token.text) {
           // 检查文本是否包含 OMML 标记
-          const ommlPattern = /__OMML_PLACEHOLDER_[^_]+__/g;
+          const ommlPattern = /<!--OMML_PLACEHOLDER_[^-]+-->/g;
           if (ommlPattern.test(token.text)) {
             console.log('[Export OMML] Token 文本包含 OMML 标记');
             const ommlElements = processOmmlInText(token.text, currentExportOmmlResults);
@@ -1642,7 +1778,7 @@ const splitLatinRuns = (text, settings, isHeading, latinSettings, additionalStyl
   const enableLatin = latinSettings && latinSettings.enabled;
   
   // 检查文本中是否包含 OMML 标记
-  const ommlPattern = /__OMML_PLACEHOLDER_[^_]+__/g;
+  const ommlPattern = /<!--OMML_PLACEHOLDER_[^-]+-->/g;
   const hasOmmlMarkers = ommlPattern.test(text);
   
   if (hasOmmlMarkers) {
@@ -1719,7 +1855,7 @@ const parseInlineTokens = (text, settings, isHeading = false, latinSettings) => 
   console.log('处理内联格式:', textContent, isHeading ? '(标题)' : '');
   
   // 优先检查是否包含 OMML 标记
-  const ommlPattern = /__OMML_PLACEHOLDER_[^_]+__/g;
+  const ommlPattern = /<!--OMML_PLACEHOLDER_[^-]+-->/g;
   if (ommlPattern.test(textContent)) {
     console.log('[Export OMML] 内联文本包含 OMML 标记，使用专用处理');
     return processOmmlInText(textContent, currentExportOmmlResults);

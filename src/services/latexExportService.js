@@ -93,7 +93,7 @@ class LatexExportService {
   /**
    * 处理 Markdown 文档中的 LaTeX 公式导出
    * @param {string} markdown - Markdown 文本
-   * @param {Array} tokens - marked 解析后的 tokens
+   * @param {Array} tokens - marked 解析后的 tokens (可选，如果为null则在内部处理markdown)
    * @returns {Promise<object>} 处理结果
    */
   async processLatexForExport(markdown, tokens) {
@@ -114,6 +114,7 @@ class LatexExportService {
           hasFormulas: false,
           formulas: [],
           tokens: tokens, // 返回原始 tokens
+          processedMarkdown: markdown, // 返回原始markdown
           conversionTime: Date.now() - startTime
         };
       }
@@ -132,8 +133,14 @@ class LatexExportService {
       // Step 3: 转换公式
       const conversionResults = await this.convertFormulasToOmml(formulas);
       
-      // Step 4: 处理转换结果
-      const processedTokens = this.integrateFormulaResults(tokens, markdown, conversionResults);
+      // Step 4: 替换markdown中的公式为占位符
+      const processedMarkdown = this.replaceLatexInMarkdown(markdown, conversionResults);
+      
+      // Step 5: 如果提供了tokens，处理tokens；否则返回处理后的markdown
+      let processedTokens = tokens;
+      if (tokens) {
+        processedTokens = this.integrateFormulaResults(tokens, markdown, conversionResults);
+      }
       
       const totalTime = Date.now() - startTime;
       const successCount = conversionResults.filter(r => r.success).length;
@@ -155,6 +162,7 @@ class LatexExportService {
         hasFormulas: true,
         formulas: conversionResults,
         tokens: processedTokens,
+        processedMarkdown: processedMarkdown, // 返回处理后的markdown
         conversionTime: totalTime,
         stats: {
           total: formulas.length,
@@ -364,6 +372,66 @@ class LatexExportService {
       success: false,
       error: lastError?.message || '未知错误'
     };
+  }
+
+  /**
+   * 在markdown文本中替换LaTeX公式为占位符
+   * @param {string} markdown - 原始markdown文本
+   * @param {Array} conversionResults - 转换结果数组
+   * @returns {string} 处理后的markdown文本
+   */
+  replaceLatexInMarkdown(markdown, conversionResults) {
+    console.log('[LaTeX Export] 开始在markdown中替换LaTeX公式为占位符');
+    
+    let processedMarkdown = markdown;
+    
+    // 提取公式信息
+    const formulas = extractLatexFormulas(markdown);
+    
+    // 创建公式映射表
+    const formulaMap = new Map();
+    conversionResults.forEach(result => {
+      formulaMap.set(result.id, result);
+    });
+    
+    // 按位置倒序处理，避免索引错乱
+    const sortedFormulas = [...formulas].sort((a, b) => b.startIndex - a.startIndex);
+    
+    // 创建一个已使用的转换结果标记
+    const usedResults = new Set();
+    
+    for (const formula of sortedFormulas) {
+      // 查找对应的转换结果，优先使用未使用的结果
+      const conversionResult = conversionResults.find(result => {
+        if (usedResults.has(result.id)) return false; // 跳过已使用的结果
+        
+        const latexMatches = result.latex === formula.latex;
+        const typeMatches = result.isDisplayMode === (formula.type === FORMULA_TYPES.BLOCK);
+        return latexMatches && typeMatches;
+      });
+      
+      console.log(`[LaTeX Export] Markdown替换检查: ${formula.latex.substring(0, 20)} | 找到匹配: ${!!conversionResult} | 结果ID: ${conversionResult?.id || 'null'}`);
+      
+      if (conversionResult && conversionResult.success) {
+        // 标记此结果已使用
+        usedResults.add(conversionResult.id);
+        
+        // 替换为 OMML 标记（使用HTML注释格式避免被marked.js误解析）
+        const ommlPlaceholder = `<!--OMML_PLACEHOLDER_${conversionResult.id}-->`;
+        
+        const beforeText = processedMarkdown.substring(0, formula.startIndex);
+        const afterText = processedMarkdown.substring(formula.endIndex);
+        
+        processedMarkdown = beforeText + ommlPlaceholder + afterText;
+        
+        console.log(`[LaTeX Export] Markdown中公式已替换: ${formula.latex.substring(0, 30)} → ${ommlPlaceholder}`);
+      } else {
+        console.warn(`[LaTeX Export] Markdown中公式未找到匹配的转换结果: ${formula.latex.substring(0, 30)}`);
+      }
+    }
+    
+    console.log(`[LaTeX Export] Markdown替换完成，长度: ${markdown.length} → ${processedMarkdown.length}`);
+    return processedMarkdown;
   }
 
   /**
