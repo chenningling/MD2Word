@@ -59,4 +59,4 @@ tmp-wps/
 test-export*/
 test-export-full*/
 test-export-full-unzip/
-.playwright-mcp/公式测试_解压/docProps/app.xml
+.playwright-mcp/

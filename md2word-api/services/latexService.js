@@ -7,7 +7,6 @@
 const mjAPI = require("mathjax-node");
 const fs = require('fs');
 const path = require('path');
-const SaxonJS = require('saxon-js');
 const { exec } = require('child_process');
 const util = require('util');
 const execAsync = util.promisify(exec);
@@ -109,20 +108,9 @@ class LatexConversionService {
         throw new Error(`MathML 转换失败: ${mathmlResult.error}`);
       }
 
-      // 2. MathML → OMML 转换
-      let ommlResult;
-      try {
-        // 优先尝试使用微软官方 XSL
-        ommlResult = await this.convertMathMLToOmmlWithMicrosoftXSL(mathmlResult.mathml);
-        console.log('[LaTeX Service] 使用微软官方 XSL 转换成功');
-      } catch (xslError) {
-        console.warn('[LaTeX Service] 微软 XSL 转换失败，回退到自制转换器:', xslError.message);
-        // 回退到自制转换器
-        ommlResult = await this.simpleMathmlToOmml(mathmlResult.mathml);
-        if (!ommlResult) {
-          throw new Error('OMML 转换失败');
-        }
-      }
+      // 2. MathML → OMML 转换（强制使用微软官方 XSL）
+      const ommlResult = await this.convertMathMLToOmmlWithMicrosoftXSL(mathmlResult.mathml);
+      console.log('[LaTeX Service] 微软官方 XSL 转换成功');
 
       const duration = Date.now() - startTime;
       
@@ -203,156 +191,6 @@ class LatexConversionService {
         reject(new Error(`MathJax 调用失败: ${error.message}`));
       }
     });
-  }
-
-  /**
-   * 使用 XSLT 引擎将 MathML 转换为 OMML
-   * @param {string} mathml - MathML 字符串
-   * @returns {Promise<string|null>} OMML 字符串
-   */
-  async simpleMathmlToOmml(mathml) {
-    try {
-      console.log('[LaTeX Service] 开始使用 XSLT 转换 MathML → OMML');
-      
-      // 尝试使用简化的 XSL 转换
-      const result = await this.performSimpleXsltTransform(mathml);
-      if (result) {
-        return result;
-      }
-      
-      // 如果简化转换失败，回退到规则转换
-      console.log('[LaTeX Service] XSLT 转换失败，使用回退转换');
-      return this.fallbackMathmlToOmml(mathml);
-      
-    } catch (error) {
-      console.error('[LaTeX Service] XSLT 转换失败，回退到简化转换:', error);
-      return this.fallbackMathmlToOmml(mathml);
-    }
-  }
-  
-  /**
-   * 执行简化的 XSLT 转换（使用内联样式表）
-   * @param {string} mathml - MathML 字符串
-   * @returns {Promise<string|null>} OMML 字符串
-   */
-  async performSimpleXsltTransform(mathml) {
-    try {
-      // 由于 SaxonJS 格式兼容性问题，我们使用基于规则的转换
-      // 这种方法模拟了 XSLT 的转换逻辑，但使用 JavaScript 实现
-      console.log('[LaTeX Service] 使用基于规则的转换（模拟 XSLT）');
-      
-      return this.performRuleBasedTransform(mathml);
-      
-    } catch (error) {
-      console.log('[LaTeX Service] 基于规则的转换失败:', error.message);
-      return null;
-    }
-  }
-  
-  /**
-   * 基于规则的转换（模拟 XSLT 逻辑）
-   * @param {string} mathml - MathML 字符串
-   * @returns {string|null} OMML 字符串
-   */
-  performRuleBasedTransform(mathml) {
-    try {
-      let content = mathml
-        .replace(/<math[^>]*>/g, '')
-        .replace(/<\/math>/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-      
-      console.log('[LaTeX Service] 开始基于规则的转换，内容长度:', content.length);
-      
-      // 1. 处理积分符号（使用 nary 结构）
-      content = content.replace(/<msubsup>\s*<mo[^>]*>&#x222B;.*?<\/mo>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<\/msubsup>/g,
-        '<m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>$1</m:t></m:r></m:sub><m:sup><m:r><m:t>$2</m:t></m:r></m:sup><m:e/></m:nary>');
-      
-      // 处理求和符号（使用 nary 结构）
-      content = content.replace(/<msubsup>\s*<mo[^>]*>&#x2211;[^<]*<\/mo>\s*<mi>([^<]*)<\/mi>\s*<mi>([^<]*)<\/mi>\s*<\/msubsup>/g,
-        '<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>$1</m:t></m:r></m:sub><m:sup><m:r><m:t>$2</m:t></m:r></m:sup><m:e/></m:nary>');
-      
-      // 2. 处理上标（支持多行格式）
-      content = content.replace(/<msup>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mn>\s*([^<]*)\s*<\/mn>\s*<\/msup>/g,
-        '<m:sSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sup><m:r><m:t>$2</m:t></m:r></m:sup></m:sSup>');
-      
-      // 3. 处理下标
-      content = content.replace(/<msub>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<\/msub>/g,
-        '<m:sSub><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub><m:r><m:t>$2</m:t></m:r></m:sub></m:sSub>');
-      
-      // 4. 处理分数
-      content = content.replace(/<mfrac>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<\/mfrac>/g,
-        '<m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>$1</m:t></m:r></m:num><m:den><m:r><m:t>$2</m:t></m:r></m:den></m:f>');
-      
-      // 5. 处理根号
-      content = content.replace(/<msqrt>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<\/msqrt>/g,
-        '<m:rad><m:radPr><m:degHide m:val="on"/></m:radPr><m:deg/><m:e><m:r><m:t>$1</m:t></m:r></m:e></m:rad>');
-      
-      // 6. 处理基本元素
-      content = content.replace(/<mi>\s*([^<]*)\s*<\/mi>/g, '<m:r><m:t>$1</m:t></m:r>');
-      content = content.replace(/<mn>\s*([^<]*)\s*<\/mn>/g, '<m:r><m:t>$1</m:t></m:r>');
-      content = content.replace(/<mo>\s*([^<]*)\s*<\/mo>/g, '<m:r><m:t>$1</m:t></m:r>');
-      content = content.replace(/<mtext>\s*([^<]*)\s*<\/mtext>/g, '<m:r><m:t>$1</m:t></m:r>');
-      
-      // 7. 清理包装标签
-      content = content.replace(/<\/?mrow[^>]*>/g, '');
-      content = content.replace(/<\/?mstyle[^>]*>/g, '');
-      
-      // 8. 最终清理和验证
-      content = content
-        .replace(/\s+/g, ' ')
-        .trim();
-      
-      if (!content || !content.includes('<m:')) {
-        console.warn('[LaTeX Service] 基于规则的转换结果无效');
-        return null;
-      }
-      
-      const omml = `<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">${content}</m:oMath>`;
-      console.log('[LaTeX Service] 基于规则的转换成功，结果长度:', omml.length);
-      return omml;
-      
-    } catch (error) {
-      console.error('[LaTeX Service] 基于规则的转换失败:', error);
-      return null;
-    }
-  }
-  
-  /**
-   * 回退转换方法（保留原有的转换逻辑作为备用）
-   * @param {string} mathml - MathML 字符串
-   * @returns {string|null} OMML 字符串
-   */
-  fallbackMathmlToOmml(mathml) {
-    try {
-      console.log('[LaTeX Service] 使用回退转换方法');
-      let content = mathml
-        .replace(/<math[^>]*>/g, '')
-        .replace(/<\/math>/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-
-      // 简化的转换规则
-      content = content.replace(/<msup>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mn>\s*([^<]*)\s*<\/mn>\s*<\/msup>/g,
-        '<m:sSup><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sup><m:r><m:t>$2</m:t></m:r></m:sup></m:sSup>');
-      
-      content = content.replace(/<msub>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<mi>\s*([^<]*)\s*<\/mi>\s*<\/msub>/g,
-        '<m:sSub><m:e><m:r><m:t>$1</m:t></m:r></m:e><m:sub><m:r><m:t>$2</m:t></m:r></m:sub></m:sSub>');
-      
-      content = content.replace(/<mi>\s*([^<]*)\s*<\/mi>/g, '<m:r><m:t>$1</m:t></m:r>');
-      content = content.replace(/<mn>\s*([^<]*)\s*<\/mn>/g, '<m:r><m:t>$1</m:t></m:r>');
-      content = content.replace(/<mo>\s*([^<]*)\s*<\/mo>/g, '<m:r><m:t>$1</m:t></m:r>');
-      
-      if (!content || !content.includes('<m:')) {
-        return null;
-      }
-      
-      return `<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">${content}</m:oMath>`;
-      
-    } catch (error) {
-      console.error('[LaTeX Service] 回退转换也失败:', error);
-      return null;
-    }
   }
 
   /**
