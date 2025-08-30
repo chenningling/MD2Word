@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaTeX 公式导出调试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-case {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .markdown-content {
+            background: white;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+        }
+        .debug-output {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #005a8a;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .status.warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+    </style>
+</head>
+<body>
+    <h1>LaTeX 公式导出调试工具</h1>
+    <p>这个工具用于调试您遇到的单行vs多行公式导出问题。</p>
+
+    <div class="test-case">
+        <h2>测试用例 1: 单行公式（正常工作）</h2>
+        <div class="markdown-content" id="case1">这是一个包含单行公式的测试。
+
+波动方程：$$\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u$$
+
+公式后的文本。</div>
+        <button onclick="testCase(1)">测试导出</button>
+        <div id="output1" class="debug-output" style="display: none;"></div>
+        <div id="status1" class="status" style="display: none;"></div>
+    </div>
+
+    <div class="test-case">
+        <h2>测试用例 2: 多行公式（有问题）</h2>
+        <div class="markdown-content" id="case2">这是一个包含多行公式的测试。
+
+波动方程：
+$$
+\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u
+$$
+
+公式后的文本。</div>
+        <button onclick="testCase(2)">测试导出</button>
+        <div id="output2" class="debug-output" style="display: none;"></div>
+        <div id="status2" class="status" style="display: none;"></div>
+    </div>
+
+    <div class="test-case">
+        <h2>测试用例 3: 混合公式</h2>
+        <div class="markdown-content" id="case3">包含多种公式的测试。
+
+行内公式：质能方程 $E = mc^2$ 很有名。
+
+单行块级：$$\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u$$
+
+多行块级：
+$$
+\int_a^b f(x)dx = F(b) - F(a)
+$$
+
+结束。</div>
+        <button onclick="testCase(3)">测试导出</button>
+        <div id="output3" class="debug-output" style="display: none;"></div>
+        <div id="status3" class="status" style="display: none;"></div>
+    </div>
+
+    <div class="test-case">
+        <h2>后端 API 状态</h2>
+        <button onclick="checkApiStatus()">检查后端状态</button>
+        <div id="api-status" class="status" style="display: none;"></div>
+    </div>
+
+    <script>
+        // 简化的LaTeX识别函数（从前端代码复制）
+        const LATEX_PATTERNS = {
+            INLINE: /\$(?!\$)([^$\n]*?[^$\s][^$\n]*?)\$/g,
+            BLOCK: /\$\$\s*([\s\S]*?)\s*\$\$/g,
+            COMBINED: /(\$\$[\s\S]*?\$\$|\$[^$\n]*?[^$\s][^$\n]*?\$)/g,
+            VALIDATION: /^[\s\S]*[\w})\]]\s*$/
+        };
+
+        const FORMULA_TYPES = {
+            INLINE: 'inline',
+            BLOCK: 'block'
+        };
+
+        function extractLatexFormulas(text) {
+            const formulas = [];
+            let formulaId = 0;
+
+            LATEX_PATTERNS.COMBINED.lastIndex = 0;
+            
+            let match;
+            while ((match = LATEX_PATTERNS.COMBINED.exec(text)) !== null) {
+                const fullMatch = match[0];
+                const startIndex = match.index;
+                const endIndex = startIndex + fullMatch.length;
+                
+                const isBlockFormula = fullMatch.startsWith('$$');
+                const type = isBlockFormula ? FORMULA_TYPES.BLOCK : FORMULA_TYPES.INLINE;
+                
+                let latexCode;
+                if (isBlockFormula) {
+                    latexCode = fullMatch.slice(2, -2).trim();
+                } else {
+                    latexCode = fullMatch.slice(1, -1).trim();
+                }
+                
+                const formulaInfo = {
+                    id: `formula_${++formulaId}`,
+                    type,
+                    raw: fullMatch,
+                    latex: latexCode,
+                    startIndex,
+                    endIndex
+                };
+                
+                formulas.push(formulaInfo);
+            }
+            
+            return formulas;
+        }
+
+        function log(caseNum, message) {
+            const output = document.getElementById(`output${caseNum}`);
+            const timestamp = new Date().toLocaleTimeString();
+            output.innerHTML += `[${timestamp}] ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function setStatus(caseNum, message, type) {
+            const statusDiv = document.getElementById(`status${caseNum}`);
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+        }
+
+        async function testCase(caseNum) {
+            const outputDiv = document.getElementById(`output${caseNum}`);
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '';
+
+            const markdown = document.getElementById(`case${caseNum}`).textContent;
+            
+            log(caseNum, `开始测试用例 ${caseNum}`);
+            log(caseNum, `Markdown 内容长度: ${markdown.length}`);
+            log(caseNum, `Markdown 内容: ${JSON.stringify(markdown.substring(0, 100))}`);
+
+            try {
+                // 1. 提取公式
+                log(caseNum, '1. 提取 LaTeX 公式...');
+                const formulas = extractLatexFormulas(markdown);
+                log(caseNum, `发现 ${formulas.length} 个公式:`);
+                
+                formulas.forEach((formula, index) => {
+                    log(caseNum, `  公式 ${index + 1}: ${JSON.stringify({
+                        id: formula.id,
+                        type: formula.type,
+                        latex: formula.latex,
+                        raw: formula.raw,
+                        position: `${formula.startIndex}-${formula.endIndex}`
+                    })}`);
+                });
+
+                if (formulas.length === 0) {
+                    setStatus(caseNum, '❌ 没有发现公式！这可能是问题所在。', 'error');
+                    return;
+                }
+
+                // 2. 发送转换请求
+                log(caseNum, '2. 发送后端转换请求...');
+                const response = await fetch('http://localhost:3001/api/formula/convert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        formulas: formulas.map(f => ({
+                            id: f.id,
+                            latex: f.latex,
+                            type: f.type
+                        }))
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                log(caseNum, `API 响应: ${JSON.stringify(data.success)}`);
+
+                if (data.success && data.data && data.data.results) {
+                    const results = data.data.results;
+                    log(caseNum, `3. 转换结果 (${results.length} 个):`);
+                    
+                    let successCount = 0;
+                    results.forEach((result, index) => {
+                        if (result.success) successCount++;
+                        
+                        log(caseNum, `  结果 ${index + 1}: ${JSON.stringify({
+                            id: result.id,
+                            success: result.success,
+                            latex: result.latex,
+                            isDisplayMode: result.isDisplayMode,
+                            ommlLength: result.omml ? result.omml.length : 0,
+                            error: result.error
+                        })}`);
+                    });
+
+                    // 4. 模拟替换过程
+                    log(caseNum, '4. 模拟文本替换...');
+                    let processedText = markdown;
+                    const sortedFormulas = [...formulas].sort((a, b) => b.startIndex - a.startIndex);
+                    
+                    for (const formula of sortedFormulas) {
+                        const conversionResult = results.find(result => {
+                            const latexMatches = result.latex === formula.latex;
+                            const typeMatches = result.isDisplayMode === (formula.type === FORMULA_TYPES.BLOCK);
+                            return latexMatches && typeMatches;
+                        });
+                        
+                        if (conversionResult && conversionResult.success) {
+                            const placeholder = `__OMML_PLACEHOLDER_${conversionResult.id}__`;
+                            const beforeText = processedText.substring(0, formula.startIndex);
+                            const afterText = processedText.substring(formula.endIndex);
+                            processedText = beforeText + placeholder + afterText;
+                            
+                            log(caseNum, `  替换公式: ${formula.latex.substring(0, 30)} → ${placeholder}`);
+                        } else {
+                            log(caseNum, `  ❌ 公式匹配失败: ${formula.latex.substring(0, 30)}`);
+                        }
+                    }
+
+                    const placeholderCount = (processedText.match(/__OMML_PLACEHOLDER_/g) || []).length;
+                    log(caseNum, `5. 替换完成，占位符数量: ${placeholderCount}`);
+                    log(caseNum, `处理后文本预览: ${JSON.stringify(processedText.substring(0, 100))}`);
+
+                    if (successCount === formulas.length && placeholderCount === formulas.length) {
+                        setStatus(caseNum, `✅ 测试通过！${successCount}个公式全部转换成功`, 'success');
+                    } else {
+                        setStatus(caseNum, `⚠️ 部分成功：${successCount}/${formulas.length}个公式转换成功，${placeholderCount}个占位符`, 'warning');
+                    }
+                } else {
+                    throw new Error('API 返回格式错误');
+                }
+
+            } catch (error) {
+                log(caseNum, `❌ 错误: ${error.message}`);
+                setStatus(caseNum, `❌ 测试失败：${error.message}`, 'error');
+            }
+        }
+
+        async function checkApiStatus() {
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.style.display = 'block';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/formula/stats');
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = `✅ 后端 API 正常运行，统计: ${JSON.stringify(data.data)}`;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ 后端 API 连接失败: ${error.message}。请确保后端服务已启动。`;
+            }
+        }
+
+        // 页面加载时检查API状态
+        window.onload = function() {
+            checkApiStatus();
+        };
+    </script>
+</body>
+</html>

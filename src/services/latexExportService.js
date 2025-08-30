@@ -431,31 +431,46 @@ class LatexExportService {
   replaceLatexInText(text, formulaMap) {
     if (!text) return text;
     
+    console.log(`[LaTeX Export Debug] 开始处理文本，长度: ${text.length}`);
+    console.log(`[LaTeX Export Debug] 文本内容预览: ${JSON.stringify(text.substring(0, 100))}`);
+    console.log(`[LaTeX Export Debug] 可用转换结果数量: ${Array.from(formulaMap.values()).length}`);
+    
     let processedText = text;
     
     // 找到文本中的所有公式并替换
     const formulas = extractLatexFormulas(text);
+    console.log(`[LaTeX Export Debug] 在文本中发现 ${formulas.length} 个公式`);
     
     // 按位置倒序处理，避免索引错乱
     const sortedFormulas = [...formulas].sort((a, b) => b.startIndex - a.startIndex);
     
     for (const formula of sortedFormulas) {
+      console.log(`[LaTeX Export Debug] 处理公式: ${JSON.stringify({
+        id: formula.id,
+        type: formula.type,
+        latex: formula.latex,
+        raw: formula.raw,
+        position: `${formula.startIndex}-${formula.endIndex}`
+      })}`);
+      
       // 查找对应的转换结果 - 改进匹配逻辑
       const conversionResult = Array.from(formulaMap.values())
         .find(result => {
           const latexMatches = result.latex === formula.latex;
           const typeMatches = result.isDisplayMode === (formula.type === FORMULA_TYPES.BLOCK);
           
-          console.log(`[LaTeX Export] 匹配检查: ${formula.latex.substring(0, 20)} | LaTeX匹配: ${latexMatches} | 类型匹配: ${typeMatches} | result.isDisplayMode: ${result.isDisplayMode} | formula.type: ${formula.type}`);
+          console.log(`[LaTeX Export Debug] 匹配检查: ${formula.latex.substring(0, 20)} | LaTeX匹配: ${latexMatches} | 类型匹配: ${typeMatches} | result.isDisplayMode: ${result.isDisplayMode} | formula.type: ${formula.type}`);
           
           return latexMatches && typeMatches;
         });
       
-      console.log(`[LaTeX Export] 公式匹配结果:`, {
+      console.log(`[LaTeX Export Debug] 公式匹配结果:`, {
         formula: formula.latex.substring(0, 30),
         found: !!conversionResult,
         success: conversionResult?.success,
-        availableResults: Array.from(formulaMap.values()).length
+        conversionResultId: conversionResult?.id,
+        availableResults: Array.from(formulaMap.values()).length,
+        availableResultIds: Array.from(formulaMap.values()).map(r => r.id)
       });
       
       if (conversionResult && conversionResult.success) {
@@ -467,7 +482,7 @@ class LatexExportService {
         
         processedText = beforeText + ommlPlaceholder + afterText;
         
-        console.log(`[LaTeX Export] 文本中公式已标记: ${formula.latex.substring(0, 30)} → ${ommlPlaceholder}`);
+        console.log(`[LaTeX Export Debug] 文本中公式已标记: ${formula.latex.substring(0, 30)} → ${ommlPlaceholder}`);
       } else {
         // 转换失败，使用降级处理
         const fallbackText = this.getFallbackText(formula);
@@ -477,23 +492,34 @@ class LatexExportService {
         
         processedText = beforeText + fallbackText + afterText;
         
-        console.warn(`[LaTeX Export] 公式转换失败，使用降级文本: ${formula.latex.substring(0, 30)} → ${fallbackText}`);
-        console.warn(`[LaTeX Export] 调试信息:`, {
+        console.warn(`[LaTeX Export Debug] 公式转换失败，使用降级文本: ${formula.latex.substring(0, 30)} → ${fallbackText}`);
+        console.warn(`[LaTeX Export Debug] 详细调试信息:`, {
           conversionResult: conversionResult ? {
             id: conversionResult.id,
             success: conversionResult.success,
             isDisplayMode: conversionResult.isDisplayMode,
+            latex: conversionResult.latex,
             hasOmml: !!conversionResult.omml
           } : null,
           formula: {
+            id: formula.id,
             latex: formula.latex,
             type: formula.type,
             expectedDisplayMode: formula.type === FORMULA_TYPES.BLOCK
           },
-          availableResultsCount: Array.from(formulaMap.values()).length
+          availableResultsCount: Array.from(formulaMap.values()).length,
+          availableResults: Array.from(formulaMap.values()).map(r => ({
+            id: r.id,
+            latex: r.latex?.substring(0, 30),
+            isDisplayMode: r.isDisplayMode,
+            success: r.success
+          }))
         });
       }
     }
+    
+    console.log(`[LaTeX Export Debug] 文本处理完成，最终长度: ${processedText.length}`);
+    console.log(`[LaTeX Export Debug] 处理后文本预览: ${JSON.stringify(processedText.substring(0, 100))}`);
     
     return processedText;
   }

@@ -168,12 +168,29 @@ const postProcessDocx = async (blob) => {
     
     // 1. 替换 OMML 占位符为真正的 OMML
     if (currentExportOmmlResults && currentExportOmmlResults.length > 0) {
-      console.log(`[OMML Post-process] 开始替换 ${currentExportOmmlResults.length} 个公式占位符`);
+      console.log(`[OMML Post-process Debug] 开始替换 ${currentExportOmmlResults.length} 个公式占位符`);
+      console.log(`[OMML Post-process Debug] XML文档长度: ${xmlString.length}`);
+      
+      // 检查XML中是否包含占位符
+      const placeholderPattern = /__OMML_PLACEHOLDER_[^_]+__/g;
+      const placeholdersInXml = xmlString.match(placeholderPattern) || [];
+      console.log(`[OMML Post-process Debug] XML中找到 ${placeholdersInXml.length} 个占位符:`, placeholdersInXml);
       
       for (const ommlResult of currentExportOmmlResults) {
+        console.log(`[OMML Post-process Debug] 处理OMML结果:`, {
+          id: ommlResult.id,
+          success: ommlResult.success,
+          hasOmml: !!ommlResult.omml,
+          latex: ommlResult.latex?.substring(0, 30),
+          isDisplayMode: ommlResult.isDisplayMode
+        });
+        
         if (ommlResult.success && ommlResult.omml) {
           const placeholder = `__OMML_PLACEHOLDER_${ommlResult.id}__`;
           const ommlXml = ommlResult.omml;
+          
+          console.log(`[OMML Post-process Debug] 查找占位符: ${placeholder}`);
+          console.log(`[OMML Post-process Debug] XML中包含占位符: ${xmlString.includes(placeholder)}`);
           
           if (xmlString.includes(placeholder)) {
             // 清理OMML XML，移除XML声明和多余的命名空间
@@ -185,6 +202,9 @@ const postProcessDocx = async (blob) => {
             // 移除多余的命名空间声明（保留必要的m:命名空间）
             cleanOmml = cleanOmml.replace(/xmlns:mml="[^"]*"/g, '');
             
+            console.log(`[OMML Post-process Debug] 清理后的OMML长度: ${cleanOmml.length}`);
+            console.log(`[OMML Post-process Debug] 清理后的OMML预览: ${cleanOmml.substring(0, 150)}`);
+            
             // 定义替换内容 - 使用正确的Word XML结构
             const replacement = `<w:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:cs="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr>${cleanOmml}</w:r>`;
             
@@ -194,20 +214,55 @@ const postProcessDocx = async (blob) => {
             // 查找包含占位符的w:t标签，确保不会错误匹配其他内容
             const placeholderRegex = new RegExp(`<w:t[^>]*>\\s*${placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*</w:t>`, 'gs');
             
+            console.log(`[OMML Post-process Debug] 测试正则匹配: ${placeholderRegex.test(xmlString)}`);
+            
+            // 重置正则状态
+            placeholderRegex.lastIndex = 0;
+            
             if (placeholderRegex.test(xmlString)) {
+              // 重置正则状态用于替换
+              placeholderRegex.lastIndex = 0;
+              
               // 替换为正确的OMML结构
+              const beforeLength = xmlString.length;
               xmlString = xmlString.replace(placeholderRegex, replacement);
-              console.log(`[OMML Post-process] 替换占位符: ${ommlResult.id}，使用正确的OMML结构`);
+              const afterLength = xmlString.length;
+              
+              console.log(`[OMML Post-process Debug] 替换占位符: ${ommlResult.id}，使用正确的OMML结构`);
+              console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
               replaced = true;
             } else {
               // 如果找不到w:t结构，使用简单的文本替换（降级方案）
+              const beforeLength = xmlString.length;
               xmlString = xmlString.replace(placeholder, replacement);
-              console.log(`[OMML Post-process] 使用降级方案替换占位符: ${ommlResult.id}`);
+              const afterLength = xmlString.length;
+              
+              console.log(`[OMML Post-process Debug] 使用降级方案替换占位符: ${ommlResult.id}`);
+              console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
               replaced = true;
             }
+            
+            // 验证替换是否成功
+            if (replaced && !xmlString.includes(placeholder)) {
+              console.log(`[OMML Post-process Debug] ✅ 占位符 ${placeholder} 替换成功`);
+            } else if (replaced) {
+              console.warn(`[OMML Post-process Debug] ⚠️ 占位符 ${placeholder} 可能未完全替换`);
+            }
+          } else {
+            console.warn(`[OMML Post-process Debug] ❌ 未找到占位符: ${placeholder}`);
           }
+        } else {
+          console.warn(`[OMML Post-process Debug] ❌ OMML结果无效:`, {
+            id: ommlResult.id,
+            success: ommlResult.success,
+            hasOmml: !!ommlResult.omml
+          });
         }
       }
+      
+      // 最终检查
+      const remainingPlaceholders = xmlString.match(placeholderPattern) || [];
+      console.log(`[OMML Post-process Debug] 处理完成，剩余占位符: ${remainingPlaceholders.length}`, remainingPlaceholders);
     }
 
     // 2. 处理字符缩进（原有逻辑）
