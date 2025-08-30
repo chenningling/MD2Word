@@ -72,10 +72,31 @@ export class LaTeXRenderer {
       });
     }
 
-    try {
-      // 使用 MathJax 渲染
-      window.MathJax.texReset(); // 重置 MathJax 状态
-      const mjxContainer = window.MathJax.tex2svg(latex, { display: isDisplayMode });
+      try {
+    // 🔧 解码HTML实体，确保LaTeX代码正确
+    const cleanLatex = decodeHtmlEntities(latex);
+    
+    // 🔍 最终检查：确保传给MathJax的代码已完全清理
+    if (cleanLatex.includes('&amp;') || cleanLatex.includes('&lt;') || cleanLatex.includes('&gt;')) {
+      console.warn(`[LaTeX Renderer] ⚠️ renderFormula函数警告：传给MathJax的公式仍包含HTML实体:`, {
+        latex: cleanLatex,
+        isDisplayMode,
+        包含amp: cleanLatex.includes('&amp;'),
+        包含lt: cleanLatex.includes('&lt;'),
+        包含gt: cleanLatex.includes('&gt;')
+      });
+    }
+    
+    console.log(`[LaTeX Renderer] 🔍 renderFormula调用:`, {
+      原始: latex.substring(0, 50) + (latex.length > 50 ? '...' : ''),
+      清理后: cleanLatex.substring(0, 50) + (cleanLatex.length > 50 ? '...' : ''),
+      isDisplayMode,
+      解码生效: latex !== cleanLatex
+    });
+    
+    // 使用 MathJax 渲染
+    window.MathJax.texReset(); // 重置 MathJax 状态
+    const mjxContainer = window.MathJax.tex2svg(cleanLatex, { display: isDisplayMode });
       
       if (!mjxContainer || !mjxContainer.firstChild) {
         throw new Error('MathJax 渲染结果为空');
@@ -332,12 +353,35 @@ export const processLatexInPreview = async (html) => {
         
         if (!latexCode) continue;
         
+        // 🔧 解码HTML实体
+        const cleanLatexCode = decodeHtmlEntities(latexCode);
+        
+        if (latexCode !== cleanLatexCode) {
+          console.log(`[LaTeX Renderer] 🔧 块级公式HTML实体解码:`, {
+            原始: latexCode.substring(0, 100) + (latexCode.length > 100 ? '...' : ''),
+            解码后: cleanLatexCode.substring(0, 100) + (cleanLatexCode.length > 100 ? '...' : ''),
+            包含amp: latexCode.includes('&amp;'),
+            包含lt: latexCode.includes('&lt;'),
+            包含gt: latexCode.includes('&gt;')
+          });
+        }
+        
+        // 🔍 最终检查：确保传给MathJax的代码已完全清理
+        if (cleanLatexCode.includes('&amp;') || cleanLatexCode.includes('&lt;') || cleanLatexCode.includes('&gt;')) {
+          console.warn(`[LaTeX Renderer] ⚠️ 警告：传给MathJax的块级公式仍包含HTML实体:`, {
+            latex: cleanLatexCode,
+            包含amp: cleanLatexCode.includes('&amp;'),
+            包含lt: cleanLatexCode.includes('&lt;'),
+            包含gt: cleanLatexCode.includes('&gt;')
+          });
+        }
+        
         console.log('[LaTeX Renderer] 渲染块级公式', {
           id: ++formulaId,
-          latex: latexCode.substring(0, 50) + (latexCode.length > 50 ? '...' : '')
+          latex: cleanLatexCode.substring(0, 50) + (cleanLatexCode.length > 50 ? '...' : '')
         });
         
-        const renderResult = await renderer.renderFormula(latexCode, true);
+        const renderResult = await renderer.renderFormula(cleanLatexCode, true);
         
         if (renderResult.success) {
           const formulaHtml = `<div class="latex-formula latex-block">${renderResult.svg}</div>`;
@@ -366,12 +410,35 @@ export const processLatexInPreview = async (html) => {
         
         if (!latexCode) continue;
         
+        // 🔧 解码HTML实体
+        const cleanLatexCode = decodeHtmlEntities(latexCode);
+        
+        if (latexCode !== cleanLatexCode) {
+          console.log(`[LaTeX Renderer] 🔧 行内公式HTML实体解码:`, {
+            原始: latexCode,
+            解码后: cleanLatexCode,
+            包含amp: latexCode.includes('&amp;'),
+            包含lt: latexCode.includes('&lt;'),
+            包含gt: latexCode.includes('&gt;')
+          });
+        }
+        
+        // 🔍 最终检查：确保传给MathJax的代码已完全清理
+        if (cleanLatexCode.includes('&amp;') || cleanLatexCode.includes('&lt;') || cleanLatexCode.includes('&gt;')) {
+          console.warn(`[LaTeX Renderer] ⚠️ 警告：传给MathJax的行内公式仍包含HTML实体:`, {
+            latex: cleanLatexCode,
+            包含amp: cleanLatexCode.includes('&amp;'),
+            包含lt: cleanLatexCode.includes('&lt;'),
+            包含gt: cleanLatexCode.includes('&gt;')
+          });
+        }
+        
         console.log('[LaTeX Renderer] 渲染行内公式', {
           id: ++formulaId,
-          latex: latexCode.substring(0, 30) + (latexCode.length > 30 ? '...' : '')
+          latex: cleanLatexCode.substring(0, 30) + (cleanLatexCode.length > 30 ? '...' : '')
         });
         
-        const renderResult = await renderer.renderFormula(latexCode, false);
+        const renderResult = await renderer.renderFormula(cleanLatexCode, false);
         
         if (renderResult.success) {
           const formulaHtml = `<span class="latex-formula latex-inline">${renderResult.svg}</span>`;
@@ -465,6 +532,20 @@ export const getLatexPreviewStyles = () => {
       }
     }
   `;
+};
+
+/**
+ * 解码HTML实体
+ * @param {string} htmlString - 包含HTML实体的字符串
+ * @returns {string} 解码后的字符串
+ */
+export const decodeHtmlEntities = (htmlString) => {
+  return htmlString.replace(/&amp;/g, '&')
+                   .replace(/&lt;/g, '<')
+                   .replace(/&gt;/g, '>')
+                   .replace(/&quot;/g, '"')
+                   .replace(/&#39;/g, "'")
+                   .replace(/&nbsp;/g, ' ');
 };
 
 /**

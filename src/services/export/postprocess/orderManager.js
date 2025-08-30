@@ -119,17 +119,36 @@ export const reorderXmlElements = (newXml) => {
       console.log(`[Order Manager] ✅ 添加段落${paragraphIndex + 1}: "${originalElem.textContent}"`);
       paragraphIndex++;
     } else if (originalElem.type === 'tbl' && tableIndex < currentElements.tables.length) {
-      // 🚨 关键修复：使用原始XML中包含公式的表格，而不是重建后的空表格
+      // 🔧 智能表格选择：优先使用已处理的表格，保持保护键
+      const currentTableXml = currentElements.tables[tableIndex][0];
       const originalTableXml = originalElem.xmlContent;
       
-      // 🔍 检查原始表格是否包含OMML公式
-      const ommlCount = (originalTableXml.match(/<m:oMath/g) || []).length;
-      const placeholderCount = (originalTableXml.match(/OMML_PLACEHOLDER/g) || []).length;
-      console.log(`[Order Manager] 🔍 表格${tableIndex + 1}内容检查: ${ommlCount}个OMML公式, ${placeholderCount}个占位符`);
-      console.log(`[Order Manager] 🔧 使用原始表格XML (长度: ${originalTableXml.length}) 而非重建表格`);
+      // 🔍 检查当前表格是否包含保护键
+      const protectionKeyCount = (currentTableXml.match(/__OMML_PROTECTED_\d+__/g) || []).length;
+      const ommlCount = (currentTableXml.match(/<m:oMath/g) || []).length;
+      const originalOmmlCount = (originalTableXml.match(/<m:oMath/g) || []).length;
       
-      orderedBodyContent.push(originalTableXml);
-      console.log(`[Order Manager] ✅ 添加表格${tableIndex + 1} (使用原始表格内容，保持已转换的公式)`);
+      // 选择使用哪个表格XML
+      let selectedTableXml, reason;
+      if (protectionKeyCount > 0) {
+        // 当前表格包含保护键，使用它以确保后续恢复
+        selectedTableXml = currentTableXml;
+        reason = `包含${protectionKeyCount}个保护键`;
+      } else if (originalOmmlCount > 0) {
+        // 原始表格包含OMML公式，使用它
+        selectedTableXml = originalTableXml;
+        reason = `包含${originalOmmlCount}个OMML公式`;
+      } else {
+        // 默认使用当前表格
+        selectedTableXml = currentTableXml;
+        reason = "使用重建表格";
+      }
+      
+      console.log(`[Order Manager] 🔍 表格${tableIndex + 1}选择: ${reason} (保护键:${protectionKeyCount}, 当前OMML:${ommlCount}, 原始OMML:${originalOmmlCount})`);
+      console.log(`[Order Manager] 🔧 使用${reason === `包含${protectionKeyCount}个保护键` ? '当前' : '原始'}表格XML (长度: ${selectedTableXml.length})`);
+      
+      orderedBodyContent.push(selectedTableXml);
+      console.log(`[Order Manager] ✅ 添加表格${tableIndex + 1} (${reason})`);
       tableIndex++;
     } else if (originalElem.type === 'sectPr' && sectPrIndex < currentElements.sectPr.length) {
       // 使用当前XML中的sectPr

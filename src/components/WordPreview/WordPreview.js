@@ -461,11 +461,66 @@ const WordPreview = () => {
         marked.setOptions(markedOptions);
         
         // 先将markdown转换为HTML
-        const html = marked(processedMarkdown);
+        let html = marked(processedMarkdown);
+        
+        // 🔍 调试：检查Markdown转HTML后是否存在HTML实体编码
+        if (html.includes('&amp;')) {
+          console.log('[Word Preview] ⚠️ 检测到HTML中包含&amp;实体编码');
+          const ampMatches = html.match(/[^&]*&amp;[^&]*/g);
+          if (ampMatches) {
+            console.log('[Word Preview] 🔍 &amp;出现的上下文:', ampMatches.slice(0, 3));
+          }
+          
+          // 🚨 紧急修复：在HTML阶段直接替换数学公式中的HTML实体
+          // 这是因为marked将LaTeX中的&符号编码成了&amp;
+          const originalHtml = html;
+          console.log(`[Word Preview] 🔍 修复前完整HTML:`, html);
+          html = html.replace(/(\$\$[\s\S]*?\$\$|\$[^$\n]*?\$)/g, (match) => {
+            console.log(`[Word Preview] 🔍 处理公式: "${match}"`);
+            const decodedMatch = match.replace(/&amp;/g, '&')
+                                    .replace(/&lt;/g, '<')
+                                    .replace(/&gt;/g, '>')
+                                    .replace(/&quot;/g, '"')
+                                    .replace(/&#39;/g, "'");
+            console.log(`[Word Preview] 🔧 解码结果: "${decodedMatch}"`);
+            console.log(`[Word Preview] 🔍 是否改变: ${decodedMatch !== match}`);
+            if (decodedMatch !== match) {
+              console.log(`[Word Preview] 🔧 紧急修复公式HTML实体: "${match}" → "${decodedMatch}"`);
+            }
+            return decodedMatch;
+          });
+          
+          // 🔍 验证HTML修复效果
+          console.log(`[Word Preview] 🔍 修复后完整HTML:`, html);
+          const htmlStillContainsAmp = html.includes('&amp;');
+          console.log(`[Word Preview] ✅ HTML阶段修复完成。还包含&amp;: ${htmlStillContainsAmp}`);
+          if (htmlStillContainsAmp) {
+            console.warn(`[Word Preview] ⚠️ 警告：HTML修复后仍包含&amp;！`);
+            console.log(`[Word Preview] 🔍 修复前HTML预览:`, originalHtml.substring(0, 200));
+            console.log(`[Word Preview] 🔍 修复后HTML预览:`, html.substring(0, 200));
+            // 额外检查：查找所有&amp;的位置
+            const ampMatches = html.match(/[^&]*&amp;[^&]*/g);
+            if (ampMatches) {
+              console.log(`[Word Preview] 🔍 剩余的&amp;上下文:`, ampMatches.slice(0, 5));
+            }
+          }
+          
+          if (originalHtml !== html) {
+            console.log('[Word Preview] ✅ 已在HTML阶段修复所有公式中的HTML实体编码');
+          }
+        }
         
         // 查找所有Mermaid占位符
         const tempDiv = document.createElement('div');
+        // 🔧 关键修复：使用修复后的HTML
         tempDiv.innerHTML = html;
+        
+        // 🔍 调试：检查DOM设置后是否重新编码了HTML实体
+        console.log(`[Word Preview] 🔍 设置tempDiv.innerHTML后检查:`, {
+          原始html包含amp: html.includes('&amp;'),
+          tempDiv包含amp: tempDiv.innerHTML.includes('&amp;'),
+          是否被重新编码: !html.includes('&amp;') && tempDiv.innerHTML.includes('&amp;')
+        });
         
         // 处理所有图片，添加样式类
         const imgElements = tempDiv.querySelectorAll('img:not(.mermaid-diagram img)');
@@ -564,6 +619,33 @@ const WordPreview = () => {
         console.log(`[Word Preview] 当前HTML长度: ${tempDiv.innerHTML.length}`);
         console.log(`[Word Preview] HTML内容预览:`, tempDiv.innerHTML.substring(0, 200));
         
+        // 🔍 重要调试：检查进入LaTeX处理时HTML的实体编码状态
+        const htmlContainsAmp = tempDiv.innerHTML.includes('&amp;');
+        console.log(`[Word Preview] 📊 进入LaTeX处理时HTML状态: 包含&amp;=${htmlContainsAmp}`);
+        if (htmlContainsAmp) {
+          const ampMatches = tempDiv.innerHTML.match(/[^&]*&amp;[^&]*/g);
+          console.log(`[Word Preview] 🔍 &amp;出现的上下文:`, ampMatches ? ampMatches.slice(0, 3) : []);
+          
+          // 🚨 关键修复：由于DOM重新编码了HTML实体，我们需要再次修复tempDiv.innerHTML
+          console.log(`[Word Preview] 🔧 DOM重新编码检测：开始修复tempDiv.innerHTML中的HTML实体`);
+          let fixedHtml = tempDiv.innerHTML;
+          fixedHtml = fixedHtml.replace(/(\$\$[\s\S]*?\$\$|\$[^$\n]*?\$)/g, (match) => {
+            const decodedMatch = match.replace(/&amp;/g, '&')
+                                    .replace(/&lt;/g, '<')
+                                    .replace(/&gt;/g, '>')
+                                    .replace(/&quot;/g, '"')
+                                    .replace(/&#39;/g, "'");
+            if (decodedMatch !== match) {
+              console.log(`[Word Preview] 🔧 DOM修复公式HTML实体: "${match}" → "${decodedMatch}"`);
+            }
+            return decodedMatch;
+          });
+          
+          // 重新设置修复后的HTML
+          tempDiv.innerHTML = fixedHtml;
+          console.log(`[Word Preview] ✅ tempDiv.innerHTML HTML实体修复完成`);
+        }
+        
         // 内联 LaTeX 渲染实现（避免模块导入问题）
         console.log('[Word Preview] 开始内联 LaTeX 公式处理');
         try {
@@ -580,17 +662,92 @@ const WordPreview = () => {
                 const fullMatch = match[0];
                 let latexCode = match[1].trim();
                 
+                // 🔍 调试：检查正则匹配时的LaTeX代码
+                console.log(`[Word Preview] 🔍 正则匹配到块级公式:`, {
+                  完整匹配: fullMatch.substring(0, 100) + (fullMatch.length > 100 ? '...' : ''),
+                  LaTeX代码: latexCode.substring(0, 100) + (latexCode.length > 100 ? '...' : ''),
+                  包含amp: latexCode.includes('&amp;')
+                });
+                
                 if (!latexCode) continue;
+                
+                // 🚨 关键修复：在清理HTML标签之前先进行HTML实体解码！
+                const originalLatexCode = latexCode;
+                latexCode = latexCode.replace(/&amp;/g, '&')
+                                   .replace(/&lt;/g, '<')
+                                   .replace(/&gt;/g, '>')
+                                   .replace(/&quot;/g, '"')
+                                   .replace(/&#39;/g, "'")
+                                   .replace(/&nbsp;/g, ' ');
+                
+                // 🔍 调试：检查HTML实体解码效果
+                if (originalLatexCode !== latexCode) {
+                  console.log(`[Word Preview] 🔧 块级公式HTML实体解码:`, {
+                    原始: originalLatexCode.substring(0, 100) + (originalLatexCode.length > 100 ? '...' : ''),
+                    解码后: latexCode.substring(0, 100) + (latexCode.length > 100 ? '...' : ''),
+                    解码生效: true
+                  });
+                }
                 
                 // 清理HTML标签，提取纯LaTeX代码
-                // 移除<br>标签并替换为换行符，保持公式的原始格式
-                latexCode = latexCode.replace(/<br\s*\/?>/gi, '\n');
-                // 移除其他可能的HTML标签
+                // 🔧 关键修复：正确处理LaTeX矩阵换行符
+                const beforeBrReplace = latexCode;
+                
+                // 步骤1：智能处理<br>标签替换
+                // 检查是否在矩阵环境中（pmatrix、bmatrix、matrix等）
+                const isInMatrix = /\\begin\{[pb]?matrix\}/.test(latexCode);
+                if (isInMatrix) {
+                  // 矩阵环境：智能处理<br>标签
+                  // 1. 不要在\begin{pmatrix}后直接添加\\
+                  // 2. 只在行与行之间添加\\
+                  latexCode = latexCode.replace(/\\begin\{([pb]?matrix)\}\s*<br\s*\/?>\s*/gi, '\\begin{$1}\n  ');
+                  // 3. 中间的<br>替换为\\换行
+                  latexCode = latexCode.replace(/<br\s*\/?>\s*(?!\\end)/gi, ' \\\\ \n  ');
+                  // 4. \end前的<br>只需要换行
+                  latexCode = latexCode.replace(/<br\s*\/?>\s*(?=\\end)/gi, '\n');
+                } else {
+                  // 其他环境：<br>替换为换行符
+                  latexCode = latexCode.replace(/<br\s*\/?>/gi, '\n');
+                }
+                const afterBrReplace = latexCode;
+                
+                // 步骤2：移除其他可能的HTML标签
                 latexCode = latexCode.replace(/<[^>]*>/g, '');
-                // 清理多余的空白字符
-                latexCode = latexCode.replace(/\n\s*\n/g, '\n').trim();
+                const afterTagRemoval = latexCode;
+                
+                // 步骤3：清理多余的空白字符，但保留LaTeX结构
+                if (isInMatrix) {
+                  // 矩阵环境：保持清晰的格式，清理多余的空白
+                  latexCode = latexCode.replace(/\n\s+/g, '\n  ')         // 统一缩进为2空格
+                                     .replace(/\s*\\\\\s*/g, ' \\\\ ')    // 标准化\\前后空格
+                                     .replace(/\s{2,}/g, ' ')             // 多个空格合并为一个
+                                     .replace(/\\\\\s*\n\s*/g, '\\\\\n  ') // \\后换行并缩进
+                                     .trim();
+                } else {
+                  // 其他环境：清理换行符
+                  latexCode = latexCode.replace(/\n\s*\n/g, '\n').trim();
+                }
+                const afterWhitespaceCleanup = latexCode;
+                
+                // 🔍 调试：检查HTML标签清理的每个步骤
+                console.log(`[Word Preview] 🔧 HTML标签清理过程:`, {
+                  '1_原始': beforeBrReplace.substring(0, 80) + (beforeBrReplace.length > 80 ? '...' : ''),
+                  '2_br替换后': afterBrReplace.substring(0, 80) + (afterBrReplace.length > 80 ? '...' : ''),
+                  '3_标签移除后': afterTagRemoval.substring(0, 80) + (afterTagRemoval.length > 80 ? '...' : ''),
+                  '4_空白清理后': afterWhitespaceCleanup.substring(0, 80) + (afterWhitespaceCleanup.length > 80 ? '...' : ''),
+                  是否包含换行: latexCode.includes('\\\\') || latexCode.includes('\n')
+                });
                 
                 if (!latexCode) continue;
+                
+                // 🔍 最终调试：传给MathJax的LaTeX代码
+                console.log(`[Word Preview] 🚀 最终传给MathJax的LaTeX代码:`, {
+                  代码: latexCode,
+                  长度: latexCode.length,
+                  包含双反斜杠: latexCode.includes('\\\\'),
+                  包含换行: latexCode.includes('\n'),
+                  代码展示: JSON.stringify(latexCode)
+                });
                 
                 window.MathJax.texReset();
                 const result = window.MathJax.tex2svg(latexCode, { display: true });
@@ -618,8 +775,40 @@ const WordPreview = () => {
                 
                 if (!latexCode) continue;
                 
-                // 清理HTML标签
+                // 🚨 关键修复：行内公式也需要HTML实体解码！
+                const originalLatexCode = latexCode;
+                latexCode = latexCode.replace(/&amp;/g, '&')
+                                   .replace(/&lt;/g, '<')
+                                   .replace(/&gt;/g, '>')
+                                   .replace(/&quot;/g, '"')
+                                   .replace(/&#39;/g, "'")
+                                   .replace(/&nbsp;/g, ' ');
+                
+                // 🔍 调试：检查行内公式HTML实体解码效果
+                if (originalLatexCode !== latexCode) {
+                  console.log(`[Word Preview] 🔧 行内公式HTML实体解码:`, {
+                    原始: originalLatexCode,
+                    解码后: latexCode,
+                    解码生效: true
+                  });
+                }
+                
+                // 清理HTML标签 - 行内公式也需要矩阵支持
+                const isInMatrix = /\\begin\{[pb]?matrix\}/.test(latexCode);
+                if (isInMatrix) {
+                  // 行内矩阵：智能处理<br>标签（简化版，因为行内一般不换行）
+                  latexCode = latexCode.replace(/\\begin\{([pb]?matrix)\}\s*<br\s*\/?>\s*/gi, '\\begin{$1} ');
+                  latexCode = latexCode.replace(/<br\s*\/?>\s*(?!\\end)/gi, ' \\\\ ');
+                  latexCode = latexCode.replace(/<br\s*\/?>\s*(?=\\end)/gi, ' ');
+                }
                 latexCode = latexCode.replace(/<[^>]*>/g, '').trim();
+                
+                // 清理行内矩阵的空白字符
+                if (isInMatrix) {
+                  latexCode = latexCode.replace(/\s+/g, ' ')
+                                     .replace(/\s*\\\\\s*/g, ' \\\\ ')
+                                     .trim();
+                }
                 
                 if (!latexCode) continue;
                 
@@ -725,14 +914,71 @@ const WordPreview = () => {
               if (!latexCode) continue;
               
               // 清理HTML标签，提取纯LaTeX代码
-              // 移除<br>标签并替换为换行符，保持公式的原始格式
-              latexCode = latexCode.replace(/<br\s*\/?>/gi, '\n');
+              // 🔧 最终处理阶段：也需要正确处理矩阵换行符
+              const isInMatrix = /\\begin\{[pb]?matrix\}/.test(latexCode);
+              if (isInMatrix) {
+                // 矩阵环境：智能处理<br>标签
+                latexCode = latexCode.replace(/\\begin\{([pb]?matrix)\}\s*<br\s*\/?>\s*/gi, '\\begin{$1}\n  ');
+                latexCode = latexCode.replace(/<br\s*\/?>\s*(?!\\end)/gi, ' \\\\ \n  ');
+                latexCode = latexCode.replace(/<br\s*\/?>\s*(?=\\end)/gi, '\n');
+              } else {
+                // 其他环境：<br>替换为换行符
+                latexCode = latexCode.replace(/<br\s*\/?>/gi, '\n');
+              }
               // 移除其他可能的HTML标签
               latexCode = latexCode.replace(/<[^>]*>/g, '');
+              // 🔧 解码HTML实体，特别是&amp;等
+              const originalLatexCode = latexCode;
+              latexCode = latexCode.replace(/&amp;/g, '&')
+                                   .replace(/&lt;/g, '<')
+                                   .replace(/&gt;/g, '>')
+                                   .replace(/&quot;/g, '"')
+                                   .replace(/&#39;/g, "'");
+              
+              // 🔍 详细调试：检查HTML实体解码效果
+              console.log(`[Word Preview] 🔍 块级公式LaTeX代码提取:`, {
+                原始码: originalLatexCode.substring(0, 100) + (originalLatexCode.length > 100 ? '...' : ''),
+                解码后: latexCode.substring(0, 100) + (latexCode.length > 100 ? '...' : ''),
+                包含amp: originalLatexCode.includes('&amp;'),
+                包含lt: originalLatexCode.includes('&lt;'),
+                包含gt: originalLatexCode.includes('&gt;'),
+                是否需要解码: originalLatexCode !== latexCode
+              });
+              
+              if (originalLatexCode !== latexCode) {
+                console.log(`[Word Preview] 🔧 块级公式HTML实体解码生效`);
+              } else if (originalLatexCode.includes('&amp;')) {
+                console.warn(`[Word Preview] ⚠️ 警告：块级公式仍包含&amp;但解码未生效！`);
+              }
+              
               // 清理多余的空白字符
-              latexCode = latexCode.replace(/\n\s*\n/g, '\n').trim();
+              if (isInMatrix) {
+                // 矩阵环境：保持清晰的格式
+                latexCode = latexCode.replace(/\n\s+/g, '\n  ')
+                                   .replace(/\s*\\\\\s*/g, ' \\\\ ')
+                                   .replace(/\s{2,}/g, ' ')
+                                   .replace(/\\\\\s*\n\s*/g, '\\\\\n  ')
+                                   .trim();
+              } else {
+                // 其他环境：清理换行符
+                latexCode = latexCode.replace(/\n\s*\n/g, '\n').trim();
+              }
+              
+              if (originalLatexCode !== latexCode) {
+                console.log(`[Word Preview] 🔧 HTML实体解码: "${originalLatexCode}" → "${latexCode}"`);
+              }
               
               if (!latexCode) continue;
+              
+              // 🔍 最终检查：确保传给MathJax的代码已完全清理
+              if (latexCode.includes('&amp;') || latexCode.includes('&lt;') || latexCode.includes('&gt;')) {
+                console.warn(`[Word Preview] ⚠️ 警告：传给MathJax的块级公式仍包含HTML实体:`, {
+                  latex: latexCode,
+                  包含amp: latexCode.includes('&amp;'),
+                  包含lt: latexCode.includes('&lt;'),
+                  包含gt: latexCode.includes('&gt;')
+                });
+              }
               
               window.MathJax.texReset();
               const result = window.MathJax.tex2svg(latexCode, { display: true });
@@ -761,9 +1007,38 @@ const WordPreview = () => {
               if (!latexCode) continue;
               
               // 清理HTML标签
-              latexCode = latexCode.replace(/<[^>]*>/g, '').trim();
+              latexCode = latexCode.replace(/<[^>]*>/g, '');
+              // 🔧 解码HTML实体，特别是&amp;等
+              const originalLatexCodeInline = latexCode;
+              latexCode = latexCode.replace(/&amp;/g, '&')
+                                   .replace(/&lt;/g, '<')
+                                   .replace(/&gt;/g, '>')
+                                   .replace(/&quot;/g, '"')
+                                   .replace(/&#39;/g, "'")
+                                   .trim();
+              
+              // 🔍 详细调试：检查行内公式HTML实体解码效果
+              if (originalLatexCodeInline !== latexCode) {
+                console.log(`[Word Preview] 🔧 行内公式HTML实体解码:`, {
+                  原始: originalLatexCodeInline,
+                  解码后: latexCode,
+                  包含amp: originalLatexCodeInline.includes('&amp;'),
+                  包含lt: originalLatexCodeInline.includes('&lt;'),
+                  包含gt: originalLatexCodeInline.includes('&gt;')
+                });
+              }
               
               if (!latexCode) continue;
+              
+              // 🔍 最终检查：确保传给MathJax的代码已完全清理
+              if (latexCode.includes('&amp;') || latexCode.includes('&lt;') || latexCode.includes('&gt;')) {
+                console.warn(`[Word Preview] ⚠️ 警告：传给MathJax的行内公式仍包含HTML实体:`, {
+                  latex: latexCode,
+                  包含amp: latexCode.includes('&amp;'),
+                  包含lt: latexCode.includes('&lt;'),
+                  包含gt: latexCode.includes('&gt;')
+                });
+              }
               
               window.MathJax.texReset();
               const result = window.MathJax.tex2svg(latexCode, { display: false });
