@@ -189,8 +189,35 @@ class LatexExportService {
   async convertFormulasToOmml(formulas) {
     console.log(`[LaTeX Export] 开始转换 ${formulas.length} 个公式为 OMML`);
     
+    // 🔧 过滤掉无效公式，避免API错误
+    const validFormulas = formulas.filter(formula => formula.isValid !== false);
+    const invalidCount = formulas.length - validFormulas.length;
+    
+    if (invalidCount > 0) {
+      console.warn(`[LaTeX Export] 过滤掉 ${invalidCount} 个无效公式`);
+      const invalidFormulas = formulas.filter(formula => formula.isValid === false);
+      invalidFormulas.forEach(formula => {
+        console.warn(`[LaTeX Export] 无效公式: ${formula.id} - "${formula.latex}"`);
+      });
+    }
+    
+    if (validFormulas.length === 0) {
+      console.log('[LaTeX Export] 没有有效公式需要转换');
+      return formulas.map(formula => ({
+        id: formula.id,
+        success: formula.isValid !== false,
+        latex: formula.latex,
+        omml: null,
+        mathml: null,
+        isDisplayMode: formula.type === 'block',
+        error: formula.isValid === false ? '公式格式无效' : null
+      }));
+    }
+    
+    console.log(`[LaTeX Export] 开始转换 ${validFormulas.length} 个有效公式为 OMML`);
+    
     // 分批处理，避免请求过大
-    const batches = this.chunkArray(formulas, LATEX_EXPORT_CONFIG.export.maxFormulasPerRequest);
+    const batches = this.chunkArray(validFormulas, LATEX_EXPORT_CONFIG.export.maxFormulasPerRequest);
     let allResults = [];
     
     for (let i = 0; i < batches.length; i++) {
@@ -217,7 +244,39 @@ class LatexExportService {
       }
     }
     
-    console.log(`[LaTeX Export] 所有批次处理完成，总计 ${allResults.length} 个结果`);
+    console.log(`[LaTeX Export] 所有批次处理完成，总计 ${allResults.length} 个有效公式结果`);
+    
+    // 🔧 合并有效公式结果和无效公式结果
+    if (invalidCount > 0) {
+      const invalidResults = formulas
+        .filter(formula => formula.isValid === false)
+        .map(formula => ({
+          id: formula.id,
+          success: false,
+          latex: formula.latex,
+          omml: null,
+          mathml: null,
+          isDisplayMode: formula.type === 'block',
+          error: '公式格式无效'
+        }));
+      
+      // 按原始顺序合并结果
+      const allFormulaResults = [];
+      let validIndex = 0;
+      let invalidIndex = 0;
+      
+      for (const originalFormula of formulas) {
+        if (originalFormula.isValid === false) {
+          allFormulaResults.push(invalidResults[invalidIndex++]);
+        } else {
+          allFormulaResults.push(allResults[validIndex++]);
+        }
+      }
+      
+      console.log(`[LaTeX Export] 返回完整结果: ${allFormulaResults.length} 个公式 (${validFormulas.length} 有效, ${invalidCount} 无效)`);
+      return allFormulaResults;
+    }
+    
     return allResults;
   }
 
