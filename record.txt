@@ -1,0 +1,237 @@
+15:51:36.486 exportService.js:81 开始导出Word文档...
+15:51:36.488 exportService.js:82 格式设置: {template: 'default', content: {…}, latin: {…}, page: {…}}
+15:51:36.491 exportService.js:85 [Export] 开始处理 LaTeX 公式...
+15:51:36.492 latexExportService.js:102 [LaTeX Export] 开始处理文档中的 LaTeX 公式
+15:51:36.492 latexExportService.js:103 [LaTeX Export Debug] 当前时间戳: 1756540296491 缓存大小: 1
+15:51:36.492 latexUtils.js:36 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 249
+15:51:36.493 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: 'p + q = r', position: '21-34', isValid: true}
+15:51:36.493 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'block', latex: '\\frac{x + y}{z + w} = \\frac{\\frac{m}{n} + \\frac{s}...', position: '49-134', isValid: true}
+15:51:36.494 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_3', type: 'block', latex: 'm \\times n = o', position: '147-165', isValid: true}
+15:51:36.494 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_4', type: 'block', latex: '\\sqrt{p^2 + q^2} = \\sqrt[3]{\\frac{x}{y}}', position: '178-222', isValid: true}
+15:51:36.494 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_5', type: 'block', latex: '5 + 7 = 12', position: '235-249', isValid: true}
+15:51:36.494 latexUtils.js:87 [LaTeX Utils] 提取完成，共发现 5 个公式
+15:51:36.494 latexExportService.js:123 [LaTeX Export] 发现 5 个 LaTeX 公式
+15:51:36.494 latexExportService.js:190 [LaTeX Export] 开始转换 5 个公式为 OMML
+15:51:36.494 latexExportService.js:198 [LaTeX Export] 处理批次 1/1，包含 5 个公式
+15:51:36.495 latexExportService.js:259 [LaTeX Export] 批次缓存统计: 1 个缓存命中, 4 个需要转换
+15:51:36.495 latexExportService.js:273 [LaTeX Export] 发送转换请求到后端 {count: 4, endpoint: 'http://localhost:3001/api/formula/convert'}
+15:51:36.495 latexExportService.js:365 [LaTeX Export] API 请求尝试 1/3: POST http://localhost:3001/api/formula/convert
+15:51:36.769 latexExportService.js:383 [LaTeX Export] API 请求成功: POST http://localhost:3001/api/formula/convert
+15:51:36.769 latexExportService.js:285 [LaTeX Export] API 响应解析: {responseSuccess: true, hasData: true, hasResults: true, resultsLength: 4, firstResult: {…}}
+15:51:36.769 latexExportService.js:339 [LaTeX Export] 批次转换完成 {total: 5, successful: 5, failed: 0, duration: 275}
+15:51:36.769 latexExportService.js:347 [LaTeX Export] 结果顺序验证: (5) ['1. formula_1', '2. formula_2', '3. formula_3', '4. formula_4', '5. formula_5']
+15:51:36.770 latexExportService.js:220 [LaTeX Export] 所有批次处理完成，总计 5 个结果
+15:51:36.770 latexExportService.js:410 [LaTeX Export] 开始在markdown中替换LaTeX公式为占位符
+15:51:36.770 latexUtils.js:36 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 249
+15:51:36.770 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: 'p + q = r', position: '21-34', isValid: true}
+15:51:36.770 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'block', latex: '\\frac{x + y}{z + w} = \\frac{\\frac{m}{n} + \\frac{s}...', position: '49-134', isValid: true}
+15:51:36.770 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_3', type: 'block', latex: 'm \\times n = o', position: '147-165', isValid: true}
+15:51:36.770 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_4', type: 'block', latex: '\\sqrt{p^2 + q^2} = \\sqrt[3]{\\frac{x}{y}}', position: '178-222', isValid: true}
+15:51:36.770 latexUtils.js:78 [LaTeX Utils] 发现公式 {id: 'formula_5', type: 'block', latex: '5 + 7 = 12', position: '235-249', isValid: true}
+15:51:36.770 latexUtils.js:87 [LaTeX Utils] 提取完成，共发现 5 个公式
+15:51:36.770 latexExportService.js:436 [LaTeX Export] Markdown替换检查: p + q = r | 找到匹配: true | 结果ID: formula_1
+15:51:36.770 latexExportService.js:450 [LaTeX Export] 准备替换公式: p + q = r → <!--OMML_PLACEHOLDER_formula_1-->
+15:51:36.770 latexExportService.js:436 [LaTeX Export] Markdown替换检查: \frac{x + y}{z + w}  | 找到匹配: true | 结果ID: formula_2
+15:51:36.770 latexExportService.js:450 [LaTeX Export] 准备替换公式: \frac{x + y}{z + w} = \frac{\f → <!--OMML_PLACEHOLDER_formula_2-->
+15:51:36.770 latexExportService.js:436 [LaTeX Export] Markdown替换检查: m \times n = o | 找到匹配: true | 结果ID: formula_3
+15:51:36.770 latexExportService.js:450 [LaTeX Export] 准备替换公式: m \times n = o → <!--OMML_PLACEHOLDER_formula_3-->
+15:51:36.770 latexExportService.js:436 [LaTeX Export] Markdown替换检查: \sqrt{p^2 + q^2} = \ | 找到匹配: true | 结果ID: formula_4
+15:51:36.771 latexExportService.js:450 [LaTeX Export] 准备替换公式: \sqrt{p^2 + q^2} = \sqrt[3]{\f → <!--OMML_PLACEHOLDER_formula_4-->
+15:51:36.771 latexExportService.js:436 [LaTeX Export] Markdown替换检查: 5 + 7 = 12 | 找到匹配: true | 结果ID: formula_5
+15:51:36.771 latexExportService.js:450 [LaTeX Export] 准备替换公式: 5 + 7 = 12 → <!--OMML_PLACEHOLDER_formula_5-->
+15:51:36.771 latexExportService.js:459 [LaTeX Export] 公式替换顺序 (执行顺序，倒序): (5) ['formula_5', 'formula_4', 'formula_3', 'formula_2', 'formula_1']
+15:51:36.771 latexExportService.js:460 [LaTeX Export] 公式替换顺序 (文档中的原始顺序): (5) ['formula_1', 'formula_2', 'formula_3', 'formula_4', 'formula_5']
+15:51:36.771 latexExportService.js:468 [LaTeX Export] Markdown中公式已替换: 5 + 7 = 12 → <!--OMML_PLACEHOLDER_formula_5-->
+15:51:36.771 latexExportService.js:468 [LaTeX Export] Markdown中公式已替换: \sqrt{p^2 + q^2} = \sqrt[3]{\f → <!--OMML_PLACEHOLDER_formula_4-->
+15:51:36.772 latexExportService.js:468 [LaTeX Export] Markdown中公式已替换: m \times n = o → <!--OMML_PLACEHOLDER_formula_3-->
+15:51:36.772 latexExportService.js:468 [LaTeX Export] Markdown中公式已替换: \frac{x + y}{z + w} = \frac{\f → <!--OMML_PLACEHOLDER_formula_2-->
+15:51:36.772 latexExportService.js:468 [LaTeX Export] Markdown中公式已替换: p + q = r → <!--OMML_PLACEHOLDER_formula_1-->
+15:51:36.772 latexExportService.js:471 [LaTeX Export] Markdown替换完成，长度: 249 → 240
+15:51:36.772 latexExportService.js:154 [LaTeX Export] 处理完成 {totalFormulas: 5, successful: 5, failed: 0, totalTime: 281}
+15:51:36.772 exportService.js:90 [Export] 使用处理后的markdown: # 全新公式测试
+
+## 测试A（简单）
+<!--OMML_PLACEHOLDER_formula_1-->
+
+## 测试B（复杂）  
+<!--OMML_PLACEHOLDER_formula_2-...
+15:51:36.773 exportService.js:94 解析的Markdown tokens: (11) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, links: {…}]
+15:51:36.773 exportService.js:97 [OMML Debug] 详细检查解析后的tokens:
+15:51:36.773 exportService.js:99 [OMML Debug] Token 0: {type: 'heading', text: '全新公式测试', raw: '# 全新公式测试\n\n', hasTokens: true, tokensCount: 1}
+15:51:36.773 exportService.js:110 [OMML Debug]   SubToken 0: {type: 'text', text: '全新公式测试', raw: '全新公式测试'}
+15:51:36.773 exportService.js:99 [OMML Debug] Token 1: {type: 'heading', text: '测试A（简单）', raw: '## 测试A（简单）\n', hasTokens: true, tokensCount: 1}
+15:51:36.773 exportService.js:110 [OMML Debug]   SubToken 0: {type: 'text', text: '测试A（简单）', raw: '测试A（简单）'}
+15:51:36.773 exportService.js:99 [OMML Debug] Token 2: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_1-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_1-->\n\n', hasTokens: false, tokensCount: 0}
+15:51:36.773 exportService.js:99 [OMML Debug] Token 3: {type: 'heading', text: '测试B（复杂）', raw: '## 测试B（复杂）  \n', hasTokens: true, tokensCount: 1}
+15:51:36.773 exportService.js:110 [OMML Debug]   SubToken 0: {type: 'text', text: '测试B（复杂）', raw: '测试B（复杂）'}
+15:51:36.773 exportService.js:99 [OMML Debug] Token 4: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_2-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_2-->\n\n', hasTokens: false, tokensCount: 0}
+15:51:36.774 exportService.js:99 [OMML Debug] Token 5: {type: 'heading', text: '测试C（简单）', raw: '## 测试C（简单）\n', hasTokens: true, tokensCount: 1}
+15:51:36.774 exportService.js:110 [OMML Debug]   SubToken 0: {type: 'text', text: '测试C（简单）', raw: '测试C（简单）'}
+15:51:36.774 exportService.js:99 [OMML Debug] Token 6: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_3-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_3-->\n\n', hasTokens: false, tokensCount: 0}
+15:51:36.774 exportService.js:99 [OMML Debug] Token 7: {type: 'heading', text: '测试D（复杂）', raw: '## 测试D（复杂）\n', hasTokens: true, tokensCount: 1}
+15:51:36.774 exportService.js:110 [OMML Debug]   SubToken 0: {type: 'text', text: '测试D（复杂）', raw: '测试D（复杂）'}
+15:51:36.774 exportService.js:99 [OMML Debug] Token 8: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_4-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_4-->\n\n', hasTokens: false, tokensCount: 0}
+15:51:36.774 exportService.js:99 [OMML Debug] Token 9: {type: 'heading', text: '测试E（简单）', raw: '## 测试E（简单）\n', hasTokens: true, tokensCount: 1}
+15:51:36.774 exportService.js:110 [OMML Debug]   SubToken 0: {type: 'text', text: '测试E（简单）', raw: '测试E（简单）'}
+15:51:36.774 exportService.js:99 [OMML Debug] Token 10: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_5-->', raw: '\x3C!--OMML_PLACEHOLDER_formula_5-->', hasTokens: false, tokensCount: 0}
+15:51:36.774 exportService.js:120 [Export] LaTeX 处理完成: {hasFormulas: true, formulaCount: 5, conversionTime: 281, fallbackMode: false}
+15:51:36.774 exportService.js:592 预处理完成，共处理 0 张图片
+15:51:36.774 exportService.js:704 处理后的tokens: (11) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+15:51:36.775 exportService.js:192 [OMML Debug] 检查tokens中的占位符...
+15:51:36.775 exportService.js:201 [OMML Debug] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_1-->'] html
+15:51:36.775 exportService.js:208 [OMML Debug] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_1-->'] html
+15:51:36.775 exportService.js:201 [OMML Debug] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_2-->'] html
+15:51:36.775 exportService.js:208 [OMML Debug] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_2-->'] html
+15:51:36.775 exportService.js:201 [OMML Debug] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_3-->'] html
+15:51:36.775 exportService.js:208 [OMML Debug] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_3-->'] html
+15:51:36.775 exportService.js:201 [OMML Debug] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_4-->'] html
+15:51:36.775 exportService.js:208 [OMML Debug] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_4-->'] html
+15:51:36.776 exportService.js:201 [OMML Debug] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_5-->'] html
+15:51:36.776 exportService.js:208 [OMML Debug] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_5-->'] html
+15:51:36.776 exportService.js:222 [OMML Debug] 期望在tokens中找到的占位符:
+15:51:36.776 exportService.js:225 [OMML Debug] - <!--OMML_PLACEHOLDER_formula_1-->
+15:51:36.776 exportService.js:225 [OMML Debug] - <!--OMML_PLACEHOLDER_formula_2-->
+15:51:36.776 exportService.js:225 [OMML Debug] - <!--OMML_PLACEHOLDER_formula_3-->
+15:51:36.776 exportService.js:225 [OMML Debug] - <!--OMML_PLACEHOLDER_formula_4-->
+15:51:36.776 exportService.js:225 [OMML Debug] - <!--OMML_PLACEHOLDER_formula_5-->
+15:51:36.776 exportService.js:1157 [Export OMML] 设置当前导出的 OMML 结果 {count: 5}
+15:51:36.779 exportService.js:1164 开始解析 11 个tokens为Word文档元素
+15:51:36.779 exportService.js:1165 tokens类型统计: {heading: 6, html: 5}
+15:51:36.779 exportService.js:1963 处理内联格式: 全新公式测试 (标题)
+15:51:36.781 exportService.js:1388 标题1设置: {spacingBefore: 12, spacingBeforeTwips: 240, spacingAfter: 8, spacingAfterTwips: 160, lineHeight: 1.5, …}
+15:51:36.781 exportService.js:1963 处理内联格式: 测试A（简单） (标题)
+15:51:36.782 exportService.js:1388 标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+15:51:36.782 exportService.js:1206 [OMML Debug] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_1-->
+15:51:36.782 exportService.js:1963 处理内联格式: 测试B（复杂） (标题)
+15:51:36.782 exportService.js:1388 标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+15:51:36.782 exportService.js:1206 [OMML Debug] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_2-->
+15:51:36.782 exportService.js:1963 处理内联格式: 测试C（简单） (标题)
+15:51:36.782 exportService.js:1388 标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+15:51:36.783 exportService.js:1206 [OMML Debug] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_3-->
+15:51:36.783 exportService.js:1963 处理内联格式: 测试D（复杂） (标题)
+15:51:36.783 exportService.js:1388 标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+15:51:36.783 exportService.js:1206 [OMML Debug] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_4-->
+15:51:36.783 exportService.js:1963 处理内联格式: 测试E（简单） (标题)
+15:51:36.783 exportService.js:1388 标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+15:51:36.783 exportService.js:1206 [OMML Debug] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_5-->
+15:51:36.783 exportService.js:1221 解析完成，共生成 11 个Word文档元素
+15:51:36.783 exportService.js:1222 Word文档元素类型统计: {Paragraph: 11}
+15:51:36.793 exportService.js:1013 样式已注入（importedStyles）：paragraph-2-chars / paragraph-4-chars / paragraph-no-indent
+15:51:36.793 exportService.js:170 [Export] LaTeX 导出统计: {totalExports: 2, totalFormulas: 6, successfulConversions: 6, failedConversions: 0, cacheHits: 1, …}
+15:51:36.845  [OMML Debug] 检查生成的docx中的占位符...
+15:51:36.853  [OMML Debug] document.xml长度: 8183
+15:51:36.853  [OMML Debug] XML中的占位符: []
+15:51:36.853  [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_1-->: ❌未找到
+15:51:36.853  [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_1--&gt;: ✅找到
+15:51:36.853  [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_2-->: ❌未找到
+15:51:36.853  [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_2--&gt;: ✅找到
+15:51:36.853  [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_3-->: ❌未找到
+15:51:36.853  [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_3--&gt;: ✅找到
+15:51:36.853  [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_4-->: ❌未找到
+15:51:36.853  [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_4--&gt;: ✅找到
+15:51:36.853  [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_5-->: ❌未找到
+15:51:36.853  [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_5--&gt;: ✅找到
+15:51:36.853  [OMML Debug] XML开头预览: <?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document mc:Ignorable="w14 w15 wp14" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http:/
+15:51:36.855  [OMML Post-process Debug] 开始替换 5 个公式占位符
+15:51:36.855  [OMML Post-process Debug] XML文档长度: 8183
+15:51:36.855  [OMML Post-process Debug] XML中找到 0 个占位符: []
+15:51:36.856  [OMML Post-process Debug] XML中占位符顺序: (5) ['formula_1@3739', 'formula_2@4773', 'formula_3@5807', 'formula_4@6841', 'formula_5@7875']
+15:51:36.856 exportService.js:329 [OMML Post-process Debug] 处理OMML结果: {id: 'formula_1', success: true, hasOmml: true, latex: 'p + q = r', isDisplayMode: true, …}
+15:51:36.856 exportService.js:343 [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_1-->
+15:51:36.856 exportService.js:344 [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_1--&gt;
+15:51:36.856 exportService.js:345 [OMML Post-process Debug] XML中包含原始占位符: false
+15:51:36.856 exportService.js:346 [OMML Post-process Debug] XML中包含转义占位符: true
+15:51:36.857 exportService.js:361 [OMML Post-process Debug] 清理后的OMML长度: 118
+15:51:36.857 exportService.js:362 [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>p+q=r</m:t></m:r></m:oMath>
+
+15:51:36.858 exportService.js:373 [OMML Post-process Debug] 测试正则匹配: true
+15:51:36.858 exportService.js:387 [OMML Post-process Debug] 替换占位符: formula_1，使用正确的OMML结构
+15:51:36.858 exportService.js:388 [OMML Post-process Debug] XML长度变化: 8183 → 8359
+15:51:36.858 exportService.js:403 [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_1--&gt; 替换成功
+15:51:36.858 exportService.js:329 [OMML Post-process Debug] 处理OMML结果: {id: 'formula_2', success: true, hasOmml: true, latex: '\\frac{x + y}{z + w} = \\frac{\\f', isDisplayMode: true, …}
+15:51:36.858 exportService.js:343 [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_2-->
+15:51:36.858 exportService.js:344 [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_2--&gt;
+15:51:36.858 exportService.js:345 [OMML Post-process Debug] XML中包含原始占位符: false
+15:51:36.858 exportService.js:346 [OMML Post-process Debug] XML中包含转义占位符: true
+15:51:36.858 exportService.js:361 [OMML Post-process Debug] 清理后的OMML长度: 856
+15:51:36.858 exportService.js:362 [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>x+y</m:t></m
+15:51:36.858 exportService.js:373 [OMML Post-process Debug] 测试正则匹配: true
+15:51:36.858 exportService.js:387 [OMML Post-process Debug] 替换占位符: formula_2，使用正确的OMML结构
+15:51:36.858 exportService.js:388 [OMML Post-process Debug] XML长度变化: 8359 → 9273
+15:51:36.858 exportService.js:403 [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_2--&gt; 替换成功
+15:51:36.858 exportService.js:329 [OMML Post-process Debug] 处理OMML结果: {id: 'formula_3', success: true, hasOmml: true, latex: 'm \\times n = o', isDisplayMode: true, …}
+15:51:36.858 exportService.js:343 [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_3-->
+15:51:36.858 exportService.js:344 [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_3--&gt;
+15:51:36.858 exportService.js:345 [OMML Post-process Debug] XML中包含原始占位符: false
+15:51:36.858 exportService.js:346 [OMML Post-process Debug] XML中包含转义占位符: true
+15:51:36.858 exportService.js:361 [OMML Post-process Debug] 清理后的OMML长度: 118
+15:51:36.858 exportService.js:362 [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>m×n=o</m:t></m:r></m:oMath>
+
+15:51:36.858 exportService.js:373 [OMML Post-process Debug] 测试正则匹配: true
+15:51:36.859 exportService.js:387 [OMML Post-process Debug] 替换占位符: formula_3，使用正确的OMML结构
+15:51:36.859 exportService.js:388 [OMML Post-process Debug] XML长度变化: 9273 → 9449
+15:51:36.859 exportService.js:403 [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_3--&gt; 替换成功
+15:51:36.859 exportService.js:329 [OMML Post-process Debug] 处理OMML结果: {id: 'formula_4', success: true, hasOmml: true, latex: '\\sqrt{p^2 + q^2} = \\sqrt[3]{\\f', isDisplayMode: true, …}
+15:51:36.859 exportService.js:343 [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_4-->
+15:51:36.859 exportService.js:344 [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_4--&gt;
+15:51:36.859 exportService.js:345 [OMML Post-process Debug] XML中包含原始占位符: false
+15:51:36.859 exportService.js:346 [OMML Post-process Debug] XML中包含转义占位符: true
+15:51:36.859 exportService.js:361 [OMML Post-process Debug] 清理后的OMML长度: 621
+15:51:36.859 exportService.js:362 [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:rad><m:radPr><m:degHide m:val="on"/></m:radPr><m:deg/><m:e><m:sSup>
+15:51:36.859 exportService.js:373 [OMML Post-process Debug] 测试正则匹配: true
+15:51:36.859 exportService.js:387 [OMML Post-process Debug] 替换占位符: formula_4，使用正确的OMML结构
+15:51:36.859 exportService.js:388 [OMML Post-process Debug] XML长度变化: 9449 → 10128
+15:51:36.859 exportService.js:403 [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_4--&gt; 替换成功
+15:51:36.859 exportService.js:329 [OMML Post-process Debug] 处理OMML结果: {id: 'formula_5', success: true, hasOmml: true, latex: '5 + 7 = 12', isDisplayMode: true, …}
+15:51:36.859 exportService.js:343 [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_5-->
+15:51:36.859 exportService.js:344 [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_5--&gt;
+15:51:36.859 exportService.js:345 [OMML Post-process Debug] XML中包含原始占位符: false
+15:51:36.859 exportService.js:346 [OMML Post-process Debug] XML中包含转义占位符: true
+15:51:36.859 exportService.js:361 [OMML Post-process Debug] 清理后的OMML长度: 119
+15:51:36.859 exportService.js:362 [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>5+7=12</m:t></m:r></m:oMath>
+
+15:51:36.859 exportService.js:373 [OMML Post-process Debug] 测试正则匹配: true
+15:51:36.859 exportService.js:387 [OMML Post-process Debug] 替换占位符: formula_5，使用正确的OMML结构
+15:51:36.859 exportService.js:388 [OMML Post-process Debug] XML长度变化: 10128 → 10305
+15:51:36.859 exportService.js:403 [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_5--&gt; 替换成功
+15:51:36.859 exportService.js:421 [OMML Post-process Debug] 处理完成，剩余占位符: 0 []
+15:51:36.860 exportService.js:424 [OMML Post-process Debug] 检查最终XML中的公式顺序...
+15:51:36.860 exportService.js:426 [OMML Post-process Debug] 最终XML中包含 5 个数学公式
+15:51:36.860 exportService.js:438 [OMML Post-process Debug] 公式 1: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>p+q=r</m:t>...
+15:51:36.860 exportService.js:446 [OMML Post-process Debug] 公式 1 提取的文本: p+q=r...
+15:51:36.860 exportService.js:438 [OMML Post-process Debug] 公式 2: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:f><m:fPr><m:type m...
+15:51:36.860 exportService.js:446 [OMML Post-process Debug] 公式 2 提取的文本: x+yz+w=mn+stuv−ab...
+15:51:36.860 exportService.js:438 [OMML Post-process Debug] 公式 3: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>m×n=o</m:t>...
+15:51:36.860 exportService.js:446 [OMML Post-process Debug] 公式 3 提取的文本: m×n=o...
+15:51:36.860 exportService.js:438 [OMML Post-process Debug] 公式 4: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:rad><m:radPr><m:de...
+15:51:36.860 exportService.js:446 [OMML Post-process Debug] 公式 4 提取的文本: p2+q2=3xy...
+15:51:36.860 exportService.js:438 [OMML Post-process Debug] 公式 5: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>5+7=12</m:t...
+15:51:36.860 exportService.js:446 [OMML Post-process Debug] 公式 5 提取的文本: 5+7=12...
+15:51:36.860 exportService.js:451 [OMML Post-process Debug] 验证公式ID和内容对应关系:
+15:51:36.860 exportService.js:454 [OMML Post-process Debug] 位置 1: ID=formula_1, 期望内容=p + q = r
+15:51:36.860 exportService.js:454 [OMML Post-process Debug] 位置 2: ID=formula_2, 期望内容=\frac{x + y}{z + w} = \frac{\f
+15:51:36.860 exportService.js:454 [OMML Post-process Debug] 位置 3: ID=formula_3, 期望内容=m \times n = o
+15:51:36.860 exportService.js:454 [OMML Post-process Debug] 位置 4: ID=formula_4, 期望内容=\sqrt{p^2 + q^2} = \sqrt[3]{\f
+15:51:36.860 exportService.js:454 [OMML Post-process Debug] 位置 5: ID=formula_5, 期望内容=5 + 7 = 12
+15:51:36.860 exportService.js:458 [OMML Post-process Debug] 分析XML段落结构:
+15:51:36.860 exportService.js:459 [OMML Post-process Debug] XML字符串长度: 10305
+15:51:36.861 exportService.js:462 [OMML Post-process Debug] 找到 11 个段落
+15:51:36.861 exportService.js:486 [OMML Post-process Debug] 段落 1: 📝 标题 1 = "全新公式测试"
+15:51:36.861 exportService.js:486 [OMML Post-process Debug] 段落 2: 📝 标题 2 = "测试A（简单）"
+15:51:36.861 exportService.js:475 [OMML Post-process Debug] 段落 3: 📊 包含公式 1 = "p+q=r"
+15:51:36.861 exportService.js:486 [OMML Post-process Debug] 段落 4: 📝 标题 3 = "测试B（复杂）"
+15:51:36.861 exportService.js:475 [OMML Post-process Debug] 段落 5: 📊 包含公式 2 = "x+yz+w=mn+stuv−ab"
+15:51:36.861 exportService.js:486 [OMML Post-process Debug] 段落 6: 📝 标题 4 = "测试C（简单）"
+15:51:36.861 exportService.js:475 [OMML Post-process Debug] 段落 7: 📊 包含公式 3 = "m×n=o"
+15:51:36.861 exportService.js:486 [OMML Post-process Debug] 段落 8: 📝 标题 5 = "测试D（复杂）"
+15:51:36.861 exportService.js:475 [OMML Post-process Debug] 段落 9: 📊 包含公式 4 = "p2+q2=3xy"
+15:51:36.861 exportService.js:486 [OMML Post-process Debug] 段落 10: 📝 标题 6 = "测试E（简单）"
+15:51:36.861 exportService.js:475 [OMML Post-process Debug] 段落 11: 📊 包含公式 5 = "5+7=12"
+15:51:36.861 exportService.js:496 [OMML Post-process Debug] 段落分析完成: 共 11 个段落，5 个公式段落，6 个标题段落
+15:51:36.879 exportService.js:552 docx后处理完成：已写入 firstLineChars 和 OMML 公式
+15:51:36.882 exportService.js:183 Word文档导出成功!

@@ -293,13 +293,46 @@ const postProcessDocx = async (blob) => {
       const placeholdersInXml = xmlString.match(placeholderPattern) || [];
       console.log(`[OMML Post-process Debug] XML中找到 ${placeholdersInXml.length} 个占位符:`, placeholdersInXml);
       
-      for (const ommlResult of currentExportOmmlResults) {
+      // 按照XML中占位符的出现顺序进行替换，确保公式顺序正确
+      const placeholdersInXmlOrder = [];
+      const placeholderRegex = /<!--OMML_PLACEHOLDER_([^-]+)-->|&lt;!--OMML_PLACEHOLDER_([^-]+)--&gt;/g;
+      let match;
+      
+      // 提取XML中所有占位符的ID及其在XML中的位置
+      while ((match = placeholderRegex.exec(xmlString)) !== null) {
+        const id = match[1] || match[2]; // 处理两种格式的占位符
+        const position = match.index;
+        const placeholder = match[0];
+        placeholdersInXmlOrder.push({ id, position, placeholder });
+      }
+      
+      // 按位置排序，确保按照在XML中的实际顺序进行替换
+      placeholdersInXmlOrder.sort((a, b) => a.position - b.position);
+      
+      console.log(`[OMML Post-process Debug] XML中占位符顺序:`, placeholdersInXmlOrder.map(p => `${p.id}@${p.position}`));
+      
+      // 创建ID到OMML结果的映射
+      const ommlResultMap = new Map();
+      currentExportOmmlResults.forEach(result => {
+        ommlResultMap.set(result.id, result);
+      });
+      
+      // 按照XML中的顺序处理每个占位符
+      for (const placeholderInfo of placeholdersInXmlOrder) {
+        const ommlResult = ommlResultMap.get(placeholderInfo.id);
+        
+        if (!ommlResult) {
+          console.warn(`[OMML Post-process Debug] 未找到ID为 ${placeholderInfo.id} 的OMML结果`);
+          continue;
+        }
+        
         console.log(`[OMML Post-process Debug] 处理OMML结果:`, {
           id: ommlResult.id,
           success: ommlResult.success,
           hasOmml: !!ommlResult.omml,
           latex: ommlResult.latex?.substring(0, 30),
-          isDisplayMode: ommlResult.isDisplayMode
+          isDisplayMode: ommlResult.isDisplayMode,
+          xmlPosition: placeholderInfo.position
         });
         
         if (ommlResult.success && ommlResult.omml) {
@@ -312,8 +345,8 @@ const postProcessDocx = async (blob) => {
           console.log(`[OMML Post-process Debug] XML中包含原始占位符: ${xmlString.includes(placeholder)}`);
           console.log(`[OMML Post-process Debug] XML中包含转义占位符: ${xmlString.includes(escapedPlaceholder)}`);
           
-          // 优先查找转义后的占位符，如果没有则查找原始占位符
-          const actualPlaceholder = xmlString.includes(escapedPlaceholder) ? escapedPlaceholder : placeholder;
+          // 使用已经在XML中找到的实际占位符格式
+          const actualPlaceholder = placeholderInfo.placeholder;
           
           if (xmlString.includes(actualPlaceholder)) {
             // 清理OMML XML，移除XML声明和多余的命名空间
@@ -357,7 +390,7 @@ const postProcessDocx = async (blob) => {
             } else {
               // 如果找不到w:t结构，使用简单的文本替换（降级方案）
               const beforeLength = xmlString.length;
-              xmlString = xmlString.replace(placeholder, replacement);
+              xmlString = xmlString.replace(actualPlaceholder, replacement);
               const afterLength = xmlString.length;
               
               console.log(`[OMML Post-process Debug] 使用降级方案替换占位符: ${ommlResult.id}`);
@@ -366,13 +399,13 @@ const postProcessDocx = async (blob) => {
             }
             
             // 验证替换是否成功
-            if (replaced && !xmlString.includes(placeholder)) {
-              console.log(`[OMML Post-process Debug] ✅ 占位符 ${placeholder} 替换成功`);
+            if (replaced && !xmlString.includes(actualPlaceholder)) {
+              console.log(`[OMML Post-process Debug] ✅ 占位符 ${actualPlaceholder} 替换成功`);
             } else if (replaced) {
-              console.warn(`[OMML Post-process Debug] ⚠️ 占位符 ${placeholder} 可能未完全替换`);
+              console.warn(`[OMML Post-process Debug] ⚠️ 占位符 ${actualPlaceholder} 可能未完全替换`);
             }
           } else {
-            console.warn(`[OMML Post-process Debug] ❌ 未找到占位符: ${placeholder}`);
+            console.warn(`[OMML Post-process Debug] ❌ 未找到占位符: ${actualPlaceholder}`);
           }
         } else {
           console.warn(`[OMML Post-process Debug] ❌ OMML结果无效:`, {
@@ -386,6 +419,81 @@ const postProcessDocx = async (blob) => {
       // 最终检查
       const remainingPlaceholders = xmlString.match(placeholderPattern) || [];
       console.log(`[OMML Post-process Debug] 处理完成，剩余占位符: ${remainingPlaceholders.length}`, remainingPlaceholders);
+      
+      // 详细检查最终XML中的公式顺序
+      console.log('[OMML Post-process Debug] 检查最终XML中的公式顺序...');
+      const mathElements = xmlString.match(/<m:oMath[^>]*>.*?<\/m:oMath>/g) || [];
+      console.log(`[OMML Post-process Debug] 最终XML中包含 ${mathElements.length} 个数学公式`);
+      
+      // 创建更详细的公式内容映射来验证顺序
+      const formulaContentMap = new Map();
+      currentExportOmmlResults.forEach(result => {
+        if (result.success && result.latex) {
+          formulaContentMap.set(result.id, result.latex.substring(0, 30));
+        }
+      });
+      
+      mathElements.forEach((mathXml, index) => {
+        const preview = mathXml.substring(0, 100).replace(/\s+/g, ' ');
+        console.log(`[OMML Post-process Debug] 公式 ${index + 1}: ${preview}...`);
+        
+        // 尝试从OMML中提取文本内容来验证
+        const textMatches = mathXml.match(/<m:t[^>]*>([^<]*)<\/m:t>/g);
+        if (textMatches && textMatches.length > 0) {
+          const extractedTexts = textMatches.map(match => 
+            match.replace(/<m:t[^>]*>([^<]*)<\/m:t>/, '$1')
+          ).join('');
+          console.log(`[OMML Post-process Debug] 公式 ${index + 1} 提取的文本: ${extractedTexts.substring(0, 30)}...`);
+        }
+      });
+      
+      // 额外验证：检查公式ID和内容的对应关系
+      console.log('[OMML Post-process Debug] 验证公式ID和内容对应关系:');
+      placeholdersInXmlOrder.forEach((placeholderInfo, index) => {
+        const expectedLatex = formulaContentMap.get(placeholderInfo.id);
+        console.log(`[OMML Post-process Debug] 位置 ${index + 1}: ID=${placeholderInfo.id}, 期望内容=${expectedLatex}`);
+      });
+      
+      // 🔍 新增：生成XML段落级别的调试信息
+      console.log('[OMML Post-process Debug] 分析XML段落结构:');
+      console.log(`[OMML Post-process Debug] XML字符串长度: ${xmlString.length}`);
+      
+      const paragraphMatches = xmlString.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || [];
+      console.log(`[OMML Post-process Debug] 找到 ${paragraphMatches.length} 个段落`);
+      
+      let formulaIndex = 0;
+      let titleIndex = 0;
+      
+      paragraphMatches.forEach((paragraph, pIndex) => {
+        // 检查是否包含公式
+        if (paragraph.includes('<m:oMath')) {
+          formulaIndex++;
+          const formulaTextMatches = paragraph.match(/<m:t[^>]*>([^<]*)<\/m:t>/g) || [];
+          const formulaTexts = formulaTextMatches.map(match => 
+            match.replace(/<m:t[^>]*>([^<]*)<\/m:t>/, '$1')
+          ).join('');
+          console.log(`[OMML Post-process Debug] 段落 ${pIndex + 1}: 📊 包含公式 ${formulaIndex} = "${formulaTexts.substring(0, 20)}${formulaTexts.length > 20 ? '...' : ''}"`);
+        }
+        
+        // 检查是否包含标题（更宽泛的匹配）
+        if (paragraph.includes('测试') || paragraph.includes('简单') || paragraph.includes('复杂')) {
+          titleIndex++;
+          const titleMatches = paragraph.match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || [];
+          const titles = titleMatches.map(match => 
+            match.replace(/<w:t[^>]*>([^<]*)<\/w:t>/, '$1')
+          ).join('');
+          if (titles.trim()) {
+            console.log(`[OMML Post-process Debug] 段落 ${pIndex + 1}: 📝 标题 ${titleIndex} = "${titles}"`);
+          }
+        }
+        
+        // 如果段落较短，显示完整内容用于调试
+        if (paragraph.length < 200) {
+          console.log(`[OMML Post-process Debug] 段落 ${pIndex + 1} 内容预览: ${paragraph.substring(0, 150)}...`);
+        }
+      });
+      
+      console.log(`[OMML Post-process Debug] 段落分析完成: 共 ${paragraphMatches.length} 个段落，${formulaIndex} 个公式段落，${titleIndex} 个标题段落`);
     }
 
     // 2. 处理字符缩进（原有逻辑）

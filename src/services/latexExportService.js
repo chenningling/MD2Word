@@ -100,6 +100,7 @@ class LatexExportService {
     const startTime = Date.now();
     
     console.log('[LaTeX Export] 开始处理文档中的 LaTeX 公式');
+    console.log('[LaTeX Export Debug] 当前时间戳:', startTime, '缓存大小:', this.conversionCache.size);
     
     try {
       this.stats.totalExports++;
@@ -310,7 +311,29 @@ class LatexExportService {
       }
     }
     
-    const allResults = [...cachedResults, ...convertedResults];
+    // ⚠️ 关键修复：按原始公式顺序重新排列结果，确保顺序正确
+    // 创建结果映射
+    const resultMap = new Map();
+    [...cachedResults, ...convertedResults].forEach(result => {
+      resultMap.set(result.id, result);
+    });
+    
+    // 按原始公式顺序重新排列结果
+    const allResults = batch.map(formula => {
+      const result = resultMap.get(formula.id);
+      if (!result) {
+        console.warn(`[LaTeX Export] 警告：公式 ${formula.id} 没有找到对应的转换结果`);
+        return {
+          id: formula.id,
+          success: false,
+          error: '转换结果缺失',
+          latex: formula.latex,
+          isDisplayMode: formula.type === 'block'
+        };
+      }
+      return result;
+    });
+    
     const duration = Date.now() - startTime;
     
     console.log(`[LaTeX Export] 批次转换完成`, {
@@ -319,6 +342,9 @@ class LatexExportService {
       failed: allResults.filter(r => !r.success).length,
       duration
     });
+    
+    // 验证结果顺序
+    console.log(`[LaTeX Export] 结果顺序验证:`, allResults.map((r, index) => `${index + 1}. ${r.id}`));
     
     return allResults;
   }
@@ -394,40 +420,52 @@ class LatexExportService {
       formulaMap.set(result.id, result);
     });
     
-    // 按位置倒序处理，避免索引错乱
-    const sortedFormulas = [...formulas].sort((a, b) => b.startIndex - a.startIndex);
+    // 创建基于ID的精确映射关系
+    const idMap = new Map();
+    conversionResults.forEach(result => {
+      idMap.set(result.id, result);
+    });
     
-    // 创建一个已使用的转换结果标记
-    const usedResults = new Set();
+    // 记录所有替换操作，稍后按位置倒序执行
+    const replacements = [];
     
-    for (const formula of sortedFormulas) {
-      // 查找对应的转换结果，优先使用未使用的结果
-      const conversionResult = conversionResults.find(result => {
-        if (usedResults.has(result.id)) return false; // 跳过已使用的结果
-        
-        const latexMatches = result.latex === formula.latex;
-        const typeMatches = result.isDisplayMode === (formula.type === FORMULA_TYPES.BLOCK);
-        return latexMatches && typeMatches;
-      });
+    for (const formula of formulas) {
+      // 使用ID映射获取对应的转换结果，确保精确匹配
+      const conversionResult = idMap.get(formula.id);
       
       console.log(`[LaTeX Export] Markdown替换检查: ${formula.latex.substring(0, 20)} | 找到匹配: ${!!conversionResult} | 结果ID: ${conversionResult?.id || 'null'}`);
       
       if (conversionResult && conversionResult.success) {
-        // 标记此结果已使用
-        usedResults.add(conversionResult.id);
-        
         // 替换为 OMML 标记（使用HTML注释格式避免被marked.js误解析）
         const ommlPlaceholder = `<!--OMML_PLACEHOLDER_${conversionResult.id}-->`;
         
-        const beforeText = processedMarkdown.substring(0, formula.startIndex);
-        const afterText = processedMarkdown.substring(formula.endIndex);
+        replacements.push({
+          startIndex: formula.startIndex,
+          endIndex: formula.endIndex,
+          placeholder: ommlPlaceholder,
+          formulaId: formula.id,
+          latex: formula.latex
+        });
         
-        processedMarkdown = beforeText + ommlPlaceholder + afterText;
-        
-        console.log(`[LaTeX Export] Markdown中公式已替换: ${formula.latex.substring(0, 30)} → ${ommlPlaceholder}`);
+        console.log(`[LaTeX Export] 准备替换公式: ${formula.latex.substring(0, 30)} → ${ommlPlaceholder}`);
       } else {
         console.warn(`[LaTeX Export] Markdown中公式未找到匹配的转换结果: ${formula.latex.substring(0, 30)}`);
       }
+    }
+    
+    // 按位置倒序执行替换，避免索引错乱，但确保输出日志按原始顺序
+    const sortedReplacements = [...replacements].sort((a, b) => b.startIndex - a.startIndex);
+    
+    console.log(`[LaTeX Export] 公式替换顺序 (执行顺序，倒序):`, sortedReplacements.map(r => r.formulaId));
+    console.log(`[LaTeX Export] 公式替换顺序 (文档中的原始顺序):`, replacements.map(r => r.formulaId));
+    
+    for (const replacement of sortedReplacements) {
+      const beforeText = processedMarkdown.substring(0, replacement.startIndex);
+      const afterText = processedMarkdown.substring(replacement.endIndex);
+      
+      processedMarkdown = beforeText + replacement.placeholder + afterText;
+      
+      console.log(`[LaTeX Export] Markdown中公式已替换: ${replacement.latex.substring(0, 30)} → ${replacement.placeholder}`);
     }
     
     console.log(`[LaTeX Export] Markdown替换完成，长度: ${markdown.length} → ${processedMarkdown.length}`);
