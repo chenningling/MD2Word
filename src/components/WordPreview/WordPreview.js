@@ -571,14 +571,24 @@ const WordPreview = () => {
             let processedHtml = tempDiv.innerHTML;
             let formulaCount = 0;
             
-            // 处理块级公式 $$...$$
-            const blockMatches = [...processedHtml.matchAll(/\$\$\s*\n?([\s\S]*?)\n?\s*\$\$/g)];
+            // 处理块级公式 $$...$$ - 改进正则表达式以处理包含HTML标签的情况
+            const blockMatches = [...processedHtml.matchAll(/\$\$\s*([\s\S]*?)\s*\$\$/g)];
             console.log(`[Word Preview] 发现 ${blockMatches.length} 个块级公式`);
             
             for (const match of blockMatches) {
               try {
                 const fullMatch = match[0];
-                const latexCode = match[1].trim();
+                let latexCode = match[1].trim();
+                
+                if (!latexCode) continue;
+                
+                // 清理HTML标签，提取纯LaTeX代码
+                // 移除<br>标签并替换为换行符，保持公式的原始格式
+                latexCode = latexCode.replace(/<br\s*\/?>/gi, '\n');
+                // 移除其他可能的HTML标签
+                latexCode = latexCode.replace(/<[^>]*>/g, '');
+                // 清理多余的空白字符
+                latexCode = latexCode.replace(/\n\s*\n/g, '\n').trim();
                 
                 if (!latexCode) continue;
                 
@@ -597,14 +607,19 @@ const WordPreview = () => {
               }
             }
             
-            // 处理行内公式 $...$
+            // 处理行内公式 $...$ - 同样改进正则表达式
             const inlineMatches = [...processedHtml.matchAll(/(?<!\$)\$(?!\$)([^$\n]*?[^$\s][^$\n]*?)\$(?!\$)/g)];
             console.log(`[Word Preview] 发现 ${inlineMatches.length} 个行内公式`);
             
             for (const match of inlineMatches) {
               try {
                 const fullMatch = match[0];
-                const latexCode = match[1].trim();
+                let latexCode = match[1].trim();
+                
+                if (!latexCode) continue;
+                
+                // 清理HTML标签
+                latexCode = latexCode.replace(/<[^>]*>/g, '').trim();
                 
                 if (!latexCode) continue;
                 
@@ -698,14 +713,24 @@ const WordPreview = () => {
         if (window.MathJax && window.MathJax.tex2svg) {
           let formulaCount = 0;
           
-          // 处理块级公式 $$...$$
-          const blockMatches = [...finalHtml.matchAll(/\$\$\s*\n?([\s\S]*?)\n?\s*\$\$/g)];
+          // 处理块级公式 $$...$$ - 改进正则表达式以处理包含HTML标签的情况
+          const blockMatches = [...finalHtml.matchAll(/\$\$\s*([\s\S]*?)\s*\$\$/g)];
           console.log(`[Word Preview] 最终处理 - 发现 ${blockMatches.length} 个块级公式`);
           
           for (const match of blockMatches) {
             try {
               const fullMatch = match[0];
-              const latexCode = match[1].trim();
+              let latexCode = match[1].trim();
+              
+              if (!latexCode) continue;
+              
+              // 清理HTML标签，提取纯LaTeX代码
+              // 移除<br>标签并替换为换行符，保持公式的原始格式
+              latexCode = latexCode.replace(/<br\s*\/?>/gi, '\n');
+              // 移除其他可能的HTML标签
+              latexCode = latexCode.replace(/<[^>]*>/g, '');
+              // 清理多余的空白字符
+              latexCode = latexCode.replace(/\n\s*\n/g, '\n').trim();
               
               if (!latexCode) continue;
               
@@ -724,14 +749,19 @@ const WordPreview = () => {
             }
           }
           
-          // 处理行内公式 $...$
+          // 处理行内公式 $...$ - 同样改进正则表达式
           const inlineMatches = [...finalHtml.matchAll(/(?<!\$)\$(?!\$)([^$\n]*?[^$\s][^$\n]*?)\$(?!\$)/g)];
           console.log(`[Word Preview] 最终处理 - 发现 ${inlineMatches.length} 个行内公式`);
           
           for (const match of inlineMatches) {
             try {
               const fullMatch = match[0];
-              const latexCode = match[1].trim();
+              let latexCode = match[1].trim();
+              
+              if (!latexCode) continue;
+              
+              // 清理HTML标签
+              latexCode = latexCode.replace(/<[^>]*>/g, '').trim();
               
               if (!latexCode) continue;
               
