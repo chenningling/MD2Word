@@ -386,6 +386,21 @@ const postProcessDocx = async (blob) => {
             
             console.log(`[OMML Post-process Debug] 查找包含占位符的段落: ${paragraphRegex.test(xmlString)}`);
             
+            // 📊 检查是否为行内公式（段落包含其他文本内容）
+            paragraphRegex.lastIndex = 0;
+            const matchedParagraph = xmlString.match(paragraphRegex);
+            if (matchedParagraph && matchedParagraph[0]) {
+              const paragraphContent = matchedParagraph[0];
+              // 检查段落是否包含占位符之外的文本内容
+              const textWithoutPlaceholder = paragraphContent.replace(new RegExp(actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '');
+              const hasOtherText = /<w:t[^>]*>(?:\s*(?!<!--)[^<\s]+|[^<]*[^\s<][^<]*)\s*<\/w:t>/.test(textWithoutPlaceholder);
+              console.log(`[OMML Post-process Debug] 🔍 段落是否包含其他文本内容: ${hasOtherText}`);
+              if (hasOtherText) {
+                console.log(`[OMML Post-process Debug] 🔍 检测到行内公式，段落包含额外文本内容`);
+                console.log(`[OMML Post-process Debug] 🔍 段落文本预览: ${textWithoutPlaceholder.substring(0, 200)}...`);
+              }
+            }
+            
             // 重置正则状态
             paragraphRegex.lastIndex = 0;
             
@@ -409,20 +424,71 @@ const postProcessDocx = async (blob) => {
                 if (paragraphCount > 1) {
                   console.warn(`[OMML Post-process Debug] ⚠️ 警告：正则表达式匹配了多个段落！`);
                 }
+                
+                // 🔍 重新检查是否为行内公式
+                const textWithoutPlaceholder = matched.replace(new RegExp(actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '');
+                const hasOtherText = /<w:t[^>]*>(?:\s*(?!<!--)[^<\s]+|[^<]*[^\s<][^<]*)\s*<\/w:t>/.test(textWithoutPlaceholder);
+                
+                if (hasOtherText) {
+                  // 🔄 行内公式：需要特殊处理，确保公式不被包装在w:t标签内
+                  console.log(`[OMML Post-process Debug] 🔄 处理行内公式，确保正确的XML结构`);
+                  
+                  // 查找包含占位符的w:t标签
+                  const wTextRegex = new RegExp(`(<w:t[^>]*>)(.*?)${actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(.*?)(<\/w:t>)`, 'g');
+                  
+                  if (wTextRegex.test(xmlString)) {
+                    console.log(`[OMML Post-process Debug] 🔍 找到包含占位符的w:t标签`);
+                    
+                    // 重置正则状态
+                    wTextRegex.lastIndex = 0;
+                    
+                    // 替换：将包含占位符的w:t标签拆分为三部分
+                    xmlString = xmlString.replace(wTextRegex, (match, openTag, beforeText, afterText, closeTag) => {
+                      console.log(`[OMML Post-process Debug] 🔧 拆分w:t标签: "${beforeText}" + 公式 + "${afterText}"`);
+                      
+                      let result = '';
+                      
+                      // 前置文本（如果有）
+                      if (beforeText.trim()) {
+                        result += `${openTag}${beforeText}${closeTag}`;
+                      }
+                      
+                      // 公式（独立元素，不包装在w:t中）
+                      result += cleanOmml;
+                      
+                      // 后置文本（如果有）
+                      if (afterText.trim()) {
+                        result += `${openTag}${afterText}${closeTag}`;
+                      }
+                      
+                      return result;
+                    });
+                    
+                    console.log(`[OMML Post-process Debug] ✅ 行内公式w:t标签拆分完成`);
+                    replaced = true;
+                  } else {
+                    // 降级：直接替换占位符（可能已经在正确位置）
+                    console.log(`[OMML Post-process Debug] 🔄 降级处理：直接替换占位符`);
+                    xmlString = xmlString.replace(new RegExp(actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), cleanOmml);
+                    console.log(`[OMML Post-process Debug] ✅ 行内公式占位符替换完成`);
+                    replaced = true;
+                  }
+                } else {
+                  // 🔄 独立公式：替换整个段落
+                  console.log(`[OMML Post-process Debug] 🔄 处理独立公式，替换整个段落`);
+                  const replacementParagraph = `<w:p>${cleanOmml}</w:p>`;
+                  
+                  const beforeLength = xmlString.length;
+                  xmlString = xmlString.replace(paragraphRegex, replacementParagraph);
+                  const afterLength = xmlString.length;
+                  
+                  console.log(`[OMML Post-process Debug] 替换整个段落: ${ommlResult.id}，生成参考文档格式`);
+                  console.log(`[OMML Post-process Debug] 新段落结构: <w:p><m:oMath>...</w:p>`);
+                  console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
+                  console.log(`[OMML Post-process Debug] 长度减少: ${beforeLength - afterLength} 字节`);
+                  replaced = true;
+                }
               }
-              
-              // 创建与参考文档完全一致的段落结构：<w:p><m:oMath>...</w:p>
-              const replacementParagraph = `<w:p>${cleanOmml}</w:p>`;
-              
-              const beforeLength = xmlString.length;
-              xmlString = xmlString.replace(paragraphRegex, replacementParagraph);
-              const afterLength = xmlString.length;
-              
-              console.log(`[OMML Post-process Debug] 替换整个段落: ${ommlResult.id}，生成参考文档格式`);
-              console.log(`[OMML Post-process Debug] 新段落结构: <w:p><m:oMath>...</w:p>`);
-              console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
-              console.log(`[OMML Post-process Debug] 长度减少: ${beforeLength - afterLength} 字节`);
-              replaced = true;
             } else {
               // 降级方案：查找包含占位符的w:t标签
               const placeholderRegex = new RegExp(`<w:t[^>]*>\\s*${actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*</w:t>`, 'gs');
