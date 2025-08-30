@@ -16,7 +16,7 @@ export const LATEX_PATTERNS = {
   COMBINED: /(\$\$[\s\S]*?\$\$|\$[^$\n]*?[^$\s][^$\n]*?\$)/g,
   
   // 验证模式：检查公式语法的基本有效性
-  VALIDATION: /^[\s\S]*[\w})\]]\s*$/
+  VALIDATION: /^[\s\S]*[\w})\]!]\s*$/
 };
 
 /**
@@ -59,6 +59,14 @@ export const extractLatexFormulas = (text) => {
       latexCode = fullMatch.slice(1, -1).trim(); // 去掉 $
     }
     
+    // 🔧 预处理LaTeX，修复n-ary运算符问题
+    const originalLatex = latexCode;
+    latexCode = preprocessLatex(latexCode);
+    
+    if (latexCode !== originalLatex) {
+      console.log(`[LaTeX Utils] 预处理修复: "${originalLatex}" → "${latexCode}"`);
+    }
+    
     // 基础语法验证
     const isValid = validateLatexSyntax(latexCode);
     
@@ -86,6 +94,57 @@ export const extractLatexFormulas = (text) => {
   
   console.log(`[LaTeX Utils] 提取完成，共发现 ${formulas.length} 个公式`);
   return formulas;
+};
+
+/**
+ * 预处理LaTeX，修复常见的n-ary运算符问题
+ * @param {string} latex - 原始LaTeX代码
+ * @returns {string} 修复后的LaTeX代码
+ */
+export const preprocessLatex = (latex) => {
+  let processed = latex;
+  
+  // 修复求和符号：确保被求和项有明确的分组
+  processed = processed.replace(/\\sum_\{([^}]+)\}\s*\^?\{?([^}]*)\}?\s*([a-zA-Z_]\w*(?:\^?\{[^}]*\})*)\s*=/g, 
+    (match, sub, sup, variable) => {
+      const supPart = sup ? `^{${sup}}` : '';
+      return `\\sum_{${sub}}${supPart} {${variable}} =`;
+    });
+  
+  // 修复积分符号：确保被积函数有明确的分组
+  // 处理标准格式：\int_{lower}^{upper}
+  processed = processed.replace(/\\int_\{([^}]+)\}\s*\^?\{?([^}]*)\}?\s*([^d]+)(\s+d[a-zA-Z]+)/g,
+    (match, sub, sup, integrand, dx) => {
+      const supPart = sup ? `^{${sup}}` : '';
+      return `\\int_{${sub}}${supPart} {${integrand.trim()}}${dx}`;
+    });
+  
+  // 处理简化格式：\int_a^b （无大括号）
+  processed = processed.replace(/\\int_([^\s\{^]+)\^?([^\s\{]*)\s+([^d]+)(\s+d[a-zA-Z]+)/g,
+    (match, sub, sup, integrand, dx) => {
+      const supPart = sup ? `^{${sup}}` : '';
+      return `\\int_{${sub}}${supPart} {${integrand.trim()}}${dx}`;
+    });
+  
+  // 修复其他n-ary运算符（乘积、并集、交集等）
+  const naryOperators = ['prod', 'bigcup', 'bigcap', 'bigoplus', 'bigotimes'];
+  naryOperators.forEach(op => {
+    // 处理标准格式：\prod_{i=1}^{n}
+    const standardRegex = new RegExp(`\\\\${op}_\\{([^}]+)\\}\\s*\\^?\\{?([^}]*)\\}?\\s*([a-zA-Z_]\\w*(?:\\^?\\{[^}]*\\})*)(\\s*[=!]|$)`, 'g');
+    processed = processed.replace(standardRegex, (match, sub, sup, variable, rest) => {
+      const supPart = sup ? `^{${sup}}` : '';
+      return `\\${op}_{${sub}}${supPart} {${variable}}${rest}`;
+    });
+    
+    // 处理简化格式：\prod_i^n （无大括号）
+    const simpleRegex = new RegExp(`\\\\${op}_([^\\s\\{^]+)\\^?([^\\s\\{]*)\\s+([a-zA-Z_]\\w*(?:\\^?\\{[^}]*\\})*)(\\s*[=!])`, 'g');
+    processed = processed.replace(simpleRegex, (match, sub, sup, variable, rest) => {
+      const supPart = sup ? `^{${sup}}` : '';
+      return `\\${op}_{${sub}}${supPart} {${variable}}${rest}`;
+    });
+  });
+  
+  return processed;
 };
 
 /**
