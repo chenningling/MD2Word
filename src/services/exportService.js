@@ -283,9 +283,10 @@ const postProcessDocx = async (blob) => {
 
     let xmlString = await docXmlFile.async('string');
     
-    // 📊 在任何处理之前检查原始Word文档结构
-    const originalParagraphCount = (xmlString.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || []).length;
-    console.log(`[Document Debug] 🚀 原始Word文档包含 ${originalParagraphCount} 个段落`);
+      // 📊 在任何处理之前检查原始Word文档结构
+  const originalParagraphCount = (xmlString.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || []).length;
+  const originalTableCount = (xmlString.match(/<w:tbl\b[^>]*>.*?<\/w:tbl>/gs) || []).length;
+  console.log(`[Document Debug] 🚀 原始Word文档包含 ${originalParagraphCount} 个段落, ${originalTableCount} 个表格`);
     
     // 分析原始段落内容
     const initialParagraphs = xmlString.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || [];
@@ -312,6 +313,25 @@ const postProcessDocx = async (blob) => {
       const placeholdersInXml = xmlString.match(placeholderPattern) || [];
       console.log(`[OMML Post-process Debug] XML中找到 ${placeholdersInXml.length} 个占位符:`, placeholdersInXml);
       
+      // 🔍 识别表格结构，避免破坏表格XML
+      const tableRegions = [];
+      const tableMatches = xmlString.matchAll(/<w:tbl\b[^>]*>.*?<\/w:tbl>/gs);
+      for (const tableMatch of tableMatches) {
+        tableRegions.push({
+          start: tableMatch.index,
+          end: tableMatch.index + tableMatch[0].length,
+          content: tableMatch[0]
+        });
+      }
+      console.log(`[Table Protection] 发现 ${tableRegions.length} 个表格区域需要保护`);
+      
+      // 检查占位符是否在表格内的辅助函数
+      const isPlaceholderInTable = (placeholderIndex) => {
+        return tableRegions.some(table => 
+          placeholderIndex >= table.start && placeholderIndex < table.end
+        );
+      };
+      
       // 按照XML中占位符的出现顺序进行替换，确保公式顺序正确
       const placeholdersInXmlOrder = [];
       const placeholderRegex = /<!--OMML_PLACEHOLDER_([^-]+)-->|&lt;!--OMML_PLACEHOLDER_([^-]+)--&gt;/g;
@@ -322,7 +342,12 @@ const postProcessDocx = async (blob) => {
         const id = match[1] || match[2]; // 处理两种格式的占位符
         const position = match.index;
         const placeholder = match[0];
-        placeholdersInXmlOrder.push({ id, position, placeholder });
+        const inTable = isPlaceholderInTable(position);
+        placeholdersInXmlOrder.push({ id, position, placeholder, inTable });
+        
+        if (inTable) {
+          console.log(`[Table Protection] 占位符 ${id} 位于表格内，位置: ${position}`);
+        }
       }
       
       // 按位置排序，确保按照在XML中的实际顺序进行替换
@@ -404,11 +429,21 @@ const postProcessDocx = async (blob) => {
             // 重置正则状态
             paragraphRegex.lastIndex = 0;
             
-            let replaced = false;
-            
-            if (paragraphRegex.test(xmlString)) {
-              // 重置正则状态用于替换
-              paragraphRegex.lastIndex = 0;
+                    let replaced = false;
+        
+        // 🔍 检查当前公式是否在表格内
+        const placeholderInfo = placeholdersInXmlOrder.find(p => p.id === ommlResult.id);
+        const isInTable = placeholderInfo && placeholderInfo.inTable;
+        
+        if (isInTable) {
+          // 🔧 表格内公式：使用简单替换，不破坏表格结构
+          console.log(`[Table Protection] 🔧 处理表格内公式: ${ommlResult.id}`);
+          xmlString = xmlString.replace(new RegExp(actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), cleanOmml);
+          console.log(`[Table Protection] ✅ 表格内公式替换完成: ${ommlResult.id}`);
+          replaced = true;
+        } else if (paragraphRegex.test(xmlString)) {
+          // 重置正则状态用于替换
+          paragraphRegex.lastIndex = 0;
               
               // 📊 调试：查看正则表达式实际匹配的内容
               const matchedContent = xmlString.match(paragraphRegex);
@@ -535,6 +570,16 @@ const postProcessDocx = async (blob) => {
       // 最终检查
       const remainingPlaceholders = xmlString.match(placeholderPattern) || [];
       console.log(`[OMML Post-process Debug] 处理完成，剩余占位符: ${remainingPlaceholders.length}`, remainingPlaceholders);
+      
+      // 🔍 验证表格结构完整性
+      const finalTableCount = (xmlString.match(/<w:tbl\b[^>]*>.*?<\/w:tbl>/gs) || []).length;
+      console.log(`[Table Protection] 处理后文档包含 ${finalTableCount} 个表格 (原始: ${originalTableCount})`);
+      
+      if (finalTableCount !== originalTableCount) {
+        console.warn(`[Table Protection] ⚠️ 警告：表格数量发生变化! 原始: ${originalTableCount}, 处理后: ${finalTableCount}`);
+      } else if (originalTableCount > 0) {
+        console.log(`[Table Protection] ✅ 表格结构保持完整`);
+      }
       
       // 详细检查最终XML中的公式顺序
       console.log('[OMML Post-process Debug] 检查最终XML中的公式顺序...');
@@ -697,6 +742,18 @@ const postProcessDocx = async (blob) => {
     
     // 📊 检查完整的body结构
     console.log(`[OMML Protection] w:body的所有键: ${Object.keys(body).join(', ')}`);
+    
+    // 🔍 详细分析body结构顺序问题
+    console.log(`[OMML Protection] 🔍 分析body结构中的所有子元素:`);
+    for (const [key, value] of Object.entries(body)) {
+      if (key === 'w:p') {
+        console.log(`[OMML Protection] - ${key}: ${Array.isArray(value) ? value.length + ' 个段落' : '1个段落'}`);
+      } else if (key === 'w:tbl') {
+        console.log(`[OMML Protection] - ${key}: ${Array.isArray(value) ? value.length + ' 个表格' : '1个表格'}`);
+      } else {
+        console.log(`[OMML Protection] - ${key}: ${typeof value}`);
+      }
+    }
 
     const ensureFirstLineChars = (pPr, chars) => {
       if (!pPr['w:ind']) pPr['w:ind'] = {};
@@ -727,6 +784,62 @@ const postProcessDocx = async (blob) => {
       ensureParagraphProcessed(paragraphs);
     }
 
+    // 🔧 新方案：完整的原始元素顺序保持方案
+    console.log(`[OMML Protection] 🔧 启动原始元素顺序保持方案...`);
+    
+    // 第一步：扫描并记录原始XML中所有body元素的完整信息
+    const bodyMatch = xmlString.match(/<w:body[^>]*>([\s\S]*?)<\/w:body>/);
+    if (bodyMatch && bodyMatch[1]) {
+      const bodyContent = bodyMatch[1];
+      
+      // 📊 记录所有body子元素的完整信息（包括sectPr等）
+      const originalBodyElements = [];
+      
+      // 使用更精确的正则表达式捕获所有直接子元素
+      const elementPattern = /<w:(p|tbl|sectPr)\b[^>]*>.*?<\/w:\1>|<w:(sectPr)\b[^>]*\/>/gs;
+      const elementMatches = [...bodyContent.matchAll(elementPattern)];
+      
+      elementMatches.forEach((match, index) => {
+        const elementType = match[1] || match[2]; // 处理自闭合标签
+        const fullElement = match[0];
+        
+        let elementInfo = {
+          type: elementType,
+          position: match.index,
+          xmlContent: fullElement,
+          index: index
+        };
+        
+        // 为段落添加文本内容标识
+        if (elementType === 'p') {
+          const textContent = (fullElement.match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || [])
+            .map(m => m.replace(/<w:t[^>]*>([^<]*)<\/w:t>/, '$1')).join('').trim();
+          elementInfo.textContent = textContent;
+          elementInfo.displayName = `段落: "${textContent.substring(0, 15)}${textContent.length > 15 ? '...' : ''}"`;
+        } else if (elementType === 'tbl') {
+          elementInfo.displayName = `表格${originalBodyElements.filter(e => e.type === 'tbl').length + 1}`;
+        } else if (elementType === 'sectPr') {
+          elementInfo.displayName = '页面设置';
+        }
+        
+        originalBodyElements.push(elementInfo);
+      });
+      
+      console.log(`[OMML Protection] 📊 扫描到 ${originalBodyElements.length} 个body子元素:`);
+      originalBodyElements.forEach((elem, idx) => {
+        console.log(`[OMML Protection] ${idx + 1}. ${elem.displayName} (类型: w:${elem.type}, 位置: ${elem.position})`);
+      });
+      
+      // 📝 保存完整的元素顺序信息
+      window.originalElementOrder = {
+        elements: originalBodyElements,
+        needsReordering: true,
+        bodyContent: bodyContent
+      };
+      
+      console.log(`[OMML Protection] ✅ 原始元素顺序信息已保存，共 ${originalBodyElements.length} 个元素`);
+    }
+
     const builder = new XMLBuilder({
       ignoreAttributes: false,
       attributeNamePrefix: '@_',
@@ -739,9 +852,103 @@ const postProcessDocx = async (blob) => {
     console.log(`[OMML Protection] 构建后XML长度: ${newXml.length}`);
     console.log(`[OMML Protection] 保护映射表大小: ${ommlProtectionMap.size}`);
     
-    // 📊 检查XML重建后段落数量
+    // 🔧 完整的XML元素顺序重建方案
+    if (window.originalElementOrder && window.originalElementOrder.needsReordering) {
+      console.log(`[OMML Protection] 🔧 开始完整的XML元素顺序重建...`);
+      
+      const orderInfo = window.originalElementOrder;
+      const originalElements = orderInfo.elements;
+      
+      // 提取当前重建XML中的所有body元素
+      const currentBodyMatch = newXml.match(/<w:body[^>]*>([\s\S]*?)<\/w:body>/);
+      if (currentBodyMatch && currentBodyMatch[1]) {
+        const currentBodyContent = currentBodyMatch[1];
+        
+        // 📊 收集当前XML中的所有元素
+        const currentElements = {
+          paragraphs: [...currentBodyContent.matchAll(/<w:p\b[^>]*>.*?<\/w:p>/gs)],
+          tables: [...currentBodyContent.matchAll(/<w:tbl\b[^>]*>.*?<\/w:tbl>/gs)],
+          sectPr: [...currentBodyContent.matchAll(/<w:sectPr\b[^>]*>.*?<\/w:sectPr>|<w:sectPr\b[^>]*\/>/gs)]
+        };
+        
+        console.log(`[OMML Protection] 📊 当前XML中元素统计: ${currentElements.paragraphs.length}个段落, ${currentElements.tables.length}个表格, ${currentElements.sectPr.length}个sectPr`);
+        
+        // 🔧 按原始顺序重建body内容
+        const orderedBodyContent = [];
+        let paragraphIndex = 0;
+        let tableIndex = 0;
+        let sectPrIndex = 0;
+        
+        originalElements.forEach((originalElem, idx) => {
+          console.log(`[OMML Protection] 🔧 处理第${idx + 1}个元素: ${originalElem.displayName}`);
+          
+          if (originalElem.type === 'p' && paragraphIndex < currentElements.paragraphs.length) {
+            // 使用当前XML中对应的段落（可能已经被OMML处理过）
+            const currentParagraph = currentElements.paragraphs[paragraphIndex][0];
+            orderedBodyContent.push(currentParagraph);
+            console.log(`[OMML Protection] ✅ 添加段落${paragraphIndex + 1}: "${originalElem.textContent}"`);
+            paragraphIndex++;
+          } else if (originalElem.type === 'tbl' && tableIndex < currentElements.tables.length) {
+            // 使用当前XML中的表格
+            const currentTable = currentElements.tables[tableIndex][0];
+            orderedBodyContent.push(currentTable);
+            console.log(`[OMML Protection] ✅ 添加表格${tableIndex + 1}`);
+            tableIndex++;
+          } else if (originalElem.type === 'sectPr' && sectPrIndex < currentElements.sectPr.length) {
+            // 使用当前XML中的sectPr
+            const currentSectPr = currentElements.sectPr[sectPrIndex][0];
+            orderedBodyContent.push(currentSectPr);
+            console.log(`[OMML Protection] ✅ 添加页面设置`);
+            sectPrIndex++;
+          }
+        });
+        
+        // 🔧 替换body内容
+        const newBodyContent = orderedBodyContent.join('');
+        const bodyStartMatch = newXml.match(/<w:body[^>]*>/);
+        if (bodyStartMatch) {
+          const bodyStart = bodyStartMatch[0];
+          const beforeBody = newXml.substring(0, newXml.indexOf(bodyStart));
+          const afterBody = newXml.substring(newXml.indexOf('</w:body>') + '</w:body>'.length);
+          
+          newXml = beforeBody + bodyStart + newBodyContent + '</w:body>' + afterBody;
+          
+          console.log(`[OMML Protection] ✅ XML元素顺序重建完成！`);
+          console.log(`[OMML Protection] 📊 重建后XML长度: ${newXml.length}`);
+          console.log(`[OMML Protection] 📊 重建后元素顺序: ${orderedBodyContent.length}个元素按原始顺序排列`);
+        }
+      }
+      
+      // 清理重建信息
+      delete window.originalElementOrder;
+    }
+    
+    // 📊 检查XML重建后段落和表格数量
     const rebuiltParagraphs = newXml.match(/<w:p\b[^>]*>.*?<\/w:p>/gs) || [];
-    console.log(`[OMML Protection] XML重建后有 ${rebuiltParagraphs.length} 个段落`);
+    const rebuiltTables = newXml.match(/<w:tbl\b[^>]*>.*?<\/w:tbl>/gs) || [];
+    const rebuiltTableCount = rebuiltTables.length;
+    console.log(`[OMML Protection] XML重建后有 ${rebuiltParagraphs.length} 个段落, ${rebuiltTableCount} 个表格`);
+    
+    // 🔍 分析重建后的元素顺序
+    console.log(`[OMML Protection] 🔍 分析重建XML中所有body子元素的顺序:`);
+    const bodyElementsPattern = /<w:(p|tbl)\b[^>]*>.*?<\/w:\1>/gs;
+    const bodyElements = [...newXml.matchAll(bodyElementsPattern)];
+    bodyElements.forEach((match, index) => {
+      const elementType = match[1]; // 'p' 或 'tbl'
+      const position = match.index;
+      if (elementType === 'tbl') {
+        console.log(`[OMML Protection] 元素 ${index + 1}: 📋 表格 (位置: ${position})`);
+      } else {
+        const textContent = (match[0].match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || [])
+          .map(m => m.replace(/<w:t[^>]*>([^<]*)<\/w:t>/, '$1')).join('');
+        if (textContent.trim()) {
+          console.log(`[OMML Protection] 元素 ${index + 1}: 📝 段落 - "${textContent.substring(0, 30)}..." (位置: ${position})`);
+        } else {
+          console.log(`[OMML Protection] 元素 ${index + 1}: 📄 空段落 (位置: ${position})`);
+        }
+      }
+    });
+    
     rebuiltParagraphs.forEach((para, index) => {
       if (para.includes('__OMML_PROTECTED_')) {
         console.log(`[OMML Protection] 重建段落 ${index + 1}: 📊 包含保护占位符`);
@@ -2094,9 +2301,10 @@ const processTokensToTextRuns = (tokens, settings, isHeading = false, latinSetti
           // 检查文本是否包含 OMML 标记
           const ommlPattern = /<!--OMML_PLACEHOLDER_[^-]+-->/g;
           if (ommlPattern.test(token.text)) {
-            console.log('[Export OMML] Token 文本包含 OMML 标记');
-            const ommlElements = processOmmlInText(token.text, currentExportOmmlResults);
-            textRuns.push(...ommlElements);
+            console.log('[Export OMML] Token 文本包含 OMML 标记，在表格中保持原样');
+            // 🔧 在表格创建阶段，保持OMML占位符为纯文本，避免二次包装
+            // 这样后处理阶段可以正确识别和替换占位符
+            textRuns.push(new TextRun({ text: token.text }));
           } else {
             const runs = splitLatinRuns(token.text, settings, isHeading, latinSettings);
             textRuns.push(...runs);
@@ -2134,8 +2342,17 @@ const splitLatinRuns = (text, settings, isHeading, latinSettings, additionalStyl
   const hasOmmlMarkers = ommlPattern.test(text);
   
   if (hasOmmlMarkers) {
-    console.log('[Export OMML] 文本包含 OMML 标记，使用专用处理');
-    return processOmmlInText(text, currentExportOmmlResults);
+    console.log('[Export OMML] 文本包含 OMML 标记，在表格等结构中保持原样');
+    // 🔧 避免在Word文档创建阶段进行OMML转换，保持占位符原样
+    // 这样后处理阶段可以正确识别和替换
+    return [new TextRun({
+      text,
+      font: { name: settings.fontFamily },
+      size: Math.round(settings.fontSize * 2),
+      bold: isHeading ? settings.bold : settings.bold,
+      color: "000000",
+      ...additionalStyles
+    })];
   }
   
   // 基础样式设置
@@ -2209,8 +2426,15 @@ const parseInlineTokens = (text, settings, isHeading = false, latinSettings) => 
   // 优先检查是否包含 OMML 标记
   const ommlPattern = /<!--OMML_PLACEHOLDER_[^-]+-->/g;
   if (ommlPattern.test(textContent)) {
-    console.log('[Export OMML] 内联文本包含 OMML 标记，使用专用处理');
-    return processOmmlInText(textContent, currentExportOmmlResults);
+    console.log('[Export OMML] 内联文本包含 OMML 标记，保持占位符原样');
+    // 🔧 在Word文档创建阶段保持OMML占位符为纯文本，避免复杂处理
+    return [new TextRun({ 
+      text: textContent,
+      font: { name: settings.fontFamily },
+      size: Math.round(settings.fontSize * 2),
+      bold: isHeading,
+      color: "000000"
+    })];
   }
   
   // 使用marked解析内联标记
