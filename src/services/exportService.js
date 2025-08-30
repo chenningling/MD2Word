@@ -361,41 +361,55 @@ const postProcessDocx = async (blob) => {
             console.log(`[OMML Post-process Debug] 清理后的OMML长度: ${cleanOmml.length}`);
             console.log(`[OMML Post-process Debug] 清理后的OMML预览: ${cleanOmml.substring(0, 150)}`);
             
-            // 定义替换内容 - 使用正确的Word XML结构
-            const replacement = `<w:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:cs="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr>${cleanOmml}</w:r>`;
+            // 新策略：替换整个包含占位符的段落，生成与参考文档完全一致的结构
+            // 查找包含占位符的整个段落
+            const paragraphRegex = new RegExp(`<w:p[^>]*>.*?${actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*?</w:p>`, 'gs');
             
-            // 尝试多种匹配模式
-            let replaced = false;
-            
-            // 查找包含占位符的w:t标签，确保不会错误匹配其他内容
-            const placeholderRegex = new RegExp(`<w:t[^>]*>\\s*${actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*</w:t>`, 'gs');
-            
-            console.log(`[OMML Post-process Debug] 测试正则匹配: ${placeholderRegex.test(xmlString)}`);
+            console.log(`[OMML Post-process Debug] 查找包含占位符的段落: ${paragraphRegex.test(xmlString)}`);
             
             // 重置正则状态
-            placeholderRegex.lastIndex = 0;
+            paragraphRegex.lastIndex = 0;
             
-            if (placeholderRegex.test(xmlString)) {
+            let replaced = false;
+            
+            if (paragraphRegex.test(xmlString)) {
               // 重置正则状态用于替换
-              placeholderRegex.lastIndex = 0;
+              paragraphRegex.lastIndex = 0;
               
-              // 替换为正确的OMML结构
+              // 创建与参考文档完全一致的段落结构：<w:p><m:oMath>...</w:p>
+              const replacementParagraph = `<w:p>${cleanOmml}</w:p>`;
+              
               const beforeLength = xmlString.length;
-              xmlString = xmlString.replace(placeholderRegex, replacement);
+              xmlString = xmlString.replace(paragraphRegex, replacementParagraph);
               const afterLength = xmlString.length;
               
-              console.log(`[OMML Post-process Debug] 替换占位符: ${ommlResult.id}，使用正确的OMML结构`);
+              console.log(`[OMML Post-process Debug] 替换整个段落: ${ommlResult.id}，生成参考文档格式`);
+              console.log(`[OMML Post-process Debug] 新段落结构: <w:p><m:oMath>...</w:p>`);
               console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
               replaced = true;
             } else {
-              // 如果找不到w:t结构，使用简单的文本替换（降级方案）
-              const beforeLength = xmlString.length;
-              xmlString = xmlString.replace(actualPlaceholder, replacement);
-              const afterLength = xmlString.length;
+              // 降级方案：查找包含占位符的w:t标签
+              const placeholderRegex = new RegExp(`<w:t[^>]*>\\s*${actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*</w:t>`, 'gs');
               
-              console.log(`[OMML Post-process Debug] 使用降级方案替换占位符: ${ommlResult.id}`);
-              console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
-              replaced = true;
+              if (placeholderRegex.test(xmlString)) {
+                placeholderRegex.lastIndex = 0;
+                const beforeLength = xmlString.length;
+                xmlString = xmlString.replace(placeholderRegex, cleanOmml);
+                const afterLength = xmlString.length;
+                
+                console.log(`[OMML Post-process Debug] 使用降级方案替换w:t: ${ommlResult.id}`);
+                console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
+                replaced = true;
+              } else {
+                // 最后的降级方案：直接文本替换
+                const beforeLength = xmlString.length;
+                xmlString = xmlString.replace(actualPlaceholder, cleanOmml);
+                const afterLength = xmlString.length;
+                
+                console.log(`[OMML Post-process Debug] 使用最终降级方案: ${ommlResult.id}`);
+                console.log(`[OMML Post-process Debug] XML长度变化: ${beforeLength} → ${afterLength}`);
+                replaced = true;
+              }
             }
             
             // 验证替换是否成功
@@ -500,7 +514,7 @@ const postProcessDocx = async (blob) => {
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: '@_',
-      preserveOrder: false,
+      preserveOrder: true,  // 保持元素顺序，关键修复！
     });
     const json = parser.parse(xmlString);
 
@@ -543,6 +557,7 @@ const postProcessDocx = async (blob) => {
     const builder = new XMLBuilder({
       ignoreAttributes: false,
       attributeNamePrefix: '@_',
+      preserveOrder: true,  // 保持元素顺序，关键修复！
     });
     const newXml = builder.build(json);
 
