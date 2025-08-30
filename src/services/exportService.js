@@ -438,9 +438,37 @@ const postProcessDocx = async (blob) => {
         if (isInTable) {
           // 🔧 表格内公式：使用简单替换，不破坏表格结构
           console.log(`[Table Protection] 🔧 处理表格内公式: ${ommlResult.id}`);
+          console.log(`[Table Protection] 🔍 查找占位符: ${actualPlaceholder}`);
+          console.log(`[Table Protection] 🔍 XML中是否包含该占位符: ${xmlString.includes(actualPlaceholder)}`);
+          
+          // 尝试替换实际找到的占位符格式
+          const beforeReplace = xmlString.length;
           xmlString = xmlString.replace(new RegExp(actualPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), cleanOmml);
-          console.log(`[Table Protection] ✅ 表格内公式替换完成: ${ommlResult.id}`);
-          replaced = true;
+          const afterReplace = xmlString.length;
+          
+          if (beforeReplace !== afterReplace) {
+            console.log(`[Table Protection] ✅ 表格内公式替换成功: ${ommlResult.id} (XML长度: ${beforeReplace} → ${afterReplace})`);
+            replaced = true;
+          } else {
+            console.log(`[Table Protection] ⚠️ 表格内公式替换失败: ${ommlResult.id} - 占位符未找到`);
+            console.log(`[Table Protection] 🔍 尝试查找其他格式的占位符...`);
+            
+            // 尝试未转义的格式
+            const unescapedPlaceholder = `<!--OMML_PLACEHOLDER_${ommlResult.id}-->`;
+            const escapedPlaceholder = `&lt;!--OMML_PLACEHOLDER_${ommlResult.id}--&gt;`;
+            
+            if (xmlString.includes(unescapedPlaceholder)) {
+              console.log(`[Table Protection] 🔍 找到未转义格式，进行替换`);
+              xmlString = xmlString.replace(new RegExp(unescapedPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), cleanOmml);
+              replaced = true;
+            } else if (xmlString.includes(escapedPlaceholder)) {
+              console.log(`[Table Protection] 🔍 找到转义格式，进行替换`);
+              xmlString = xmlString.replace(new RegExp(escapedPlaceholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), cleanOmml);
+              replaced = true;
+            } else {
+              console.log(`[Table Protection] ❌ 无法找到任何格式的占位符`);
+            }
+          }
         } else if (paragraphRegex.test(xmlString)) {
           // 重置正则状态用于替换
           paragraphRegex.lastIndex = 0;
@@ -889,10 +917,17 @@ const postProcessDocx = async (blob) => {
             console.log(`[OMML Protection] ✅ 添加段落${paragraphIndex + 1}: "${originalElem.textContent}"`);
             paragraphIndex++;
           } else if (originalElem.type === 'tbl' && tableIndex < currentElements.tables.length) {
-            // 使用当前XML中的表格
-            const currentTable = currentElements.tables[tableIndex][0];
-            orderedBodyContent.push(currentTable);
-            console.log(`[OMML Protection] ✅ 添加表格${tableIndex + 1}`);
+            // 🚨 关键修复：使用原始XML中包含公式的表格，而不是重建后的空表格
+            const originalTableXml = originalElem.xmlContent;
+            
+            // 🔍 检查原始表格是否包含OMML公式
+            const ommlCount = (originalTableXml.match(/<m:oMath/g) || []).length;
+            const placeholderCount = (originalTableXml.match(/OMML_PLACEHOLDER/g) || []).length;
+            console.log(`[OMML Protection] 🔍 表格${tableIndex + 1}内容检查: ${ommlCount}个OMML公式, ${placeholderCount}个占位符`);
+            console.log(`[OMML Protection] 🔧 使用原始表格XML (长度: ${originalTableXml.length}) 而非重建表格`);
+            
+            orderedBodyContent.push(originalTableXml);
+            console.log(`[OMML Protection] ✅ 添加表格${tableIndex + 1} (使用原始表格内容，保持已转换的公式)`);
             tableIndex++;
           } else if (originalElem.type === 'sectPr' && sectPrIndex < currentElements.sectPr.length) {
             // 使用当前XML中的sectPr

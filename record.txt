@@ -1,47 +1,146 @@
-22:27:46.991 exportService.js:81 开始导出Word文档...
-22:27:46.991 exportService.js:82 格式设置: {template: 'default', content: {…}, latin: {…}, page: {…}}
-22:27:46.991 exportService.js:85 [Export] 开始处理 LaTeX 公式...
-22:27:46.991  [LaTeX Export] 开始处理文档中的 LaTeX 公式
-22:27:46.992  [LaTeX Export Debug] 当前时间戳: 1756564066991 缓存大小: 100
-22:27:46.992  [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 73
-22:27:46.992  [LaTeX Utils] 提取完成，共发现 0 个公式
-22:27:46.992  [LaTeX Export] 文档中没有 LaTeX 公式
-22:27:46.992  [Export] 使用处理后的markdown: # 表格测试
+22:43:27.172 main.c7a872d728e5734ea9dc.hot-update.js:102 开始导出Word文档...
+22:43:27.172 main.c7a872d728e5734ea9dc.hot-update.js:103 格式设置: {template: 'default', content: {…}, latin: {…}, page: {…}}
+22:43:27.172 main.c7a872d728e5734ea9dc.hot-update.js:106 [Export] 开始处理 LaTeX 公式...
+22:43:27.172 latexExportService.js:102 [LaTeX Export] 开始处理文档中的 LaTeX 公式
+22:43:27.172 latexExportService.js:103 [LaTeX Export Debug] 当前时间戳: 1756565007172 缓存大小: 100
+22:43:27.172 latexUtils.js:93 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 343
+22:43:27.173  [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'inline', latex: 'e^x', position: '111-116', isValid: true}
+22:43:27.173  [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'inline', latex: '2x', position: '120-124', isValid: true}
+22:43:27.173  [LaTeX Utils] 发现公式 {id: 'formula_3', type: 'inline', latex: '\\frac{x^3}{3} + C', position: '127-146', isValid: true}
+22:43:27.174  [LaTeX Utils] 发现公式 {id: 'formula_4', type: 'inline', latex: 'e^x', position: '151-156', isValid: true}
+22:43:27.174  [LaTeX Utils] 发现公式 {id: 'formula_5', type: 'inline', latex: 'e^x', position: '159-164', isValid: true}
+22:43:27.174  [LaTeX Utils] 发现公式 {id: 'formula_6', type: 'inline', latex: 'e^x + C', position: '167-176', isValid: true}
+22:43:27.174  [LaTeX Utils] 发现公式 {id: 'formula_7', type: 'inline', latex: '\\sin x', position: '181-189', isValid: true}
+22:43:27.174  [LaTeX Utils] 发现公式 {id: 'formula_8', type: 'inline', latex: '\\cos x', position: '192-200', isValid: true}
+22:43:27.174  [LaTeX Utils] 发现公式 {id: 'formula_9', type: 'inline', latex: '-\\cos x + C', position: '203-216', isValid: true}
+22:43:27.175  [LaTeX Utils] 发现公式 {id: 'formula_10', type: 'inline', latex: 'a = 2', position: '293-300', isValid: true}
+22:43:27.175  [LaTeX Utils] 发现公式 {id: 'formula_11', type: 'inline', latex: 'b = 3', position: '301-308', isValid: true}
+22:43:27.175  [LaTeX Utils] 发现公式 {id: 'formula_12', type: 'inline', latex: 'a + b = 5', position: '312-323', isValid: true}
+22:43:27.175  [LaTeX Utils] 提取完成，共发现 12 个公式
+22:43:27.175  [LaTeX Export] 发现 12 个 LaTeX 公式
+22:43:27.175  [LaTeX Export] 开始转换 12 个公式为 OMML
+22:43:27.175  [LaTeX Export] 开始转换 12 个有效公式为 OMML
+22:43:27.175  [LaTeX Export] 处理批次 1/1，包含 12 个公式
+22:43:27.175  [LaTeX Export] 批次缓存统计: 12 个缓存命中, 0 个需要转换
+22:43:27.175  [LaTeX Export] 批次转换完成 {total: 12, successful: 12, failed: 0, duration: 0}
+22:43:27.175  [LaTeX Export] 结果顺序验证: (12) ['1. formula_1', '2. formula_2', '3. formula_3', '4. formula_4', '5. formula_5', '6. formula_6', '7. formula_7', '8. formula_8', '9. formula_9', '10. formula_10', '11. formula_11', '12. formula_12']
+22:43:27.176  [LaTeX Export] 所有批次处理完成，总计 12 个有效公式结果
+22:43:27.176  [LaTeX Export] 开始在markdown中替换LaTeX公式为占位符
+22:43:27.176  [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 343
+22:43:27.176  [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'inline', latex: 'e^x', position: '111-116', isValid: true}
+22:43:27.176  [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'inline', latex: '2x', position: '120-124', isValid: true}
+22:43:27.176  [LaTeX Utils] 发现公式 {id: 'formula_3', type: 'inline', latex: '\\frac{x^3}{3} + C', position: '127-146', isValid: true}
+22:43:27.176  [LaTeX Utils] 发现公式 {id: 'formula_4', type: 'inline', latex: 'e^x', position: '151-156', isValid: true}
+22:43:27.176  [LaTeX Utils] 发现公式 {id: 'formula_5', type: 'inline', latex: 'e^x', position: '159-164', isValid: true}
+22:43:27.176  [LaTeX Utils] 发现公式 {id: 'formula_6', type: 'inline', latex: 'e^x + C', position: '167-176', isValid: true}
+22:43:27.176  [LaTeX Utils] 发现公式 {id: 'formula_7', type: 'inline', latex: '\\sin x', position: '181-189', isValid: true}
+22:43:27.177  [LaTeX Utils] 发现公式 {id: 'formula_8', type: 'inline', latex: '\\cos x', position: '192-200', isValid: true}
+22:43:27.177  [LaTeX Utils] 发现公式 {id: 'formula_9', type: 'inline', latex: '-\\cos x + C', position: '203-216', isValid: true}
+22:43:27.177  [LaTeX Utils] 发现公式 {id: 'formula_10', type: 'inline', latex: 'a = 2', position: '293-300', isValid: true}
+22:43:27.177  [LaTeX Utils] 发现公式 {id: 'formula_11', type: 'inline', latex: 'b = 3', position: '301-308', isValid: true}
+22:43:27.177  [LaTeX Utils] 发现公式 {id: 'formula_12', type: 'inline', latex: 'a + b = 5', position: '312-323', isValid: true}
+22:43:27.177  [LaTeX Utils] 提取完成，共发现 12 个公式
+22:43:27.177  [LaTeX Export] Markdown替换检查: e^x | 找到匹配: true | 结果ID: formula_1
+22:43:27.177  [LaTeX Export] 准备替换公式: e^x → <!--OMML_PLACEHOLDER_formula_1-->
+22:43:27.177  [LaTeX Export] Markdown替换检查: 2x | 找到匹配: true | 结果ID: formula_2
+22:43:27.177  [LaTeX Export] 准备替换公式: 2x → <!--OMML_PLACEHOLDER_formula_2-->
+22:43:27.177  [LaTeX Export] Markdown替换检查: \frac{x^3}{3} + C | 找到匹配: true | 结果ID: formula_3
+22:43:27.177  [LaTeX Export] 准备替换公式: \frac{x^3}{3} + C → <!--OMML_PLACEHOLDER_formula_3-->
+22:43:27.177  [LaTeX Export] Markdown替换检查: e^x | 找到匹配: true | 结果ID: formula_4
+22:43:27.177  [LaTeX Export] 准备替换公式: e^x → <!--OMML_PLACEHOLDER_formula_4-->
+22:43:27.177  [LaTeX Export] Markdown替换检查: e^x | 找到匹配: true | 结果ID: formula_5
+22:43:27.177  [LaTeX Export] 准备替换公式: e^x → <!--OMML_PLACEHOLDER_formula_5-->
+22:43:27.177  [LaTeX Export] Markdown替换检查: e^x + C | 找到匹配: true | 结果ID: formula_6
+22:43:27.177  [LaTeX Export] 准备替换公式: e^x + C → <!--OMML_PLACEHOLDER_formula_6-->
+22:43:27.177  [LaTeX Export] Markdown替换检查: \sin x | 找到匹配: true | 结果ID: formula_7
+22:43:27.177  [LaTeX Export] 准备替换公式: \sin x → <!--OMML_PLACEHOLDER_formula_7-->
+22:43:27.177  [LaTeX Export] Markdown替换检查: \cos x | 找到匹配: true | 结果ID: formula_8
+22:43:27.178  [LaTeX Export] 准备替换公式: \cos x → <!--OMML_PLACEHOLDER_formula_8-->
+22:43:27.178  [LaTeX Export] Markdown替换检查: -\cos x + C | 找到匹配: true | 结果ID: formula_9
+22:43:27.178  [LaTeX Export] 准备替换公式: -\cos x + C → <!--OMML_PLACEHOLDER_formula_9-->
+22:43:27.178  [LaTeX Export] Markdown替换检查: a = 2 | 找到匹配: true | 结果ID: formula_10
+22:43:27.178  [LaTeX Export] 准备替换公式: a = 2 → <!--OMML_PLACEHOLDER_formula_10-->
+22:43:27.178  [LaTeX Export] Markdown替换检查: b = 3 | 找到匹配: true | 结果ID: formula_11
+22:43:27.178  [LaTeX Export] 准备替换公式: b = 3 → <!--OMML_PLACEHOLDER_formula_11-->
+22:43:27.178  [LaTeX Export] Markdown替换检查: a + b = 5 | 找到匹配: true | 结果ID: formula_12
+22:43:27.178  [LaTeX Export] 准备替换公式: a + b = 5 → <!--OMML_PLACEHOLDER_formula_12-->
+22:43:27.178  [LaTeX Export] 公式替换顺序 (执行顺序，倒序): (12) ['formula_12', 'formula_11', 'formula_10', 'formula_9', 'formula_8', 'formula_7', 'formula_6', 'formula_5', 'formula_4', 'formula_3', 'formula_2', 'formula_1']
+22:43:27.178  [LaTeX Export] 公式替换顺序 (文档中的原始顺序): (12) ['formula_1', 'formula_2', 'formula_3', 'formula_4', 'formula_5', 'formula_6', 'formula_7', 'formula_8', 'formula_9', 'formula_10', 'formula_11', 'formula_12']
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: a + b = 5 → <!--OMML_PLACEHOLDER_formula_12-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: b = 3 → <!--OMML_PLACEHOLDER_formula_11-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: a = 2 → <!--OMML_PLACEHOLDER_formula_10-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: -\cos x + C → <!--OMML_PLACEHOLDER_formula_9-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: \cos x → <!--OMML_PLACEHOLDER_formula_8-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: \sin x → <!--OMML_PLACEHOLDER_formula_7-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: e^x + C → <!--OMML_PLACEHOLDER_formula_6-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: e^x → <!--OMML_PLACEHOLDER_formula_5-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: e^x → <!--OMML_PLACEHOLDER_formula_4-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: \frac{x^3}{3} + C → <!--OMML_PLACEHOLDER_formula_3-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: 2x → <!--OMML_PLACEHOLDER_formula_2-->
+22:43:27.178  [LaTeX Export] Markdown中公式已替换: e^x → <!--OMML_PLACEHOLDER_formula_1-->
+22:43:27.178  [LaTeX Export] Markdown替换完成，长度: 343 → 641
+22:43:27.178  [LaTeX Export] 处理完成 {totalFormulas: 12, successful: 12, failed: 0, totalTime: 6}
+22:43:27.179  [Export] 使用处理后的markdown: # 表格位置测试
 
-哈哈哈
+这是第一段文字，应该在表格前面。
 
-| 名称 | 年龄 |
-|------|------|
-| 张三 | 25 |
-| 李四 | 30 |
+## 第二节标题
 
-哈哈哈哈哈
+这是第二段文字，仍然在表格前面。
 
-...
-22:27:46.992  解析的Markdown tokens: (6) [{…}, {…}, {…}, {…}, {…}, {…}, links: {…}]
-22:27:46.992  [OMML Debug] 详细检查解析后的tokens:
-22:27:46.992  [OMML Debug] Token 0: {type: 'heading', text: '表格测试', raw: '# 表格测试\n\n', hasTokens: true, tokensCount: 1}
-22:27:46.993  [OMML Debug]   SubToken 0: {type: 'text', text: '表格测试', raw: '表格测试'}
-22:27:46.993  [OMML Debug] Token 1: {type: 'paragraph', text: '哈哈哈', raw: '哈哈哈', hasTokens: true, tokensCount: 1}
-22:27:46.993  [OMML Debug]   SubToken 0: {type: 'text', text: '哈哈哈', raw: '哈哈哈'}
-22:27:46.993  [OMML Debug] Token 2: {type: 'space', text: undefined, raw: '\n\n', hasTokens: false, tokensCount: 0}
-22:27:46.993  [OMML Debug] Token 3: {type: 'table', text: undefined, raw: '| 名称 | 年龄 |\n|------|------|\n| 张三 | 25 |\n| 李四 | 30 |\n\n', hasTokens: false, tokensCount: 0}
-22:27:46.993  [OMML Debug] Token 4: {type: 'paragraph', text: '哈哈哈哈哈', raw: '哈哈哈哈哈', hasTokens: true, tokensCount: 1}
-22:27:46.993  [OMML Debug]   SubToken 0: {type: 'text', text: '哈哈哈哈哈', raw: '哈哈哈哈哈'}
-22:27:46.993  [OMML Debug] Token 5: {type: 'space', text: undefined, raw: '\n\n', hasTokens: false, tokensCount: 0}
-22:27:46.993  [Export] LaTeX 处理完成: {hasFormulas: false, formulaCount: 0, conversionTime: 1, fallbackMode: false}
-22:27:46.993  表格内容: [
+### 表格应该在这里
+
+| 函数 | 导数 | 积分 |
+|------|------...
+22:43:27.179  解析的Markdown tokens: (17) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, links: {…}]
+22:43:27.179  [OMML Debug] 详细检查解析后的tokens:
+22:43:27.179  [OMML Debug] Token 0: {type: 'heading', text: '表格位置测试', raw: '# 表格位置测试\n\n', hasTokens: true, tokensCount: 1}
+22:43:27.179  [OMML Debug]   SubToken 0: {type: 'text', text: '表格位置测试', raw: '表格位置测试'}
+22:43:27.179  [OMML Debug] Token 1: {type: 'paragraph', text: '这是第一段文字，应该在表格前面。', raw: '这是第一段文字，应该在表格前面。', hasTokens: true, tokensCount: 1}
+22:43:27.179  [OMML Debug]   SubToken 0: {type: 'text', text: '这是第一段文字，应该在表格前面。', raw: '这是第一段文字，应该在表格前面。'}
+22:43:27.179  [OMML Debug] Token 2: {type: 'space', text: undefined, raw: '\n\n', hasTokens: false, tokensCount: 0}
+22:43:27.179  [OMML Debug] Token 3: {type: 'heading', text: '第二节标题', raw: '## 第二节标题\n\n', hasTokens: true, tokensCount: 1}
+22:43:27.179  [OMML Debug]   SubToken 0: {type: 'text', text: '第二节标题', raw: '第二节标题'}
+22:43:27.179  [OMML Debug] Token 4: {type: 'paragraph', text: '这是第二段文字，仍然在表格前面。', raw: '这是第二段文字，仍然在表格前面。', hasTokens: true, tokensCount: 1}
+22:43:27.180  [OMML Debug]   SubToken 0: {type: 'text', text: '这是第二段文字，仍然在表格前面。', raw: '这是第二段文字，仍然在表格前面。'}
+22:43:27.180  [OMML Debug] Token 5: {type: 'space', text: undefined, raw: '\n\n', hasTokens: false, tokensCount: 0}
+22:43:27.180  [OMML Debug] Token 6: {type: 'heading', text: '表格应该在这里', raw: '### 表格应该在这里\n\n', hasTokens: true, tokensCount: 1}
+22:43:27.180  [OMML Debug]   SubToken 0: {type: 'text', text: '表格应该在这里', raw: '表格应该在这里'}
+22:43:27.180  [OMML Debug] Token 7: {type: 'table', text: undefined, raw: '| 函数 | 导数 | 积分 |\n|------|------|------|\n| \x3C!--OMML_PLACEHOLDER_formula_1-->  | \x3C!--OMML_PLACEHOLDER_', hasTokens: false, tokensCount: 0}
+22:43:27.180  [OMML Debug] Token 8: {type: 'paragraph', text: '这是表格后面的文字，应该出现在表格下方。', raw: '这是表格后面的文字，应该出现在表格下方。', hasTokens: true, tokensCount: 1}
+22:43:27.180  [OMML Debug]   SubToken 0: {type: 'text', text: '这是表格后面的文字，应该出现在表格下方。', raw: '这是表格后面的文字，应该出现在表格下方。'}
+22:43:27.180  [OMML Debug] Token 9: {type: 'space', text: undefined, raw: '\n\n', hasTokens: false, tokensCount: 0}
+22:43:27.180  [OMML Debug] Token 10: {type: 'heading', text: '另一个标题', raw: '### 另一个标题\n\n', hasTokens: true, tokensCount: 1}
+22:43:27.180  [OMML Debug]   SubToken 0: {type: 'text', text: '另一个标题', raw: '另一个标题'}
+22:43:27.180  [OMML Debug] Token 11: {type: 'paragraph', text: '这是最后一段文字。', raw: '这是最后一段文字。', hasTokens: true, tokensCount: 1}
+22:43:27.180  [OMML Debug]   SubToken 0: {type: 'text', text: '这是最后一段文字。', raw: '这是最后一段文字。'}
+22:43:27.180  [OMML Debug] Token 12: {type: 'space', text: undefined, raw: '\n\n', hasTokens: false, tokensCount: 0}
+22:43:27.180  [OMML Debug] Token 13: {type: 'heading', text: '包含公式的段落', raw: '## 包含公式的段落\n\n', hasTokens: true, tokensCount: 1}
+22:43:27.180  [OMML Debug]   SubToken 0: {type: 'text', text: '包含公式的段落', raw: '包含公式的段落'}
+22:43:27.181  [OMML Debug] Token 14: {type: 'paragraph', text: '这是一个包含行内公式的段落：计算 \x3C!--OMML_PLACEHOLDER_formula_10-->，\x3C!--OMML_PLACEHOLDER_formula_11-->，那么 \x3C!--OMML_P', raw: '这是一个包含行内公式的段落：计算 \x3C!--OMML_PLACEHOLDER_formula_10-->，\x3C!--OMML_PLACEHOLDER_formula_11-->，那么 \x3C!--OMML_P', hasTokens: true, tokensCount: 7}
+22:43:27.181  [OMML Debug]   SubToken 0: {type: 'text', text: '这是一个包含行内公式的段落：计算 ', raw: '这是一个包含行内公式的段落：计算 '}
+22:43:27.181  [OMML Debug]   SubToken 1: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_10-->', raw: '\x3C!--OMML_PLACEHOLDER_formula_10-->'}
+22:43:27.181  [OMML Debug]   SubToken 2: {type: 'text', text: '，', raw: '，'}
+22:43:27.181  [OMML Debug]   SubToken 3: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_11-->', raw: '\x3C!--OMML_PLACEHOLDER_formula_11-->'}
+22:43:27.181  [OMML Debug]   SubToken 4: {type: 'text', text: '，那么 ', raw: '，那么 '}
+22:43:27.181  [OMML Debug]   SubToken 5: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_12-->', raw: '\x3C!--OMML_PLACEHOLDER_formula_12-->'}
+22:43:27.181  [OMML Debug]   SubToken 6: {type: 'text', text: '。', raw: '。'}
+22:43:27.181  [OMML Debug] Token 15: {type: 'space', text: undefined, raw: '\n\n', hasTokens: false, tokensCount: 0}
+22:43:27.181  [OMML Debug] Token 16: {type: 'paragraph', text: '这段文字应该在公式段落之后显示。', raw: '这段文字应该在公式段落之后显示。\n', hasTokens: true, tokensCount: 1}
+22:43:27.181  [OMML Debug]   SubToken 0: {type: 'text', text: '这段文字应该在公式段落之后显示。', raw: '这段文字应该在公式段落之后显示。'}
+22:43:27.181  [Export] LaTeX 处理完成: {hasFormulas: true, formulaCount: 12, conversionTime: 6, fallbackMode: false}
+22:43:27.181  表格内容: [
   {
     "type": "table",
-    "raw": "| 名称 | 年龄 |\n|------|------|\n| 张三 | 25 |\n| 李四 | 30 |\n\n",
+    "raw": "| 函数 | 导数 | 积分 |\n|------|------|------|\n| <!--OMML_PLACEHOLDER_formula_1-->  | <!--OMML_PLACEHOLDER_formula_2--> | <!--OMML_PLACEHOLDER_formula_3--> |\n| <!--OMML_PLACEHOLDER_formula_4--> | <!--OMML_PLACEHOLDER_formula_5--> | <!--OMML_PLACEHOLDER_formula_6--> |\n| <!--OMML_PLACEHOLDER_formula_7--> | <!--OMML_PLACEHOLDER_formula_8--> | <!--OMML_PLACEHOLDER_formula_9--> |\n\n",
     "header": [
       {
-        "text": "名称",
+        "text": "函数",
         "tokens": [
           {
             "type": "text",
-            "raw": "名称",
-            "text": "名称",
+            "raw": "函数",
+            "text": "函数",
             "escaped": false
           }
         ],
@@ -49,12 +148,25 @@
         "align": null
       },
       {
-        "text": "年龄",
+        "text": "导数",
         "tokens": [
           {
             "type": "text",
-            "raw": "年龄",
-            "text": "年龄",
+            "raw": "导数",
+            "text": "导数",
+            "escaped": false
+          }
+        ],
+        "header": true,
+        "align": null
+      },
+      {
+        "text": "积分",
+        "tokens": [
+          {
+            "type": "text",
+            "raw": "积分",
+            "text": "积分",
             "escaped": false
           }
         ],
@@ -64,31 +176,51 @@
     ],
     "align": [
       null,
+      null,
       null
     ],
     "rows": [
       [
         {
-          "text": "张三",
+          "text": "<!--OMML_PLACEHOLDER_formula_1-->",
           "tokens": [
             {
-              "type": "text",
-              "raw": "张三",
-              "text": "张三",
-              "escaped": false
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_1-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_1-->"
             }
           ],
           "header": false,
           "align": null
         },
         {
-          "text": "25",
+          "text": "<!--OMML_PLACEHOLDER_formula_2-->",
           "tokens": [
             {
-              "type": "text",
-              "raw": "25",
-              "text": "25",
-              "escaped": false
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_2-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_2-->"
+            }
+          ],
+          "header": false,
+          "align": null
+        },
+        {
+          "text": "<!--OMML_PLACEHOLDER_formula_3-->",
+          "tokens": [
+            {
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_3-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_3-->"
             }
           ],
           "header": false,
@@ -97,26 +229,92 @@
       ],
       [
         {
-          "text": "李四",
+          "text": "<!--OMML_PLACEHOLDER_formula_4-->",
           "tokens": [
             {
-              "type": "text",
-              "raw": "李四",
-              "text": "李四",
-              "escaped": false
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_4-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_4-->"
             }
           ],
           "header": false,
           "align": null
         },
         {
-          "text": "30",
+          "text": "<!--OMML_PLACEHOLDER_formula_5-->",
           "tokens": [
             {
-              "type": "text",
-              "raw": "30",
-              "text": "30",
-              "escaped": false
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_5-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_5-->"
+            }
+          ],
+          "header": false,
+          "align": null
+        },
+        {
+          "text": "<!--OMML_PLACEHOLDER_formula_6-->",
+          "tokens": [
+            {
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_6-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_6-->"
+            }
+          ],
+          "header": false,
+          "align": null
+        }
+      ],
+      [
+        {
+          "text": "<!--OMML_PLACEHOLDER_formula_7-->",
+          "tokens": [
+            {
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_7-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_7-->"
+            }
+          ],
+          "header": false,
+          "align": null
+        },
+        {
+          "text": "<!--OMML_PLACEHOLDER_formula_8-->",
+          "tokens": [
+            {
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_8-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_8-->"
+            }
+          ],
+          "header": false,
+          "align": null
+        },
+        {
+          "text": "<!--OMML_PLACEHOLDER_formula_9-->",
+          "tokens": [
+            {
+              "type": "html",
+              "raw": "<!--OMML_PLACEHOLDER_formula_9-->",
+              "inLink": false,
+              "inRawBlock": false,
+              "block": false,
+              "text": "<!--OMML_PLACEHOLDER_formula_9-->"
             }
           ],
           "header": false,
@@ -126,20 +324,43 @@
     ]
   }
 ]
-22:27:46.993  预处理完成，共处理 0 张图片
-22:27:46.993  处理后的tokens: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
-22:27:46.994  [OMML Debug] 检查tokens中的占位符...
-22:27:46.995  开始解析 6 个tokens为Word文档元素
-22:27:46.995  tokens类型统计: {heading: 1, paragraph: 2, space: 2, table: 1}
-22:27:46.995  处理内联格式: 表格测试 (标题)
-22:27:46.995  标题1设置: {spacingBefore: 12, spacingBeforeTwips: 240, spacingAfter: 8, spacingAfterTwips: 160, lineHeight: 1.5, …}
-22:27:46.996  首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
-22:27:46.996  段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
-22:27:46.996  创建段落：{"chosenStyleId":"paragraph-2-chars","firstLineIndent":2,"willSetIndentAtParagraphLevel":false}
-22:27:46.996  未处理的token类型: space
-parseTokensToDocxElements @ main.481eaa6ee52293b….hot-update.js:1654
-createWordDocument @ main.481eaa6ee52293b….hot-update.js:1441
-exportToWord @ main.481eaa6ee52293b…f.hot-update.js:189
+22:43:27.182  预处理完成，共处理 0 张图片
+22:43:27.182  处理后的tokens: (17) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+22:43:27.182  [OMML Debug] 检查tokens中的占位符...
+22:43:27.182  [OMML Debug] Token raw中发现占位符: (9) ['\x3C!--OMML_PLACEHOLDER_formula_1-->', '\x3C!--OMML_PLACEHOLDER_formula_2-->', '\x3C!--OMML_PLACEHOLDER_formula_3-->', '\x3C!--OMML_PLACEHOLDER_formula_4-->', '\x3C!--OMML_PLACEHOLDER_formula_5-->', '\x3C!--OMML_PLACEHOLDER_formula_6-->', '\x3C!--OMML_PLACEHOLDER_formula_7-->', '\x3C!--OMML_PLACEHOLDER_formula_8-->', '\x3C!--OMML_PLACEHOLDER_formula_9-->'] table
+22:43:27.182  [OMML Debug] Token中发现占位符: (3) ['\x3C!--OMML_PLACEHOLDER_formula_10-->', '\x3C!--OMML_PLACEHOLDER_formula_11-->', '\x3C!--OMML_PLACEHOLDER_formula_12-->'] paragraph
+22:43:27.182  [OMML Debug] Token raw中发现占位符: (3) ['\x3C!--OMML_PLACEHOLDER_formula_10-->', '\x3C!--OMML_PLACEHOLDER_formula_11-->', '\x3C!--OMML_PLACEHOLDER_formula_12-->'] paragraph
+22:43:27.182  [OMML Debug] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_10-->'] html
+22:43:27.182  [OMML Debug] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_10-->'] html
+22:43:27.182  [OMML Debug] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_11-->'] html
+22:43:27.183  [OMML Debug] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_11-->'] html
+22:43:27.183  [OMML Debug] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_12-->'] html
+22:43:27.183  [OMML Debug] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_12-->'] html
+22:43:27.183  [OMML Debug] 期望在tokens中找到的占位符:
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_1-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_2-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_3-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_4-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_5-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_6-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_7-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_8-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_9-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_10-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_11-->
+22:43:27.183  [OMML Debug] - <!--OMML_PLACEHOLDER_formula_12-->
+22:43:27.183  [Export OMML] 设置当前导出的 OMML 结果 {count: 12}
+22:43:27.185  开始解析 17 个tokens为Word文档元素
+22:43:27.185  tokens类型统计: {heading: 5, paragraph: 6, space: 5, table: 1}
+22:43:27.185  处理内联格式: 表格位置测试 (标题)
+22:43:27.185  标题1设置: {spacingBefore: 12, spacingBeforeTwips: 240, spacingAfter: 8, spacingAfterTwips: 160, lineHeight: 1.5, …}
+22:43:27.185  首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
+22:43:27.185  段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.185  创建段落：{"chosenStyleId":"paragraph-2-chars","firstLineIndent":2,"willSetIndentAtParagraphLevel":false}
+22:43:27.185  未处理的token类型: space
+parseTokensToDocxElements @ main.c7a872d728e5734….hot-update.js:1688
+createWordDocument @ main.c7a872d728e5734….hot-update.js:1475
+exportToWord @ main.c7a872d728e5734…c.hot-update.js:189
 await in exportToWord
 handleExport @ bundle.js:296103
 （匿名） @ bundle.js:101548
@@ -151,24 +372,15 @@ batchedUpdates$1 @ bundle.js:267213
 dispatchEventForPluginEventSystem @ bundle.js:273726
 dispatchEvent @ bundle.js:275825
 dispatchDiscreteEvent @ bundle.js:275807
-22:27:46.996  创建表格: {type: 'table', raw: '| 名称 | 年龄 |\n|------|------|\n| 张三 | 25 |\n| 李四 | 30 |\n\n', header: Array(2), align: Array(2), rows: Array(2)}
-22:27:46.996  表格表头: (2) [{…}, {…}]
-22:27:46.996  表头单元格 0: 名称
-22:27:46.996  表头单元格 1: 年龄
-22:27:46.997  表格行数: 2
-22:27:46.997  表格行 0: (2) [{…}, {…}]
-22:27:46.997  单元格 [0,0]: 张三
-22:27:46.997  单元格 [0,1]: 25
-22:27:46.997  表格行 1: (2) [{…}, {…}]
-22:27:46.997  单元格 [1,0]: 李四
-22:27:46.997  单元格 [1,1]: 30
-22:27:46.997  首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
-22:27:46.998  段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
-22:27:46.998  创建段落：{"chosenStyleId":"paragraph-2-chars","firstLineIndent":2,"willSetIndentAtParagraphLevel":false}
-22:27:46.998  未处理的token类型: space
-parseTokensToDocxElements @ main.481eaa6ee52293b….hot-update.js:1654
-createWordDocument @ main.481eaa6ee52293b….hot-update.js:1441
-exportToWord @ main.481eaa6ee52293b…f.hot-update.js:189
+22:43:27.186  处理内联格式: 第二节标题 (标题)
+22:43:27.186  标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.186  首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
+22:43:27.186  段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.186  创建段落：{"chosenStyleId":"paragraph-2-chars","firstLineIndent":2,"willSetIndentAtParagraphLevel":false}
+22:43:27.186  未处理的token类型: space
+parseTokensToDocxElements @ main.c7a872d728e5734….hot-update.js:1688
+createWordDocument @ main.c7a872d728e5734….hot-update.js:1475
+exportToWord @ main.c7a872d728e5734…c.hot-update.js:189
 await in exportToWord
 handleExport @ bundle.js:296103
 （匿名） @ bundle.js:101548
@@ -180,54 +392,62 @@ batchedUpdates$1 @ bundle.js:267213
 dispatchEventForPluginEventSystem @ bundle.js:273726
 dispatchEvent @ bundle.js:275825
 dispatchDiscreteEvent @ bundle.js:275807
-22:27:46.998  解析完成，共生成 4 个Word文档元素
-22:27:46.998  Word文档元素类型统计: {Paragraph: 3, Table: 1}
-22:27:47.000  样式已注入（importedStyles）：paragraph-2-chars / paragraph-4-chars / paragraph-no-indent
-22:27:47.035  [OMML Debug] 检查生成的docx中的占位符...
-22:27:47.039  [OMML Debug] document.xml长度: 6341
-22:27:47.039  [OMML Debug] XML中的占位符: []
-22:27:47.039  [OMML Debug] XML开头预览: <?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document mc:Ignorable="w14 w15 wp14" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http:/
-22:27:47.042  [Document Debug] 🚀 原始Word文档包含 9 个段落, 1 个表格
-22:27:47.042  [Document Debug] 段落 1: 📝 文本内容 - "表格测试..."
-22:27:47.042  [Document Debug] 段落 2: 📝 文本内容 - "哈哈哈..."
-22:27:47.042  [Document Debug] 段落 3: 📝 文本内容 - "名称..."
-22:27:47.042  [Document Debug] 段落 4: 📝 文本内容 - "年龄..."
-22:27:47.042  [Document Debug] 段落 5: 📝 文本内容 - "张三..."
-22:27:47.042 exportService.js:300 [Document Debug] 段落 6: 📝 文本内容 - "25..."
-22:27:47.042 exportService.js:300 [Document Debug] 段落 7: 📝 文本内容 - "李四..."
-22:27:47.042 exportService.js:300 [Document Debug] 段落 8: 📝 文本内容 - "30..."
-22:27:47.042 exportService.js:300 [Document Debug] 段落 9: 📝 文本内容 - "哈哈哈哈哈..."
-22:27:47.042 exportService.js:308 [OMML Post-process Debug] 开始替换 3 个公式占位符
-22:27:47.042 exportService.js:309 [OMML Post-process Debug] XML文档长度: 6341
-22:27:47.042 exportService.js:314 [OMML Post-process Debug] XML中找到 0 个占位符: []
-22:27:47.042 exportService.js:326 [Table Protection] 发现 1 个表格区域需要保护
-22:27:47.043 exportService.js:356 [OMML Post-process Debug] XML中占位符顺序: []
-22:27:47.043 exportService.js:572 [OMML Post-process Debug] 处理完成，剩余占位符: 0 []
-22:27:47.043 exportService.js:576 [Table Protection] 处理后文档包含 1 个表格 (原始: 1)
-22:27:47.043 exportService.js:581 [Table Protection] ✅ 表格结构保持完整
-22:27:47.043 exportService.js:585 [OMML Post-process Debug] 检查最终XML中的公式顺序...
-22:27:47.043 exportService.js:587 [OMML Post-process Debug] 最终XML中包含 0 个数学公式
-22:27:47.043 exportService.js:612 [OMML Post-process Debug] 验证公式ID和内容对应关系:
-22:27:47.043 exportService.js:619 [OMML Post-process Debug] 分析XML段落结构:
-22:27:47.043 exportService.js:620 [OMML Post-process Debug] XML字符串长度: 6341
-22:27:47.043 exportService.js:623 [OMML Post-process Debug] 找到 9 个段落
-22:27:47.043 exportService.js:647 [OMML Post-process Debug] 段落 1: 📝 标题 1 = "表格测试"
-22:27:47.043 exportService.js:657 [OMML Post-process Debug] 段落分析完成: 共 9 个段落，0 个公式段落，1 个标题段落
-22:27:47.043 exportService.js:662 [OMML Protection] OMML替换后XML中有 9 个段落
-22:27:47.043 exportService.js:672 [OMML Protection] 段落 1: 📝 文本 - "表格测试..."
-22:27:47.043 exportService.js:672 [OMML Protection] 段落 2: 📝 文本 - "哈哈哈..."
-22:27:47.043 exportService.js:672 [OMML Protection] 段落 3: 📝 文本 - "名称..."
-22:27:47.043 exportService.js:672 [OMML Protection] 段落 4: 📝 文本 - "年龄..."
-22:27:47.043 exportService.js:672 [OMML Protection] 段落 5: 📝 文本 - "张三..."
-22:27:47.043 exportService.js:672 [OMML Protection] 段落 6: 📝 文本 - "25..."
-22:27:47.043 exportService.js:672 [OMML Protection] 段落 7: 📝 文本 - "李四..."
-22:27:47.044 exportService.js:672 [OMML Protection] 段落 8: 📝 文本 - "30..."
-22:27:47.044 exportService.js:672 [OMML Protection] 段落 9: 📝 文本 - "哈哈哈哈哈..."
-22:27:47.044 exportService.js:687 [OMML Protection] 在已替换OMML的XML中找到 0 个OMML需要保护
-22:27:47.044 exportService.js:698 [OMML Protection] ⚠️ 未找到OMML内容需要保护，可能OMML替换未成功
-postProcessDocx @ exportService.js:698
-await in postProcessDocx
-exportToWord @ exportService.js:180
+22:43:27.186  处理内联格式: 表格应该在这里 (标题)
+22:43:27.186  标题3设置: {spacingBefore: 8, spacingBeforeTwips: 160, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.186  创建表格: {type: 'table', raw: '| 函数 | 导数 | 积分 |\n|------|------|------|\n| \x3C!--OMML…mula_8--> | \x3C!--OMML_PLACEHOLDER_formula_9--> |\n\n', header: Array(3), align: Array(3), rows: Array(3)}
+22:43:27.186  表格表头: (3) [{…}, {…}, {…}]
+22:43:27.187  表头单元格 0: 函数
+22:43:27.187  表头单元格 1: 导数
+22:43:27.187  表头单元格 2: 积分
+22:43:27.187  表格行数: 3
+22:43:27.187  表格行 0: (3) [{…}, {…}, {…}]
+22:43:27.187  单元格 [0,0]: <!--OMML_PLACEHOLDER_formula_1-->
+22:43:27.187  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.187  单元格 [0,1]: <!--OMML_PLACEHOLDER_formula_2-->
+22:43:27.187  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.187  单元格 [0,2]: <!--OMML_PLACEHOLDER_formula_3-->
+22:43:27.188  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.188  表格行 1: (3) [{…}, {…}, {…}]
+22:43:27.188  单元格 [1,0]: <!--OMML_PLACEHOLDER_formula_4-->
+22:43:27.188  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.188  单元格 [1,1]: <!--OMML_PLACEHOLDER_formula_5-->
+22:43:27.188  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.188  单元格 [1,2]: <!--OMML_PLACEHOLDER_formula_6-->
+22:43:27.188  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.188  表格行 2: (3) [{…}, {…}, {…}]
+22:43:27.188  单元格 [2,0]: <!--OMML_PLACEHOLDER_formula_7-->
+22:43:27.188  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.188  单元格 [2,1]: <!--OMML_PLACEHOLDER_formula_8-->
+22:43:27.188  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.188  单元格 [2,2]: <!--OMML_PLACEHOLDER_formula_9-->
+22:43:27.188  [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.189  首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
+22:43:27.189  段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.189  创建段落：{"chosenStyleId":"paragraph-2-chars","firstLineIndent":2,"willSetIndentAtParagraphLevel":false}
+22:43:27.189  未处理的token类型: space
+parseTokensToDocxElements @ main.c7a872d728e5734….hot-update.js:1688
+createWordDocument @ main.c7a872d728e5734….hot-update.js:1475
+exportToWord @ main.c7a872d728e5734…c.hot-update.js:189
+await in exportToWord
+handleExport @ bundle.js:296103
+（匿名） @ bundle.js:101548
+executeDispatch @ bundle.js:273622
+runWithFiberInDEV @ bundle.js:266364
+processDispatchQueue @ bundle.js:273650
+（匿名） @ bundle.js:273943
+batchedUpdates$1 @ bundle.js:267213
+dispatchEventForPluginEventSystem @ bundle.js:273726
+dispatchEvent @ bundle.js:275825
+dispatchDiscreteEvent @ bundle.js:275807
+22:43:27.189  处理内联格式: 另一个标题 (标题)
+22:43:27.189  标题3设置: {spacingBefore: 8, spacingBeforeTwips: 160, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.189  首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
+22:43:27.189 main.c7a872d728e5734ea9dc.hot-update.js:1941 段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.189 main.c7a872d728e5734ea9dc.hot-update.js:1967 创建段落：{"chosenStyleId":"paragraph-2-chars","firstLineIndent":2,"willSetIndentAtParagraphLevel":false}
+22:43:27.189 main.c7a872d728e5734ea9dc.hot-update.js:1688 未处理的token类型: space
+parseTokensToDocxElements @ main.c7a872d728e5734ea9dc.hot-update.js:1688
+createWordDocument @ main.c7a872d728e5734ea9dc.hot-update.js:1475
+exportToWord @ main.c7a872d728e5734ea9dc.hot-update.js:189
 await in exportToWord
 handleExport @ Header.js:185
 （匿名） @ button.js:186
@@ -239,65 +459,18 @@ batchedUpdates$1 @ react-dom-client.development.js:3262
 dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
 dispatchEvent @ react-dom-client.development.js:20657
 dispatchDiscreteEvent @ react-dom-client.development.js:20625
-22:27:47.046 exportService.js:710 [OMML Protection] XML解析完成，检查JSON结构
-22:27:47.046 exportService.js:711 [OMML Protection] JSON根键: ?xml, w:document
-22:27:47.046 exportService.js:719 [OMML Protection] ✅ 找到w:document
-22:27:47.046 exportService.js:726 [OMML Protection] ✅ 找到w:body
-22:27:47.046 exportService.js:729 [OMML Protection] 段落类型: object, 是否为数组: true
-22:27:47.046 exportService.js:733 [OMML Protection] 找到 3 个段落数组
-22:27:47.046 exportService.js:735 [OMML Protection] 段落 1: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading1"},"w:spacing":{"@_w:before":"240","@_w:after":"160","@_w:l...
-22:27:47.046 exportService.js:735 [OMML Protection] 段落 2: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
-22:27:47.046 exportService.js:735 [OMML Protection] 段落 3: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
-22:27:47.046 exportService.js:744 [OMML Protection] w:body的所有键: w:p, w:tbl, w:sectPr
-22:27:47.046 exportService.js:747 [OMML Protection] 🔍 分析body结构中的所有子元素:
-22:27:47.046 exportService.js:750 [OMML Protection] - w:p: 3 个段落
-22:27:47.046 exportService.js:752 [OMML Protection] - w:tbl: 1个表格
-22:27:47.046 exportService.js:754 [OMML Protection] - w:sectPr: object
-22:27:47.046 exportService.js:788 [OMML Protection] 🔍 分析原始文档中的元素顺序...
-22:27:47.046 exportService.js:825 [OMML Protection] 🔍 原始文档中body元素的实际顺序:
-22:27:47.047 exportService.js:830 [OMML Protection] 1. 📝 段落: "表格测试" (位置: 0)
-22:27:47.047 exportService.js:830 [OMML Protection] 2. 📝 段落: "哈哈哈" (位置: 400)
-22:27:47.047 exportService.js:828 [OMML Protection] 3. 📋 表格1 (位置: 824)
-22:27:47.047 exportService.js:830 [OMML Protection] 4. 📝 段落: "名称" (位置: 1340)
-22:27:47.047 exportService.js:830 [OMML Protection] 5. 📝 段落: "年龄" (位置: 1615)
-22:27:47.047 exportService.js:830 [OMML Protection] 6. 📝 段落: "张三" (位置: 1862)
-22:27:47.047 exportService.js:830 [OMML Protection] 7. 📝 段落: "25" (位置: 2191)
-22:27:47.047 exportService.js:830 [OMML Protection] 8. 📝 段落: "李四" (位置: 2585)
-22:27:47.047 exportService.js:830 [OMML Protection] 9. 📝 段落: "30" (位置: 2914)
-22:27:47.047 exportService.js:830 [OMML Protection] 10. 📝 段落: "哈哈哈哈哈" (位置: 3304)
-22:27:47.047 exportService.js:838 [OMML Protection] 🔍 表格在所有元素中的位置: 3
-22:27:47.047 exportService.js:839 [OMML Protection] 🔍 表格前有 2 个独立段落
-22:27:47.047 exportService.js:842 [OMML Protection] ⚠️ 检测到表格位置问题，但JSON结构无法完美解决此问题
-22:27:47.047 exportService.js:843 [OMML Protection] 💡 将采用XML字符串操作来修复表格位置
-22:27:47.047 exportService.js:855 [OMML Protection] 📝 保存修复信息: 表格应在第2个独立段落后
-22:27:47.048 exportService.js:866 [OMML Protection] XMLBuilder构建完成，准备开始恢复阶段
-22:27:47.048 exportService.js:867 [OMML Protection] 构建后XML长度: 7146
-22:27:47.048 exportService.js:868 [OMML Protection] 保护映射表大小: 0
-22:27:47.048 exportService.js:872 [OMML Protection] 🔧 开始XML字符串级别的表格位置修复...
-22:27:47.048 exportService.js:881 [OMML Protection] 🔍 XML中找到 9 个段落, 1 个表格
-22:27:47.048 exportService.js:894 [OMML Protection] 🔍 识别出 1 个独立段落
-22:27:47.048 exportService.js:922 [OMML Protection] XML重建后有 9 个段落, 1 个表格
-22:27:47.048 exportService.js:925 [OMML Protection] 🔍 分析重建XML中所有body子元素的顺序:
-22:27:47.048 exportService.js:937 [OMML Protection] 元素 1: 📝 段落 - "表格测试..." (位置: 2360)
-22:27:47.048 exportService.js:937 [OMML Protection] 元素 2: 📝 段落 - "哈哈哈..." (位置: 2844)
-22:27:47.048 exportService.js:937 [OMML Protection] 元素 3: 📝 段落 - "哈哈哈哈哈..." (位置: 3390)
-22:27:47.048 exportService.js:932 [OMML Protection] 元素 4: 📋 表格 (位置: 3938)
-22:27:47.048 exportService.js:951 [OMML Protection] 重建段落 1: 📝 文本 - "表格测试..."
-22:27:47.049 exportService.js:951 [OMML Protection] 重建段落 2: 📝 文本 - "哈哈哈..."
-22:27:47.049 exportService.js:951 [OMML Protection] 重建段落 3: 📝 文本 - "哈哈哈哈哈..."
-22:27:47.049 exportService.js:951 [OMML Protection] 重建段落 4: 📝 文本 - "名称..."
-22:27:47.049 exportService.js:951 [OMML Protection] 重建段落 5: 📝 文本 - "年龄..."
-22:27:47.049 exportService.js:951 [OMML Protection] 重建段落 6: 📝 文本 - "张三..."
-22:27:47.049 exportService.js:951 [OMML Protection] 重建段落 7: 📝 文本 - "25..."
-22:27:47.049 exportService.js:951 [OMML Protection] 重建段落 8: 📝 文本 - "李四..."
-22:27:47.049 exportService.js:951 [OMML Protection] 重建段落 9: 📝 文本 - "30..."
-22:27:47.049 exportService.js:959 [OMML Protection] 开始恢复 0 个被保护的OMML
-22:27:47.049 exportService.js:960 [OMML Protection] 恢复前XML长度: 7146
-22:27:47.049 exportService.js:964 [OMML Protection] XML中是否包含保护键: false
-22:27:47.049 exportService.js:978 [OMML Protection] ⚠️ 所有保护键都未在XML中找到，可能XML解析过程中丢失了
-postProcessDocx @ exportService.js:978
-await in postProcessDocx
-exportToWord @ exportService.js:180
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:2482 处理内联格式: 包含公式的段落 (标题)
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:1886 标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:2359 [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:2359 [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:2359 [Export OMML] Token 文本包含 OMML 标记，在表格中保持原样
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:55 首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:1941 段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:1967 创建段落：{"chosenStyleId":"paragraph-2-chars","firstLineIndent":2,"willSetIndentAtParagraphLevel":false}
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:1688 未处理的token类型: space
+parseTokensToDocxElements @ main.c7a872d728e5734ea9dc.hot-update.js:1688
+createWordDocument @ main.c7a872d728e5734ea9dc.hot-update.js:1475
+exportToWord @ main.c7a872d728e5734ea9dc.hot-update.js:189
 await in exportToWord
 handleExport @ Header.js:185
 （匿名） @ button.js:186
@@ -309,8 +482,509 @@ batchedUpdates$1 @ react-dom-client.development.js:3262
 dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
 dispatchEvent @ react-dom-client.development.js:20657
 dispatchDiscreteEvent @ react-dom-client.development.js:20625
-22:27:47.049 exportService.js:982 [OMML Protection] XML中是否包含原始占位符: false
-22:27:47.049 exportService.js:989 [OMML Protection] 恢复后XML长度: 7146
-22:27:47.049 exportService.js:990 [OMML Protection] OMML恢复完成
-22:27:47.060 exportService.js:995 docx后处理完成：已写入 firstLineChars 和 OMML 公式
-22:27:47.061 exportService.js:183 Word文档导出成功!
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:55 首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
+22:43:27.190 main.c7a872d728e5734ea9dc.hot-update.js:1941 段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+22:43:27.191 main.c7a872d728e5734ea9dc.hot-update.js:1967 创建段落：{"chosenStyleId":"paragraph-2-chars","firstLineIndent":2,"willSetIndentAtParagraphLevel":false}
+22:43:27.191 main.c7a872d728e5734ea9dc.hot-update.js:1691 解析完成，共生成 12 个Word文档元素
+22:43:27.191 main.c7a872d728e5734ea9dc.hot-update.js:1692 Word文档元素类型统计: {Paragraph: 11, Table: 1}
+22:43:27.194 main.c7a872d728e5734ea9dc.hot-update.js:1481 样式已注入（importedStyles）：paragraph-2-chars / paragraph-4-chars / paragraph-no-indent
+22:43:27.194 main.c7a872d728e5734ea9dc.hot-update.js:194 [Export] LaTeX 导出统计: {totalExports: 17, totalFormulas: 197, successfulConversions: 195, failedConversions: 2, cacheHits: 93, …}
+22:43:27.219 main.c7a872d728e5734ea9dc.hot-update.js:253 [OMML Debug] 检查生成的docx中的占位符...
+22:43:27.223 main.c7a872d728e5734ea9dc.hot-update.js:261 [OMML Debug] document.xml长度: 10931
+22:43:27.223 main.c7a872d728e5734ea9dc.hot-update.js:266 [OMML Debug] XML中的占位符: []
+22:43:27.223 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_1-->: ❌未找到
+22:43:27.223 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_1--&gt;: ✅找到
+22:43:27.223 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_2-->: ❌未找到
+22:43:27.223 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_2--&gt;: ✅找到
+22:43:27.223 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_3-->: ❌未找到
+22:43:27.223 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_3--&gt;: ✅找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_4-->: ❌未找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_4--&gt;: ✅找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_5-->: ❌未找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_5--&gt;: ✅找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_6-->: ❌未找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_6--&gt;: ✅找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_7-->: ❌未找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_7--&gt;: ✅找到
+22:43:27.224 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_8-->: ❌未找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_8--&gt;: ✅找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_9-->: ❌未找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_9--&gt;: ✅找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_10-->: ❌未找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_10--&gt;: ✅找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_11-->: ❌未找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_11--&gt;: ✅找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:276 [OMML Debug] 期望占位符 <!--OMML_PLACEHOLDER_formula_12-->: ❌未找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:277 [OMML Debug] 转义占位符 &lt;!--OMML_PLACEHOLDER_formula_12--&gt;: ✅找到
+22:43:27.225 main.c7a872d728e5734ea9dc.hot-update.js:284 [OMML Debug] XML开头预览: <?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document mc:Ignorable="w14 w15 wp14" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http:/
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:304 [Document Debug] 🚀 原始Word文档包含 23 个段落, 1 个表格
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 1: 📝 文本内容 - "表格位置测试..."
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 2: 📝 文本内容 - "这是第一段文字，应该在表格前面。..."
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 3: 📝 文本内容 - "第二节标题..."
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 4: 📝 文本内容 - "这是第二段文字，仍然在表格前面。..."
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 5: 📝 文本内容 - "表格应该在这里..."
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 6: 📝 文本内容 - "函数..."
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 7: 📝 文本内容 - "导数..."
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 8: 📝 文本内容 - "积分..."
+22:43:27.228 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 9: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_1--&gt;...
+22:43:27.229 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 10: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_2--&gt;...
+22:43:27.229 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 11: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_3--&gt;...
+22:43:27.229 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 12: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_4--&gt;...
+22:43:27.229 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 13: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_5--&gt;...
+22:43:27.229 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 14: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_6--&gt;...
+22:43:27.229 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 15: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_7--&gt;...
+22:43:27.229 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 16: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_8--&gt;...
+22:43:27.229 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 17: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formula_9--&gt;...
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 18: 📝 文本内容 - "这是表格后面的文字，应该出现在表格下方。..."
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 19: 📝 文本内容 - "另一个标题..."
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 20: 📝 文本内容 - "这是最后一段文字。..."
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 21: 📝 文本内容 - "包含公式的段落..."
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:311 [Document Debug] 段落 22: 📊 包含占位符 - 这是一个包含行内公式的段落：计算 &lt;!--OMML_PLACEHOLDER_formula_1...
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:313 [Document Debug] 段落 23: 📝 文本内容 - "这段文字应该在公式段落之后显示。..."
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:321 [OMML Post-process Debug] 开始替换 12 个公式占位符
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:322 [OMML Post-process Debug] XML文档长度: 10931
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:327 [OMML Post-process Debug] XML中找到 0 个占位符: []
+22:43:27.230 main.c7a872d728e5734ea9dc.hot-update.js:339 [Table Protection] 发现 1 个表格区域需要保护
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_1 位于表格内，位置: 5842
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_2 位于表格内，位置: 5983
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_3 位于表格内，位置: 6124
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_4 位于表格内，位置: 6278
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_5 位于表格内，位置: 6419
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_6 位于表格内，位置: 6560
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_7 位于表格内，位置: 6714
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_8 位于表格内，位置: 6855
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:364 [Table Protection] 占位符 formula_9 位于表格内，位置: 6996
+22:43:27.231 main.c7a872d728e5734ea9dc.hot-update.js:370 [OMML Post-process Debug] XML中占位符顺序: (12) ['formula_1@5842', 'formula_2@5983', 'formula_3@6124', 'formula_4@6278', 'formula_5@6419', 'formula_6@6560', 'formula_7@6714', 'formula_8@6855', 'formula_9@6996', 'formula_10@9209', 'formula_11@9561', 'formula_12@9916']
+22:43:27.232 main.c7a872d728e5734ea9dc.hot-update.js:386 [OMML Post-process Debug] 处理OMML结果: {id: 'formula_1', success: true, hasOmml: true, latex: 'e^x', isDisplayMode: false, …}
+22:43:27.232 main.c7a872d728e5734ea9dc.hot-update.js:398 [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_1-->
+22:43:27.232 main.c7a872d728e5734ea9dc.hot-update.js:399 [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_1--&gt;
+22:43:27.232 main.c7a872d728e5734ea9dc.hot-update.js:400 [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.232 main.c7a872d728e5734ea9dc.hot-update.js:401 [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.232 main.c7a872d728e5734ea9dc.hot-update.js:414 [OMML Post-process Debug] 清理后的OMML长度: 180
+22:43:27.232  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>x</m:t></m:
+22:43:27.232  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.233  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.233  [Table Protection] 🔧 处理表格内公式: formula_1
+22:43:27.233  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_1--&gt;
+22:43:27.233  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.233  [Table Protection] ✅ 表格内公式替换成功: formula_1 (XML长度: 10931 → 11072)
+22:43:27.233  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_1--&gt; 替换成功
+22:43:27.233  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_2', success: true, hasOmml: true, latex: '2x', isDisplayMode: false, …}
+22:43:27.233  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_2-->
+22:43:27.233  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_2--&gt;
+22:43:27.233  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.233  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.234  [OMML Post-process Debug] 清理后的OMML长度: 115
+22:43:27.234  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>2x</m:t></m:r></m:oMath>
+
+22:43:27.234  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.234  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.234  [Table Protection] 🔧 处理表格内公式: formula_2
+22:43:27.234  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_2--&gt;
+22:43:27.234  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.235  [Table Protection] ✅ 表格内公式替换成功: formula_2 (XML长度: 11072 → 11148)
+22:43:27.235  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_2--&gt; 替换成功
+22:43:27.235  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_3', success: true, hasOmml: true, latex: '\\frac{x^3}{3} + C', isDisplayMode: false, …}
+22:43:27.235  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_3-->
+22:43:27.235  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_3--&gt;
+22:43:27.235  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.235  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.235  [OMML Post-process Debug] 清理后的OMML长度: 304
+22:43:27.235  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:sSup><m:e><m:r><m:t
+22:43:27.236  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.236  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.236  [Table Protection] 🔧 处理表格内公式: formula_3
+22:43:27.236  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_3--&gt;
+22:43:27.236  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.236  [Table Protection] ✅ 表格内公式替换成功: formula_3 (XML长度: 11148 → 11413)
+22:43:27.236  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_3--&gt; 替换成功
+22:43:27.236  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_4', success: true, hasOmml: true, latex: 'e^x', isDisplayMode: false, …}
+22:43:27.237  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_4-->
+22:43:27.237  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_4--&gt;
+22:43:27.237  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.237  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.237  [OMML Post-process Debug] 清理后的OMML长度: 180
+22:43:27.237  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>x</m:t></m:
+22:43:27.237  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.237  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.237  [Table Protection] 🔧 处理表格内公式: formula_4
+22:43:27.238  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_4--&gt;
+22:43:27.238  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.238  [Table Protection] ✅ 表格内公式替换成功: formula_4 (XML长度: 11413 → 11554)
+22:43:27.238  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_4--&gt; 替换成功
+22:43:27.238  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_5', success: true, hasOmml: true, latex: 'e^x', isDisplayMode: false, …}
+22:43:27.238  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_5-->
+22:43:27.238  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_5--&gt;
+22:43:27.238  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.238  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.238  [OMML Post-process Debug] 清理后的OMML长度: 180
+22:43:27.238  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>x</m:t></m:
+22:43:27.239  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.239  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.239  [Table Protection] 🔧 处理表格内公式: formula_5
+22:43:27.239  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_5--&gt;
+22:43:27.239  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.239  [Table Protection] ✅ 表格内公式替换成功: formula_5 (XML长度: 11554 → 11695)
+22:43:27.239  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_5--&gt; 替换成功
+22:43:27.239  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_6', success: true, hasOmml: true, latex: 'e^x + C', isDisplayMode: false, …}
+22:43:27.239  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_6-->
+22:43:27.240  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_6--&gt;
+22:43:27.240  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.240  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.240  [OMML Post-process Debug] 清理后的OMML长度: 204
+22:43:27.240  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>x</m:t></m:
+22:43:27.240  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.240  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.240  [Table Protection] 🔧 处理表格内公式: formula_6
+22:43:27.240  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_6--&gt;
+22:43:27.241  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.241  [Table Protection] ✅ 表格内公式替换成功: formula_6 (XML长度: 11695 → 11860)
+22:43:27.241  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_6--&gt; 替换成功
+22:43:27.241  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_7', success: true, hasOmml: true, latex: '\\sin x', isDisplayMode: false, …}
+22:43:27.241  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_7-->
+22:43:27.241  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_7--&gt;
+22:43:27.241  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.241  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.241  [OMML Post-process Debug] 清理后的OMML长度: 173
+22:43:27.241  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>sin</m:t></m:r><m:r><m:t>⁡x
+22:43:27.242  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.242  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.242  [Table Protection] 🔧 处理表格内公式: formula_7
+22:43:27.242  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_7--&gt;
+22:43:27.242  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.242  [Table Protection] ✅ 表格内公式替换成功: formula_7 (XML长度: 11860 → 11994)
+22:43:27.242  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_7--&gt; 替换成功
+22:43:27.242  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_8', success: true, hasOmml: true, latex: '\\cos x', isDisplayMode: false, …}
+22:43:27.242  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_8-->
+22:43:27.243  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_8--&gt;
+22:43:27.243  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.243  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.243  [OMML Post-process Debug] 清理后的OMML长度: 173
+22:43:27.243  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>cos</m:t></m:r><m:r><m:t>⁡x
+22:43:27.243  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.243  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.243  [Table Protection] 🔧 处理表格内公式: formula_8
+22:43:27.243  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_8--&gt;
+22:43:27.243  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.243  [Table Protection] ✅ 表格内公式替换成功: formula_8 (XML长度: 11994 → 12128)
+22:43:27.243  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_8--&gt; 替换成功
+22:43:27.243  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_9', success: true, hasOmml: true, latex: '-\\cos x + C', isDisplayMode: false, …}
+22:43:27.243  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_9-->
+22:43:27.243  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_9--&gt;
+22:43:27.244  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.244  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.244  [OMML Post-process Debug] 清理后的OMML长度: 198
+22:43:27.244  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>−</m:t></m:r><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>cos<
+22:43:27.244  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.244  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: false
+22:43:27.244  [Table Protection] 🔧 处理表格内公式: formula_9
+22:43:27.244  [Table Protection] 🔍 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_9--&gt;
+22:43:27.244  [Table Protection] 🔍 XML中是否包含该占位符: true
+22:43:27.244  [Table Protection] ✅ 表格内公式替换成功: formula_9 (XML长度: 12128 → 12287)
+22:43:27.244  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_9--&gt; 替换成功
+22:43:27.244  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_10', success: true, hasOmml: true, latex: 'a = 2', isDisplayMode: false, …}
+22:43:27.245  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_10-->
+22:43:27.245  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_10--&gt;
+22:43:27.245  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.245  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.245  [OMML Post-process Debug] 清理后的OMML长度: 116
+22:43:27.245  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>a=2</m:t></m:r></m:oMath>
+
+22:43:27.245  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.245  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: true
+22:43:27.245  [OMML Post-process Debug] 🔍 检测到行内公式，段落包含额外文本内容
+22:43:27.245  [OMML Post-process Debug] 🔍 段落文本预览: <w:p><w:pPr><w:pStyle w:val="paragraph-2-chars"/><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="宋体" w:cs="宋体" w:eastAs...
+22:43:27.245  [OMML Post-process Debug] 🔍 正则匹配的内容长度: 1497
+22:43:27.245  [OMML Post-process Debug] 🔍 匹配内容预览: <w:p><w:pPr><w:pStyle w:val="paragraph-2-chars"/><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="宋体" w:cs="宋体" w:eastAs...
+22:43:27.246  [OMML Post-process Debug] 🔍 匹配内容包含 1 个段落开始标签
+22:43:27.246  [OMML Post-process Debug] 🔄 处理行内公式，确保正确的XML结构
+22:43:27.246  [OMML Post-process Debug] 🔍 找到包含占位符的w:t标签
+22:43:27.246  [OMML Post-process Debug] 🔧 拆分w:t标签: "这是表格后面的文字，应该出现在表格下方。</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="Heading3"/><w:spacing w:before="160" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="微软雅黑" w:cs="微软雅黑" w:eastAsia="微软雅黑" w:hAnsi="微软雅黑"/><w:b/><w:bCs/><w:i w:val="false"/><w:iCs w:val="false"/><w:color w:val="000000"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr><w:t xml:space="preserve">另一个标题</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="paragraph-2-chars"/><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="宋体" w:cs="宋体" w:eastAsia="宋体" w:hAnsi="宋体"/><w:b w:val="false"/><w:bCs w:val="false"/><w:i w:val="false"/><w:iCs w:val="false"/><w:color w:val="000000"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr><w:t xml:space="preserve">这是最后一段文字。</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="Heading2"/><w:spacing w:before="200" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="微软雅黑" w:cs="微软雅黑" w:eastAsia="微软雅黑" w:hAnsi="微软雅黑"/><w:b/><w:bCs/><w:i w:val="false"/><w:iCs w:val="false"/><w:color w:val="000000"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t xml:space="preserve">包含公式的段落</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="paragraph-2-chars"/><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="宋体" w:cs="宋体" w:eastAsia="宋体" w:hAnsi="宋体"/><w:b w:val="false"/><w:bCs w:val="false"/><w:i w:val="false"/><w:iCs w:val="false"/><w:color w:val="000000"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr><w:t xml:space="preserve">这是一个包含行内公式的段落：计算 </w:t></w:r><w:r><w:t xml:space="preserve">" + 公式 + ""
+22:43:27.246  [OMML Post-process Debug] ✅ 行内公式w:t标签拆分完成
+22:43:27.246  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_10--&gt; 替换成功
+22:43:27.246  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_11', success: true, hasOmml: true, latex: 'b = 3', isDisplayMode: false, …}
+22:43:27.246  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_11-->
+22:43:27.246  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_11--&gt;
+22:43:27.246  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.246  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.246  [OMML Post-process Debug] 清理后的OMML长度: 116
+22:43:27.246  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>b=3</m:t></m:r></m:oMath>
+
+22:43:27.247  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.247  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: true
+22:43:27.247  [OMML Post-process Debug] 🔍 检测到行内公式，段落包含额外文本内容
+22:43:27.247  [OMML Post-process Debug] 🔍 段落文本预览: <w:p><w:pPr><w:pStyle w:val="paragraph-2-chars"/><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="宋体" w:cs="宋体" w:eastAs...
+22:43:27.247  [OMML Post-process Debug] 🔍 正则匹配的内容长度: 1573
+22:43:27.247  [OMML Post-process Debug] 🔍 匹配内容预览: <w:p><w:pPr><w:pStyle w:val="paragraph-2-chars"/><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="宋体" w:cs="宋体" w:eastAs...
+22:43:27.247  [OMML Post-process Debug] 🔍 匹配内容包含 1 个段落开始标签
+22:43:27.247  [OMML Post-process Debug] 🔄 处理行内公式，确保正确的XML结构
+22:43:27.247  [OMML Post-process Debug] 🔍 找到包含占位符的w:t标签
+22:43:27.248  [OMML Post-process Debug] 🔧 拆分w:t标签: "，</w:t></w:r><w:r><w:t xml:space="preserve">" + 公式 + ""
+22:43:27.248  [OMML Post-process Debug] ✅ 行内公式w:t标签拆分完成
+22:43:27.248  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_11--&gt; 替换成功
+22:43:27.248  [OMML Post-process Debug] 处理OMML结果: {id: 'formula_12', success: true, hasOmml: true, latex: 'a + b = 5', isDisplayMode: false, …}
+22:43:27.248  [OMML Post-process Debug] 查找占位符: <!--OMML_PLACEHOLDER_formula_12-->
+22:43:27.248  [OMML Post-process Debug] 查找转义占位符: &lt;!--OMML_PLACEHOLDER_formula_12--&gt;
+22:43:27.248  [OMML Post-process Debug] XML中包含原始占位符: false
+22:43:27.248  [OMML Post-process Debug] XML中包含转义占位符: true
+22:43:27.248  [OMML Post-process Debug] 清理后的OMML长度: 118
+22:43:27.248  [OMML Post-process Debug] 清理后的OMML预览: 
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>a+b=5</m:t></m:r></m:oMath>
+
+22:43:27.248  [OMML Post-process Debug] 查找包含占位符的段落: true
+22:43:27.248  [OMML Post-process Debug] 🔍 段落是否包含其他文本内容: true
+22:43:27.248  [OMML Post-process Debug] 🔍 检测到行内公式，段落包含额外文本内容
+22:43:27.248  [OMML Post-process Debug] 🔍 段落文本预览: <w:p><w:pPr><w:pStyle w:val="paragraph-2-chars"/><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="宋体" w:cs="宋体" w:eastAs...
+22:43:27.249  [OMML Post-process Debug] 🔍 正则匹配的内容长度: 1649
+22:43:27.249  [OMML Post-process Debug] 🔍 匹配内容预览: <w:p><w:pPr><w:pStyle w:val="paragraph-2-chars"/><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="宋体" w:cs="宋体" w:eastAs...
+22:43:27.249  [OMML Post-process Debug] 🔍 匹配内容包含 1 个段落开始标签
+22:43:27.249  [OMML Post-process Debug] 🔄 处理行内公式，确保正确的XML结构
+22:43:27.249  [OMML Post-process Debug] 🔍 找到包含占位符的w:t标签
+22:43:27.249  [OMML Post-process Debug] 🔧 拆分w:t标签: "，那么 </w:t></w:r><w:r><w:t xml:space="preserve">" + 公式 + ""
+22:43:27.249  [OMML Post-process Debug] ✅ 行内公式w:t标签拆分完成
+22:43:27.249  [OMML Post-process Debug] ✅ 占位符 &lt;!--OMML_PLACEHOLDER_formula_12--&gt; 替换成功
+22:43:27.249  [OMML Post-process Debug] 处理完成，剩余占位符: 0 []
+22:43:27.250  [Table Protection] 处理后文档包含 1 个表格 (原始: 1)
+22:43:27.250  [Table Protection] ✅ 表格结构保持完整
+22:43:27.250  [OMML Post-process Debug] 检查最终XML中的公式顺序...
+22:43:27.250  [OMML Post-process Debug] 最终XML中包含 12 个数学公式
+22:43:27.250  [OMML Post-process Debug] 公式 1: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:...
+22:43:27.250  [OMML Post-process Debug] 公式 1 提取的文本: ex...
+22:43:27.250  [OMML Post-process Debug] 公式 2: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>2x</m:t></m...
+22:43:27.250  [OMML Post-process Debug] 公式 2 提取的文本: 2x...
+22:43:27.250  [OMML Post-process Debug] 公式 3: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:f><m:fPr><m:type m...
+22:43:27.250  [OMML Post-process Debug] 公式 3 提取的文本: x33+C...
+22:43:27.250  [OMML Post-process Debug] 公式 4: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:...
+22:43:27.250  [OMML Post-process Debug] 公式 4 提取的文本: ex...
+22:43:27.250  [OMML Post-process Debug] 公式 5: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:...
+22:43:27.250  [OMML Post-process Debug] 公式 5 提取的文本: ex...
+22:43:27.250  [OMML Post-process Debug] 公式 6: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:...
+22:43:27.251  [OMML Post-process Debug] 公式 6 提取的文本: ex+C...
+22:43:27.251  [OMML Post-process Debug] 公式 7: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:rPr><m:sty m:...
+22:43:27.251  [OMML Post-process Debug] 公式 7 提取的文本: sin⁡x...
+22:43:27.251  [OMML Post-process Debug] 公式 8: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:rPr><m:sty m:...
+22:43:27.251  [OMML Post-process Debug] 公式 8 提取的文本: cos⁡x...
+22:43:27.251  [OMML Post-process Debug] 公式 9: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>−</m:t></m:...
+22:43:27.251  [OMML Post-process Debug] 公式 9 提取的文本: −cos⁡x+C...
+22:43:27.251  [OMML Post-process Debug] 公式 10: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>a=2</m:t></...
+22:43:27.251  [OMML Post-process Debug] 公式 10 提取的文本: a=2...
+22:43:27.251  [OMML Post-process Debug] 公式 11: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>b=3</m:t></...
+22:43:27.251  [OMML Post-process Debug] 公式 11 提取的文本: b=3...
+22:43:27.251  [OMML Post-process Debug] 公式 12: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>a+b=5</m:t>...
+22:43:27.251  [OMML Post-process Debug] 公式 12 提取的文本: a+b=5...
+22:43:27.251  [OMML Post-process Debug] 验证公式ID和内容对应关系:
+22:43:27.251  [OMML Post-process Debug] 位置 1: ID=formula_1, 期望内容=e^x
+22:43:27.252  [OMML Post-process Debug] 位置 2: ID=formula_2, 期望内容=2x
+22:43:27.252  [OMML Post-process Debug] 位置 3: ID=formula_3, 期望内容=\frac{x^3}{3} + C
+22:43:27.252  [OMML Post-process Debug] 位置 4: ID=formula_4, 期望内容=e^x
+22:43:27.252  [OMML Post-process Debug] 位置 5: ID=formula_5, 期望内容=e^x
+22:43:27.252  [OMML Post-process Debug] 位置 6: ID=formula_6, 期望内容=e^x + C
+22:43:27.252  [OMML Post-process Debug] 位置 7: ID=formula_7, 期望内容=\sin x
+22:43:27.252  [OMML Post-process Debug] 位置 8: ID=formula_8, 期望内容=\cos x
+22:43:27.252  [OMML Post-process Debug] 位置 9: ID=formula_9, 期望内容=-\cos x + C
+22:43:27.252  [OMML Post-process Debug] 位置 10: ID=formula_10, 期望内容=a = 2
+22:43:27.252  [OMML Post-process Debug] 位置 11: ID=formula_11, 期望内容=b = 3
+22:43:27.252  [OMML Post-process Debug] 位置 12: ID=formula_12, 期望内容=a + b = 5
+22:43:27.252  [OMML Post-process Debug] 分析XML段落结构:
+22:43:27.252  [OMML Post-process Debug] XML字符串长度: 12517
+22:43:27.252  [OMML Post-process Debug] 找到 23 个段落
+22:43:27.253  [OMML Post-process Debug] 段落 1: 📝 标题 1 = "表格位置测试"
+22:43:27.253  [OMML Post-process Debug] 段落 9: 📊 包含公式 1 = "ex"
+22:43:27.253  [OMML Post-process Debug] 段落 10: 📊 包含公式 2 = "2x"
+22:43:27.253  [OMML Post-process Debug] 段落 11: 📊 包含公式 3 = "x33+C"
+22:43:27.253  [OMML Post-process Debug] 段落 12: 📊 包含公式 4 = "ex"
+22:43:27.253  [OMML Post-process Debug] 段落 13: 📊 包含公式 5 = "ex"
+22:43:27.253  [OMML Post-process Debug] 段落 14: 📊 包含公式 6 = "ex+C"
+22:43:27.253  [OMML Post-process Debug] 段落 15: 📊 包含公式 7 = "sin⁡x"
+22:43:27.253  [OMML Post-process Debug] 段落 16: 📊 包含公式 8 = "cos⁡x"
+22:43:27.253  [OMML Post-process Debug] 段落 17: 📊 包含公式 9 = "−cos⁡x+C"
+22:43:27.253  [OMML Post-process Debug] 段落 22: 📊 包含公式 10 = "a=2b=3a+b=5"
+22:43:27.253  [OMML Post-process Debug] 段落分析完成: 共 23 个段落，10 个公式段落，1 个标题段落
+22:43:27.253  [OMML Protection] OMML替换后XML中有 23 个段落
+22:43:27.254  [OMML Protection] 段落 1: 📝 文本 - "表格位置测试..."
+22:43:27.254  [OMML Protection] 段落 2: 📝 文本 - "这是第一段文字，应该在表格前面。..."
+22:43:27.254  [OMML Protection] 段落 3: 📝 文本 - "第二节标题..."
+22:43:27.254  [OMML Protection] 段落 4: 📝 文本 - "这是第二段文字，仍然在表格前面。..."
+22:43:27.254  [OMML Protection] 段落 5: 📝 文本 - "表格应该在这里..."
+22:43:27.254  [OMML Protection] 段落 6: 📝 文本 - "函数..."
+22:43:27.254  [OMML Protection] 段落 7: 📝 文本 - "导数..."
+22:43:27.254  [OMML Protection] 段落 8: 📝 文本 - "积分..."
+22:43:27.254  [OMML Protection] 段落 9: 📊 包含OMML公式
+22:43:27.254  [OMML Protection] 段落 10: 📊 包含OMML公式
+22:43:27.254  [OMML Protection] 段落 11: 📊 包含OMML公式
+22:43:27.254  [OMML Protection] 段落 12: 📊 包含OMML公式
+22:43:27.254  [OMML Protection] 段落 13: 📊 包含OMML公式
+22:43:27.254  [OMML Protection] 段落 14: 📊 包含OMML公式
+22:43:27.254  [OMML Protection] 段落 15: 📊 包含OMML公式
+22:43:27.255  [OMML Protection] 段落 16: 📊 包含OMML公式
+22:43:27.255  [OMML Protection] 段落 17: 📊 包含OMML公式
+22:43:27.255  [OMML Protection] 段落 18: 📝 文本 - "这是表格后面的文字，应该出现在表格下方。..."
+22:43:27.255  [OMML Protection] 段落 19: 📝 文本 - "另一个标题..."
+22:43:27.255  [OMML Protection] 段落 20: 📝 文本 - "这是最后一段文字。..."
+22:43:27.255  [OMML Protection] 段落 21: 📝 文本 - "包含公式的段落..."
+22:43:27.255  [OMML Protection] 段落 22: 📊 包含OMML公式
+22:43:27.255  [OMML Protection] 段落 23: 📝 文本 - "这段文字应该在公式段落之后显示。..."
+22:43:27.255  [OMML Protection] 在已替换OMML的XML中找到 12 个OMML需要保护
+22:43:27.255  [OMML Protection] 保护OMML 1: __OMML_PROTECTED_0__ (长度: 178)
+22:43:27.255  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:...
+22:43:27.255  [OMML Protection] 保护OMML 2: __OMML_PROTECTED_1__ (长度: 113)
+22:43:27.255  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>2x</m:t></m...
+22:43:27.255  [OMML Protection] 保护OMML 3: __OMML_PROTECTED_2__ (长度: 302)
+22:43:27.255  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:f><m:fPr><m:type m...
+22:43:27.255  [OMML Protection] 保护OMML 4: __OMML_PROTECTED_3__ (长度: 178)
+22:43:27.256  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:...
+22:43:27.256  [OMML Protection] 保护OMML 5: __OMML_PROTECTED_4__ (长度: 178)
+22:43:27.256  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:...
+22:43:27.256  [OMML Protection] 保护OMML 6: __OMML_PROTECTED_5__ (长度: 202)
+22:43:27.256  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:sSup><m:e><m:r><m:...
+22:43:27.256  [OMML Protection] 保护OMML 7: __OMML_PROTECTED_6__ (长度: 171)
+22:43:27.256  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:rPr><m:sty m:...
+22:43:27.256  [OMML Protection] 保护OMML 8: __OMML_PROTECTED_7__ (长度: 171)
+22:43:27.256  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:rPr><m:sty m:...
+22:43:27.257  [OMML Protection] 保护OMML 9: __OMML_PROTECTED_8__ (长度: 196)
+22:43:27.257  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>−</m:t></m:...
+22:43:27.257  [OMML Protection] 保护OMML 10: __OMML_PROTECTED_9__ (长度: 114)
+22:43:27.257  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>a=2</m:t></...
+22:43:27.257  [OMML Protection] 保护OMML 11: __OMML_PROTECTED_10__ (长度: 114)
+22:43:27.257  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>b=3</m:t></...
+22:43:27.257  [OMML Protection] 保护OMML 12: __OMML_PROTECTED_11__ (长度: 116)
+22:43:27.257  [OMML Protection] 被保护的内容预览: <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" ><m:r><m:t>a+b=5</m:t>...
+22:43:27.259  [OMML Protection] XML解析完成，检查JSON结构
+22:43:27.259  [OMML Protection] JSON根键: ?xml, w:document
+22:43:27.259  [OMML Protection] ✅ 找到w:document
+22:43:27.259  [OMML Protection] ✅ 找到w:body
+22:43:27.259  [OMML Protection] 段落类型: object, 是否为数组: true
+22:43:27.259  [OMML Protection] 找到 11 个段落数组
+22:43:27.260  [OMML Protection] 段落 1: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading1"},"w:spacing":{"@_w:before":"240","@_w:after":"160","@_w:l...
+22:43:27.260  [OMML Protection] 段落 2: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
+22:43:27.260  [OMML Protection] 段落 3: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading2"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
+22:43:27.260  [OMML Protection] 段落 4: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
+22:43:27.260  [OMML Protection] 段落 5: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading3"},"w:spacing":{"@_w:before":"160","@_w:after":"120","@_w:l...
+22:43:27.260  [OMML Protection] 段落 6: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
+22:43:27.260  [OMML Protection] 段落 7: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading3"},"w:spacing":{"@_w:before":"160","@_w:after":"120","@_w:l...
+22:43:27.260  [OMML Protection] 段落 8: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
+22:43:27.260  [OMML Protection] 段落 9: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading2"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
+22:43:27.260  [OMML Protection] 段落 10: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
+22:43:27.260  [OMML Protection] 段落 11: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
+22:43:27.260  [OMML Protection] w:body的所有键: w:p, w:tbl, w:sectPr
+22:43:27.260  [OMML Protection] 🔍 分析body结构中的所有子元素:
+22:43:27.261  [OMML Protection] - w:p: 11 个段落
+22:43:27.261  [OMML Protection] - w:tbl: 1个表格
+22:43:27.261  [OMML Protection] - w:sectPr: object
+22:43:27.261  [OMML Protection] 🔧 启动原始元素顺序保持方案...
+22:43:27.261  [OMML Protection] 📊 扫描到 13 个body子元素:
+22:43:27.261  [OMML Protection] 1. 段落: "表格位置测试" (类型: w:p, 位置: 0)
+22:43:27.261  [OMML Protection] 2. 段落: "这是第一段文字，应该在表格前面..." (类型: w:p, 位置: 402)
+22:43:27.261  [OMML Protection] 3. 段落: "第二节标题" (类型: w:p, 位置: 839)
+22:43:27.261  [OMML Protection] 4. 段落: "这是第二段文字，仍然在表格前面..." (类型: w:p, 位置: 1238)
+22:43:27.261  [OMML Protection] 5. 段落: "表格应该在这里" (类型: w:p, 位置: 1675)
+22:43:27.261  [OMML Protection] 6. 表格1 (类型: w:tbl, 位置: 2076)
+22:43:27.261  [OMML Protection] 7. 段落: "这是表格后面的文字，应该出现在..." (类型: w:p, 位置: 6071)
+22:43:27.261  [OMML Protection] 8. 段落: "另一个标题" (类型: w:p, 位置: 6512)
+22:43:27.262  [OMML Protection] 9. 段落: "这是最后一段文字。" (类型: w:p, 位置: 6911)
+22:43:27.262  [OMML Protection] 10. 段落: "包含公式的段落" (类型: w:p, 位置: 7341)
+22:43:27.262  [OMML Protection] 11. 段落: "这是一个包含行内公式的段落：计..." (类型: w:p, 位置: 7742)
+22:43:27.262  [OMML Protection] 12. 段落: "这段文字应该在公式段落之后显示..." (类型: w:p, 位置: 9469)
+22:43:27.262  [OMML Protection] 13. 页面设置 (类型: w:sectPr, 位置: 9906)
+22:43:27.262 main.c7a872d728e5734ea9dc.hot-update.js:835 [OMML Protection] ✅ 原始元素顺序信息已保存，共 13 个元素
+22:43:27.263 main.c7a872d728e5734ea9dc.hot-update.js:845 [OMML Protection] XMLBuilder构建完成，准备开始恢复阶段
+22:43:27.263 main.c7a872d728e5734ea9dc.hot-update.js:846 [OMML Protection] 构建后XML长度: 12362
+22:43:27.263 main.c7a872d728e5734ea9dc.hot-update.js:847 [OMML Protection] 保护映射表大小: 12
+22:43:27.263 main.c7a872d728e5734ea9dc.hot-update.js:851 [OMML Protection] 🔧 开始完整的XML元素顺序重建...
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:866 [OMML Protection] 📊 当前XML中元素统计: 23个段落, 1个表格, 1个sectPr
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第1个元素: 段落: "表格位置测试"
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落1: "表格位置测试"
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第2个元素: 段落: "这是第一段文字，应该在表格前面..."
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落2: "这是第一段文字，应该在表格前面。"
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第3个元素: 段落: "第二节标题"
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落3: "第二节标题"
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第4个元素: 段落: "这是第二段文字，仍然在表格前面..."
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落4: "这是第二段文字，仍然在表格前面。"
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第5个元素: 段落: "表格应该在这里"
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落5: "表格应该在这里"
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第6个元素: 表格1
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:885 [OMML Protection] ✅ 添加表格1
+22:43:27.264 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第7个元素: 段落: "这是表格后面的文字，应该出现在..."
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落6: "这是表格后面的文字，应该出现在表格下方。"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第8个元素: 段落: "另一个标题"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落7: "另一个标题"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第9个元素: 段落: "这是最后一段文字。"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落8: "这是最后一段文字。"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第10个元素: 段落: "包含公式的段落"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落9: "包含公式的段落"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第11个元素: 段落: "这是一个包含行内公式的段落：计..."
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落10: "这是一个包含行内公式的段落：计算 ，，那么 。"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第12个元素: 段落: "这段文字应该在公式段落之后显示..."
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:879 [OMML Protection] ✅ 添加段落11: "这段文字应该在公式段落之后显示。"
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:874 [OMML Protection] 🔧 处理第13个元素: 页面设置
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:891 [OMML Protection] ✅ 添加页面设置
+22:43:27.265 main.c7a872d728e5734ea9dc.hot-update.js:904 [OMML Protection] ✅ XML元素顺序重建完成！
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:905 [OMML Protection] 📊 重建后XML长度: 12362
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:906 [OMML Protection] 📊 重建后元素顺序: 13个元素按原始顺序排列
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:918 [OMML Protection] XML重建后有 23 个段落, 1 个表格
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:921 [OMML Protection] 🔍 分析重建XML中所有body子元素的顺序:
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 1: 📝 段落 - "表格位置测试..." (位置: 2360)
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 2: 📝 段落 - "这是第一段文字，应该在表格前面。..." (位置: 2846)
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 3: 📝 段落 - "第二节标题..." (位置: 3405)
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 4: 📝 段落 - "这是第二段文字，仍然在表格前面。..." (位置: 3888)
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 5: 📝 段落 - "表格应该在这里..." (位置: 4447)
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:928 [OMML Protection] 元素 6: 📋 表格 (位置: 4932)
+22:43:27.266 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 7: 📝 段落 - "这是表格后面的文字，应该出现在表格下方。..." (位置: 7698)
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 8: 📝 段落 - "另一个标题..." (位置: 8261)
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 9: 📝 段落 - "这是最后一段文字。..." (位置: 8744)
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 10: 📝 段落 - "包含公式的段落..." (位置: 9296)
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 11: 📝 段落 - "这是一个包含行内公式的段落：计算，，那么。..." (位置: 9781)
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:932 [OMML Protection] 元素 12: 📝 段落 - "这段文字应该在公式段落之后显示。..." (位置: 11511)
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 1: 📝 文本 - "表格位置测试..."
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 2: 📝 文本 - "这是第一段文字，应该在表格前面。..."
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 3: 📝 文本 - "第二节标题..."
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 4: 📝 文本 - "这是第二段文字，仍然在表格前面。..."
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 5: 📝 文本 - "表格应该在这里..."
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 6: 📝 文本 - "函数..."
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 7: 📝 文本 - "导数..."
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 8: 📝 文本 - "积分..."
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 9: 📊 包含保护占位符
+22:43:27.267 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 10: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 11: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 12: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 13: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 14: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 15: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 16: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 17: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 18: 📝 文本 - "这是表格后面的文字，应该出现在表格下方。..."
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 19: 📝 文本 - "另一个标题..."
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 20: 📝 文本 - "这是最后一段文字。..."
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 21: 📝 文本 - "包含公式的段落..."
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:940 [OMML Protection] 重建段落 22: 📊 包含保护占位符
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:944 [OMML Protection] 重建段落 23: 📝 文本 - "这段文字应该在公式段落之后显示。..."
+22:43:27.268 main.c7a872d728e5734ea9dc.hot-update.js:952 [OMML Protection] 开始恢复 12 个被保护的OMML
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:953 [OMML Protection] 恢复前XML长度: 12362
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:957 [OMML Protection] XML中是否包含保护键: true
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_0__ → OMML内容 (XML长度: 12362 → 12520)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_1__ → OMML内容 (XML长度: 12520 → 12613)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_2__ → OMML内容 (XML长度: 12613 → 12895)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_3__ → OMML内容 (XML长度: 12895 → 13053)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_4__ → OMML内容 (XML长度: 13053 → 13211)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_5__ → OMML内容 (XML长度: 13211 → 13393)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_6__ → OMML内容 (XML长度: 13393 → 13544)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_7__ → OMML内容 (XML长度: 13544 → 13695)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_8__ → OMML内容 (XML长度: 13695 → 13871)
+22:43:27.269 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_9__ → OMML内容 (XML长度: 13871 → 13965)
+22:43:27.270 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_10__ → OMML内容 (XML长度: 13965 → 14058)
+22:43:27.270 main.c7a872d728e5734ea9dc.hot-update.js:964 [OMML Protection] ✅ 恢复OMML: __OMML_PROTECTED_11__ → OMML内容 (XML长度: 14058 → 14153)
+22:43:27.270 main.c7a872d728e5734ea9dc.hot-update.js:979 [OMML Protection] 恢复后XML长度: 14153
+22:43:27.270 main.c7a872d728e5734ea9dc.hot-update.js:980 [OMML Protection] OMML恢复完成
+22:43:27.284 main.c7a872d728e5734ea9dc.hot-update.js:987 docx后处理完成：已写入 firstLineChars 和 OMML 公式
+22:43:27.284 main.c7a872d728e5734ea9dc.hot-update.js:206 Word文档导出成功!
