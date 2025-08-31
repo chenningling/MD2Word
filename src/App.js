@@ -225,7 +225,7 @@ function App() {
         return (
           <SideContentContainer width={sideContentWidth}>
             <ModuleHeader>
-              <h3>文本内容转Markdown</h3>
+              <h3>使用AI转Markdown</h3>
               <button className="close-btn" onClick={closeSideContent}>×</button>
             </ModuleHeader>
             <SideContentBody>

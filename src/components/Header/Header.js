@@ -181,6 +181,8 @@ const Header = ({ toggleSettings, settingsVisible }) => {
     addGlobalStyle();
   }, []);
 
+
+
   const handleExport = () => {
     exportToWord(markdown, formatSettings);
   };
@@ -261,13 +263,19 @@ const Header = ({ toggleSettings, settingsVisible }) => {
         >
           排版格式设置
         </Button>
-        <Button 
-          type="primary" 
-          icon={<ExportOutlined />} 
-          onClick={handleExport}
+        <Tooltip 
+          title="智能导出：有LaTeX公式时后台处理导出，无公式时快速导出"
+          placement="bottomRight"
+          mouseEnterDelay={0.3}
         >
-          导出Word文档
-        </Button>
+          <Button 
+            type="primary" 
+            icon={<ExportOutlined />} 
+            onClick={handleExport}
+          >
+            导出Word文档
+          </Button>
+        </Tooltip>
       </ButtonGroup>
       
       {/* 微信二维码弹窗 */}

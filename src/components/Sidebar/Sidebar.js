@@ -36,6 +36,7 @@ const StyledMenu = styled(Menu)`
     word-break: break-word;
     text-align: center;
     width: 100%;
+    font-weight: bold;
   }
   
   .ant-menu-item-selected {
@@ -85,7 +86,7 @@ const Sidebar = ({ openSideContent, sideContentVisible, sideContentType }) => {
           <div className="menu-item-text">MD基本<br/>语法学习</div>
         </Menu.Item>
         <Menu.Item key="text-to-markdown" icon={<FormatPainterOutlined />}>
-          <div className="menu-item-text">文本内容<br/>转MD</div>
+          <div className="menu-item-text">使用AI<br/>转MD</div>
         </Menu.Item>
       </StyledMenu>
     </StyledSidebarContainer>

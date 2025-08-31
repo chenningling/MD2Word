@@ -254,9 +254,35 @@ const WordDocument = styled.div`
     padding-left: 2em;
   }
   
+  li {
+    font-family: ${props => getMappedFont(props.paragraph.fontFamily)};
+    font-size: ${props => props.paragraph.fontSize}pt;
+    line-height: ${props => props.paragraph.lineHeightUnit === 'pt' ? `${props.paragraph.lineHeight}pt` : props.paragraph.lineHeight};
+    margin-bottom: 0.3em;
+  }
+  
   /* 内联格式 */
   strong {
-    font-weight: bold;
+    font-weight: bold !important;
+    /* 在某些字体下增强加粗效果 */
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+  }
+  
+  /* 确保列表中的加粗文本显示明显 */
+  li strong {
+    font-weight: bold !important;
+    font-family: inherit;
+    /* 进一步增强列表中加粗文本的显示 */
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+  }
+  
+  /* 段落中的加粗文本 */
+  p strong {
+    font-weight: bold !important;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
   }
   
   em {

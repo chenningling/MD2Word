@@ -250,7 +250,7 @@ ${text}
           ref={textAreaRef}
           value={text}
           onChange={handleTextChange}
-          placeholder="在此粘贴需要转换为Markdown的文本内容..."
+          placeholder="在此粘贴需要AI转换为Markdown的文本内容..."
           style={{
             width: '100%',
             minHeight: '200px',
@@ -266,7 +266,7 @@ ${text}
       </div>
       
       <EmptyTextWarning visible={isEmpty}>
-        请输入需要转换的文本内容
+        请输入需要AI转换的文本内容
       </EmptyTextWarning>
       
       {/* 
@@ -309,27 +309,27 @@ ${text}
       </ButtonsContainer>
       
       <StepsContainer>
-        <StepTitle level={4}>转换步骤说明</StepTitle>
+        <StepTitle level={4}>AI一键转换步骤</StepTitle>
         <StyledSteps
           direction="vertical"
           size="small"
           current={0} /* 移除当前步骤高亮 */
           items={[
             {
-              title: '复制提示词并跳转',
-              description: '点击上方按钮，系统自动复制提示词并跳转到AI平台',
+              title: '一键发送AI转换',
+              description: '点击上方按钮，自动复制专业提示词并跳转到AI平台',
             },
             {
-              title: '粘贴提示词并发送',
-              description: '在AI对话框中粘贴(Ctrl+V)并发送，等待处理',
+              title: '粘贴提示词发送',
+              description: '在AI对话框中粘贴(Ctrl+V)并发送，AI智能转换中',
             },
             {
-              title: '复制转换结果',
+              title: '复制MD格式结果',
               description: '复制AI生成的Markdown内容(Ctrl+A, Ctrl+C)到编辑器',
             },
             {
-              title: '设置排版并导出',
-              description: '调整排版设置，预览并导出Word文档',
+              title: '预览排版并导出',
+              description: '调整排版设置，预览效果并导出精美Word文档',
             },
           ]}
         />

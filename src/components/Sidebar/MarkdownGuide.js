@@ -384,6 +384,66 @@ const MarkdownGuide = () => {
       description: '| 分隔列，--- 分隔表头'
     }
   ];
+  
+  // LaTeX数学公式数据
+  const mathFormulaData = [
+    {
+      key: '1',
+      syntax: '$E = mc^2$',
+      result: <span style={{
+        fontFamily: 'KaTeX_Math, "Times New Roman", serif',
+        fontStyle: 'italic',
+        color: '#2c3e50'
+      }}>E = mc²</span>,
+      description: '行内公式：单$包围'
+    },
+    {
+      key: '2', 
+      syntax: '$\\alpha + \\beta = \\gamma$',
+      result: <span style={{
+        fontFamily: 'KaTeX_Math, "Times New Roman", serif',
+        fontStyle: 'italic',
+        color: '#2c3e50'
+      }}>α + β = γ</span>,
+      description: '希腊字母：\\alpha形式'
+    },
+    {
+      key: '3',
+      syntax: '$$\\int_{0}^{1} x dx = \\frac{1}{2}$$',
+      result: (
+        <div style={{
+          textAlign: 'center',
+          fontFamily: 'KaTeX_Math, "Times New Roman", serif',
+          fontSize: '16px',
+          fontStyle: 'italic',
+          color: '#2c3e50',
+          padding: '8px 0'
+        }}>
+          ∫₀¹ x dx = ½
+        </div>
+      ),
+      description: '块级公式：双$$包围'
+    },
+    {
+      key: '4',
+      syntax: '$$\\begin{pmatrix}\na & b \\\\\nc & d\n\\end{pmatrix}$$',
+      result: (
+        <div style={{
+          textAlign: 'center',
+          fontFamily: 'KaTeX_Math, "Times New Roman", serif',
+          fontSize: '14px',
+          color: '#2c3e50',
+          padding: '8px 0'
+        }}>
+          <div style={{display: 'inline-block', border: '1px solid #ddd', borderRadius: '4px', padding: '6px 8px'}}>
+            <div>a&nbsp;&nbsp;b</div>
+            <div>c&nbsp;&nbsp;d</div>
+          </div>
+        </div>
+      ),
+      description: '矩阵：pmatrix环境'
+    }
+  ];
 
   return (
     <GuideContainer>
@@ -444,6 +504,26 @@ const MarkdownGuide = () => {
         style={{ marginBottom: '16px' }}
       />
       
+      <SectionTitle level={4}>数学公式 (LaTeX)</SectionTitle>
+      <StyledTable 
+        columns={tableColumns} 
+        dataSource={mathFormulaData} 
+        pagination={false}
+        bordered
+        size="small"
+        style={{ marginBottom: '8px' }}
+      />
+      
+      <Paragraph style={{ 
+        fontSize: '11px', 
+        color: '#666', 
+        margin: '0 0 16px 0',
+        fontStyle: 'italic',
+        textAlign: 'center'
+      }}>
+        💡 LaTeX公式语法较为复杂，建议使用AI工具协助生成
+      </Paragraph>
+      
       <Divider style={{ margin: '12px 0' }} />
       
       <div style={{
@@ -460,6 +540,7 @@ const MarkdownGuide = () => {
           <li>在Markdown中，需要空一行才能开始新的段落</li>
           <li>点击代码块右上角的复制按钮可以快速复制语法示例</li>
           <li>嵌套列表使用Tab键缩进，导出Word时自动使用不同样式的项目符号</li>
+          <li>数学公式支持LaTeX语法，导出Word时会转换为可编辑的公式格式</li>
         </ul>
       </div>
     </GuideContainer>
