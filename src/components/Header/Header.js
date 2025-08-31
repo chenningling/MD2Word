@@ -13,6 +13,7 @@ import {
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 import { exportToWord } from '../../services/exportService';
+import { getLatexExportService } from '../../services/latexExportService';
 
 // 自定义小红书图标组件
 const XiaohongshuIcon = () => (
@@ -184,6 +185,11 @@ const Header = ({ toggleSettings, settingsVisible }) => {
 
 
   const handleExport = () => {
+    // 🔧 每次导出前清理LaTeX缓存，确保修复后的代码生效
+    const latexService = getLatexExportService();
+    console.log('[Header] 🧹 清理LaTeX缓存以应用最新修复...');
+    latexService.resetAfterFix(); // 使用专门的修复后重置方法
+    
     exportToWord(markdown, formatSettings);
   };
   
@@ -264,7 +270,7 @@ const Header = ({ toggleSettings, settingsVisible }) => {
           排版格式设置
         </Button>
         <Tooltip 
-          title="智能导出：有LaTeX公式时后台处理导出，无公式时快速导出"
+          title="智能导出：有LaTeX公式时等待后台处理完成导出，无公式时快速导出"
           placement="bottomRight"
           mouseEnterDelay={0.3}
         >

@@ -1,347 +1,396 @@
-15:36:24.042 index.js:33 [Export Service] 开始导出Word文档...
-15:36:24.042 index.js:34 [Export Service] 格式设置: {template: 'academic', content: {…}, latin: {…}, page: {…}}
-15:36:24.042 index.js:37 [Export Service] === 阶段1: LaTeX处理 ===
-15:36:24.042 imageProcessor.js:288 [LaTeX Processor] 开始处理 LaTeX 公式...
-15:36:24.043  [LaTeX Export] 开始处理文档中的 LaTeX 公式
-15:36:24.043  [LaTeX Export Debug] 当前时间戳: 1756625784043 缓存大小: 4
-15:36:24.043  [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 289
-15:36:24.043  [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: 'L(x) = \\sum_{j=0}^{n} y_j \\prod_{\\substack{k=0 \\\\ ...', position: '32-128', isValid: true}
-15:36:24.043  [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'block', latex: '\\mathcal{L}\\{f(t)\\} = F(s) = \\int_0^{\\infty} f(t) ...', position: '149-215', isValid: true}
-15:36:24.044  [LaTeX Utils] 发现公式 {id: 'formula_3', type: 'block', latex: '\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6...', position: '231-288', isValid: true}
-15:36:24.044  [LaTeX Utils] 提取完成，共发现 3 个公式
-15:36:24.044  [LaTeX Export] 发现 3 个 LaTeX 公式
-15:36:24.044  [LaTeX Export] 开始转换 3 个公式为 OMML
-15:36:24.044  [LaTeX Export] 开始转换 3 个有效公式为 OMML
-15:36:24.044  [LaTeX Export] 处理批次 1/1，包含 3 个公式
-15:36:24.044  [LaTeX Export] OMML预清理完成 {原始长度: 1202, 清理后长度: 1202, 变化: 0}
-15:36:24.044  [LaTeX Export] 🔍 分析OMML内容 (前800字符): <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>L(x)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>j=0</m:t></m:r></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary><m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:eqArr><m:e><m:r><m:t>k=0</m:t></m:r></m:e><m:e><m:r><m:t>k≠j</m:t></m:r></m:e></m:eqArr></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary>
-15:36:24.045  [LaTeX Export] 🔍 标签检测结果: {空的自闭合标签: 0, 空的标签对: 0, 包含空格的空标签对: 0, 所有m:e标签: 6, 所有自闭合m:e: 0, …}
-15:36:24.045  [LaTeX Export] OMML预清理完成 {原始长度: 669, 清理后长度: 669, 变化: 0}
-15:36:24.045 latexExportService.js:857 [LaTeX Export] 🔍 分析OMML内容 (前800字符): <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:rPr><m:scr m:val="script"/></m:rPr><m:t>L</m:t></m:r><m:r><m:t>{f(t)}=F(s)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>−st</m:t></m:r></m:sup></m:sSup><m:r><m:t>dt</m:t></m:r></m:oMath>
+21:11:31.188 Header.js:190 [Header] 🧹 清理LaTeX缓存以应用最新修复...
+21:11:31.189 latexExportService.js:956 [LaTeX Export] 缓存已清空 {oldSize: 2}
+21:11:31.189 latexExportService.js:1005 [LaTeX Export] 统计信息已重置
+21:11:31.189 latexExportService.js:966 [LaTeX Export] 🔧 修复后重置完成：缓存已清空，API状态已重置
+21:11:31.190 index.js:33 [Export Service] 开始导出Word文档...
+21:11:31.191 index.js:34 [Export Service] 格式设置: {template: 'default', content: {…}, latin: {…}, page: {…}}
+21:11:31.191 index.js:37 [Export Service] === 阶段1: LaTeX处理 ===
+21:11:31.192 latexProcessor.js:15 [LaTeX Processor] 开始处理 LaTeX 公式...
+21:11:31.192 latexExportService.js:97 [LaTeX Export] 开始处理文档中的 LaTeX 公式
+21:11:31.195 latexExportService.js:98 [LaTeX Export Debug] 当前时间戳: 1756645891192 缓存大小: 0
+21:11:31.195 latexUtils.js:32 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 179
+21:11:31.197 latexUtils.js:80 [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: '(f * g)(t) = \\int_{-\\infty}^{\\infty} f(\\tau) g(t -...', position: '21-87', isValid: true}
+21:11:31.197 latexUtils.js:80 [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'block', latex: 'S(i,j) = (I * K)(i,j) = \\sum_m \\sum_n I(m,n)K(i-m,...', position: '100-158', isValid: true}
+21:11:31.198 latexUtils.js:90 [LaTeX Utils] 提取完成，共发现 2 个公式
+21:11:31.198 latexExportService.js:118 [LaTeX Export] 发现 2 个 LaTeX 公式
+21:11:31.198 latexExportService.js:59 [LaTeX Export] 检查后端 API 可用性...
+21:11:31.477 latexExportService.js:73 [LaTeX Export] 后端 API 可用
+21:11:31.478 latexExportService.js:186 [LaTeX Export] 开始转换 2 个公式为 OMML
+21:11:31.483 latexExportService.js:212 [LaTeX Export] 开始转换 2 个有效公式为 OMML
+21:11:31.483 latexExportService.js:220 [LaTeX Export] 处理批次 1/1，包含 2 个公式
+21:11:31.484 latexExportService.js:319 [LaTeX Export] 批次缓存统计: 0 个缓存命中, 2 个需要转换
+21:11:31.484 latexExportService.js:333 [LaTeX Export] 发送转换请求到后端 {count: 2, endpoint: 'http://localhost:3001/api/formula/convert'}
+21:11:31.484 latexExportService.js:433 [LaTeX Export] API 请求尝试 1/3: POST http://localhost:3001/api/formula/convert
+21:11:32.020 latexExportService.js:450 [LaTeX Export] API 请求成功: POST http://localhost:3001/api/formula/convert
+21:11:32.020 latexExportService.js:345 [LaTeX Export] API 响应解析: {responseSuccess: true, hasData: true, hasResults: true, resultsLength: 2, firstResult: {…}}
+21:11:32.021 latexExportService.js:851 [LaTeX Export] 🔧 修复nary中的空元素: {原始: '<m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:va…ubSup"/><m:grow m:val="1"/><m:subHide m:val="o...', 修复策略: '移除空的m:e标签'}
+21:11:32.021 latexExportService.js:874 [LaTeX Export] OMML预清理完成 {原始长度: 560, 清理后长度: 554, 变化: 6, 清理效果: '移除了6个问题字符'}
+21:11:32.021 latexExportService.js:900 [LaTeX Export] 🔍 分析OMML内容 (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>(f∗g)(t)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>−</m:t></m:r><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup><m:e/></m:nary><m:r><m:t>f(τ)g(t−τ)dτ</m:t></m:r></m:oMath>
 
-15:36:24.045 latexExportService.js:870 [LaTeX Export] 🔍 标签检测结果: {空的自闭合标签: 0, 空的标签对: 0, 包含空格的空标签对: 0, 所有m:e标签: 1, 所有自闭合m:e: 0, …}
-15:36:24.045 latexExportService.js:850 [LaTeX Export] OMML预清理完成 {原始长度: 836, 清理后长度: 836, 变化: 0}
-15:36:24.045 latexExportService.js:857 [LaTeX Export] 🔍 分析OMML内容 (前800字符): <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>n=1</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:sSup><m:e><m:r><m:t>n</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:den></m:f><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:sSup><m:e><m:r><m:t>π</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:num><m:den><m:r><m:t>6<
-15:36:24.045 latexExportService.js:870 [LaTeX Export] 🔍 标签检测结果: {空的自闭合标签: 0, 空的标签对: 0, 包含空格的空标签对: 0, 所有m:e标签: 2, 所有自闭合m:e: 0, …}
-15:36:24.045 latexExportService.js:324 [LaTeX Export] 批次缓存统计: 3 个缓存命中, 0 个需要转换
-15:36:24.045 latexExportService.js:412 [LaTeX Export] 批次转换完成 {total: 3, successful: 3, failed: 0, duration: 1}
-15:36:24.045 latexExportService.js:420 [LaTeX Export] 结果顺序验证: (3) ['1. formula_1', '2. formula_2', '3. formula_3']
-15:36:24.046 latexExportService.js:247 [LaTeX Export] 所有批次处理完成，总计 3 个有效公式结果
-15:36:24.046 latexExportService.js:483 [LaTeX Export] 开始在markdown中替换LaTeX公式为占位符
-15:36:24.046 latexDebug.js:55 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 289
-15:36:24.046 latexDebug.js:96 [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: 'L(x) = \\sum_{j=0}^{n} y_j \\prod_{\\substack{k=0 \\\\ ...', position: '32-128', isValid: true}
-15:36:24.046 latexDebug.js:96 [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'block', latex: '\\mathcal{L}\\{f(t)\\} = F(s) = \\int_0^{\\infty} f(t) ...', position: '149-215', isValid: true}
-15:36:24.046 latexDebug.js:96 [LaTeX Utils] 发现公式 {id: 'formula_3', type: 'block', latex: '\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6...', position: '231-288', isValid: true}
-15:36:24.046 latexDebug.js:101 [LaTeX Utils] 提取完成，共发现 3 个公式
-15:36:24.046 latexExportService.js:509 [LaTeX Export] Markdown替换检查: L(x) = \sum_{j=0}^{n | 找到匹配: true | 结果ID: formula_1
-15:36:24.046 latexExportService.js:523 [LaTeX Export] 准备替换公式: L(x) = \sum_{j=0}^{n} y_j \pro → <!--OMML_PLACEHOLDER_formula_1-->
-15:36:24.046 latexExportService.js:509 [LaTeX Export] Markdown替换检查: \mathcal{L}\{f(t)\}  | 找到匹配: true | 结果ID: formula_2
-15:36:24.046 latexExportService.js:523 [LaTeX Export] 准备替换公式: \mathcal{L}\{f(t)\} = F(s) = \ → <!--OMML_PLACEHOLDER_formula_2-->
-15:36:24.046 latexExportService.js:509 [LaTeX Export] Markdown替换检查: \sum_{n=1}^{\infty}  | 找到匹配: true | 结果ID: formula_3
-15:36:24.046 latexExportService.js:523 [LaTeX Export] 准备替换公式: \sum_{n=1}^{\infty} \frac{1}{n → <!--OMML_PLACEHOLDER_formula_3-->
-15:36:24.046 latexExportService.js:532 [LaTeX Export] 公式替换顺序 (执行顺序，倒序): (3) ['formula_3', 'formula_2', 'formula_1']
-15:36:24.047 latexExportService.js:533 [LaTeX Export] 公式替换顺序 (文档中的原始顺序): (3) ['formula_1', 'formula_2', 'formula_3']
-15:36:24.047 latexExportService.js:541 [LaTeX Export] Markdown中公式已替换: \sum_{n=1}^{\infty} \frac{1}{n → <!--OMML_PLACEHOLDER_formula_3-->
-15:36:24.047 latexExportService.js:541 [LaTeX Export] Markdown中公式已替换: \mathcal{L}\{f(t)\} = F(s) = \ → <!--OMML_PLACEHOLDER_formula_2-->
-15:36:24.047 latexExportService.js:541 [LaTeX Export] Markdown中公式已替换: L(x) = \sum_{j=0}^{n} y_j \pro → <!--OMML_PLACEHOLDER_formula_1-->
-15:36:24.047 latexExportService.js:544 [LaTeX Export] Markdown替换完成，长度: 289 → 169
-15:36:24.047 latexExportService.js:154 [LaTeX Export] 处理完成 {totalFormulas: 3, successful: 3, failed: 0, totalTime: 4}
-15:36:24.047 imageProcessor.js:290 [LaTeX Processor] LaTeX 处理完成: {hasFormulas: true, formulaCount: 3, conversionTime: 4, fallbackMode: false}
-15:36:24.047 imageProcessor.js:323 [LaTeX Processor] 设置当前导出的 OMML 结果 {count: 3}
-15:36:24.047 index.js:42 [Export Service] 使用处理后的markdown: 
-## 测试公式
+21:11:32.022 latexExportService.js:911 [LaTeX Export] 🔍 标签检测结果: {空的自闭合标签: 1, 空的标签对: 0, 包含空格的空标签对: 0, 所有m:e标签: 0, 所有自闭合m:e: 1, …}
+21:11:32.022 latexExportService.js:923 [LaTeX Export] ⚠️ 发现包含空元素的nary结构 (空白方块根源): ['<m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:va…</m:rPr><m:t>∞</m:t></m:r></m:sup><m:e/></m:nary>']
+21:11:32.022 latexExportService.js:927 [LaTeX Export] ⚠️ 检测到导致空白方块的空标签!
+21:11:32.022 latexExportService.js:928 [LaTeX Export] 空标签详情: {emptyTags: Array(1), emptyTagPairs: Array(0), emptyTagsWithSpaces: Array(0)}
+21:11:32.022 latexExportService.js:851 [LaTeX Export] 🔧 修复nary中的空元素: {原始: '<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va…ndOvr"/><m:grow m:val="1"/><m:subHide m:val="o...', 修复策略: '移除空的m:e标签'}
+21:11:32.022 latexExportService.js:851 [LaTeX Export] 🔧 修复nary中的空元素: {原始: '<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va…ndOvr"/><m:grow m:val="1"/><m:subHide m:val="o...', 修复策略: '移除空的m:e标签'}
+21:11:32.022 latexExportService.js:874 [LaTeX Export] OMML预清理完成 {原始长度: 653, 清理后长度: 641, 变化: 12, 清理效果: '移除了12个问题字符'}
+21:11:32.023 latexExportService.js:900 [LaTeX Export] 🔍 分析OMML内容 (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>S(i,j)=(I∗K)(i,j)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>m</m:t></m:r></m:sub><m:sup/><m:e/></m:nary><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/><m:e/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
 
-### 1. 拉格朗日插值多项式（原问题）
+21:11:32.023 latexExportService.js:911 [LaTeX Export] 🔍 标签检测结果: {空的自闭合标签: 2, 空的标签对: 0, 包含空格的空标签对: 0, 所有m:e标签: 0, 所有自闭合m:e: 2, …}
+21:11:32.023 latexExportService.js:923 [LaTeX Export] ⚠️ 发现包含空元素的nary结构 (空白方块根源): (2) ['<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va…<m:t>m</m:t></m:r></m:sub><m:sup/><m:e/></m:nary>', '<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va…<m:t>n</m:t></m:r></m:sub><m:sup/><m:e/></m:nary>']
+21:11:32.023 latexExportService.js:927 [LaTeX Export] ⚠️ 检测到导致空白方块的空标签!
+21:11:32.023 latexExportService.js:928 [LaTeX Export] 空标签详情: {emptyTags: Array(2), emptyTagPairs: Array(0), emptyTagsWithSpaces: Array(0)}
+21:11:32.023 latexExportService.js:406 [LaTeX Export] 批次转换完成 {total: 2, successful: 2, failed: 0, duration: 540}
+21:11:32.023 latexExportService.js:416 [LaTeX Export] 结果顺序验证: (2) ['1. formula_1', '2. formula_2']
+21:11:32.023 latexExportService.js:241 [LaTeX Export] 所有批次处理完成，总计 2 个有效公式结果
+21:11:32.023 latexExportService.js:479 [LaTeX Export] 开始在markdown中替换LaTeX公式为占位符
+21:11:32.023 latexUtils.js:32 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 179
+21:11:32.023 latexUtils.js:80 [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: '(f * g)(t) = \\int_{-\\infty}^{\\infty} f(\\tau) g(t -...', position: '21-87', isValid: true}
+21:11:32.024 latexUtils.js:80 [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'block', latex: 'S(i,j) = (I * K)(i,j) = \\sum_m \\sum_n I(m,n)K(i-m,...', position: '100-158', isValid: true}
+21:11:32.024 latexUtils.js:90 [LaTeX Utils] 提取完成，共发现 2 个公式
+21:11:32.024 latexExportService.js:503 [LaTeX Export] Markdown替换检查: (f * g)(t) = \int_{- | 找到匹配: true | 结果ID: formula_1
+21:11:32.024 latexExportService.js:518 [LaTeX Export] 准备替换公式: (f * g)(t) = \int_{-\infty}^{\ → <!--OMML_PLACEHOLDER_formula_1-->
+21:11:32.024 latexExportService.js:503 [LaTeX Export] Markdown替换检查: S(i,j) = (I * K)(i,j | 找到匹配: true | 结果ID: formula_2
+21:11:32.024 latexExportService.js:518 [LaTeX Export] 准备替换公式: S(i,j) = (I * K)(i,j) = \sum_m → <!--OMML_PLACEHOLDER_formula_2-->
+21:11:32.024 latexExportService.js:527 [LaTeX Export] 公式替换顺序 (执行顺序，倒序): (2) ['formula_2', 'formula_1']
+21:11:32.024 latexExportService.js:527 [LaTeX Export] 公式替换顺序 (文档中的原始顺序): (2) ['formula_1', 'formula_2']
+21:11:32.024 latexExportService.js:535 [LaTeX Export] Markdown中公式已替换: S(i,j) = (I * K)(i,j) = \sum_m → <!--OMML_PLACEHOLDER_formula_2-->
+21:11:32.024 latexExportService.js:535 [LaTeX Export] Markdown中公式已替换: (f * g)(t) = \int_{-\infty}^{\ → <!--OMML_PLACEHOLDER_formula_1-->
+21:11:32.024 latexExportService.js:537 [LaTeX Export] Markdown替换完成，长度: 179 → 121
+21:11:32.025 latexExportService.js:148 [LaTeX Export] 处理完成 {totalFormulas: 2, successful: 2, failed: 0, totalTime: 833}
+21:11:32.025 latexProcessor.js:18 [LaTeX Processor] LaTeX 处理完成: {hasFormulas: true, formulaCount: 2, conversionTime: 833, fallbackMode: false}
+21:11:32.025 latexProcessor.js:50 [LaTeX Processor] 设置当前导出的 OMML 结果 {count: 2}
+21:11:32.025 index.js:42 [Export Service] 使用处理后的markdown: # 调试修复测试
+
+## 积分公式测试
+
 <!--OMML_PLACEHOLDER_formula_1-->
 
-### 2. 拉普拉斯变换（原问题）
-<!--OMML_PLACE...
-15:36:24.047 index.js:46 [Export Service] 解析的Markdown tokens: 8 个
-15:36:24.047 index.js:121 [Export Service] 详细检查解析后的tokens:
-15:36:24.047 index.js:123 [Export Service] Token 0: {type: 'space', text: undefined, raw: '\n', hasTokens: false, tokensCount: 0}
-15:36:24.047 index.js:123 [Export Service] Token 1: {type: 'heading', text: '测试公式', raw: '## 测试公式\n\n', hasTokens: true, tokensCount: 1}
-15:36:24.047 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '测试公式', raw: '测试公式'}
-15:36:24.048 index.js:123 [Export Service] Token 2: {type: 'heading', text: '1. 拉格朗日插值多项式（原问题）', raw: '### 1. 拉格朗日插值多项式（原问题）\n', hasTokens: true, tokensCount: 1}
-15:36:24.048 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '1. 拉格朗日插值多项式（原问题）', raw: '1. 拉格朗日插值多项式（原问题）'}
-15:36:24.048 index.js:123 [Export Service] Token 3: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_1-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_1-->\n\n', hasTokens: false, tokensCount: 0}
-15:36:24.048 index.js:123 [Export Service] Token 4: {type: 'heading', text: '2. 拉普拉斯变换（原问题）', raw: '### 2. 拉普拉斯变换（原问题）\n', hasTokens: true, tokensCount: 1}
-15:36:24.048 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '2. 拉普拉斯变换（原问题）', raw: '2. 拉普拉斯变换（原问题）'}
-15:36:24.048 index.js:123 [Export Service] Token 5: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_2-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_2-->\n\n', hasTokens: false, tokensCount: 0}
-15:36:24.048 index.js:123 [Export Service] Token 6: {type: 'heading', text: '3. 复杂求和公式', raw: '### 3. 复杂求和公式\n', hasTokens: true, tokensCount: 1}
-15:36:24.048 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '3. 复杂求和公式', raw: '3. 复杂求和公式'}
-15:36:24.048 index.js:123 [Export Service] Token 7: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_3-->\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_3-->\n', hasTokens: false, tokensCount: 0}
-15:36:24.048 index.js:52 [Export Service] LaTeX 处理完成: {hasFormulas: true, formulaCount: 3, conversionTime: 4, fallbackMode: false}
-15:36:24.048 index.js:62 [Export Service] 文档标题: markdown-document
-15:36:24.048 index.js:177 [Export Service] Token类型统计: {space: 1, heading: 4, html: 3}
-15:36:24.049 index.js:68 [Export Service] === 阶段2: 特殊内容处理 ===
-15:36:24.049 xmlPostProcessor.js:285 [Image Processor] 预处理完成，共处理 0 张图片
-15:36:24.049 imageProcessor.js:39 [Image Processor] 处理后的tokens: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-15:36:24.049 index.js:70 [Export Service] 特殊内容处理完成，tokens数量: 8
-15:36:24.049 imageProcessor.js:335 [LaTeX Processor] 检查tokens中的占位符...
-15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_1-->'] html
-15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_1-->'] html
-15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_2-->'] html
-15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_2-->'] html
-15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_3-->'] html
-15:36:24.050 imageProcessor.js:335 [LaTeX Processor] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_3-->'] html
-15:36:24.050 latexProcessor.js:3 [LaTeX Processor] 期望在tokens中找到的占位符:
-15:36:24.050 latexProcessor.js:6 [LaTeX Processor] - <!--OMML_PLACEHOLDER_formula_1-->
-15:36:24.050 latexProcessor.js:6 [LaTeX Processor] - <!--OMML_PLACEHOLDER_formula_2-->
-15:36:24.050 latexProcessor.js:6 [LaTeX Processor] - <!--OMML_PLACEHOLDER_formula_3-->
-15:36:24.050 index.js:78 [Export Service] === 阶段3: Word文档创建 ===
-15:36:24.050 documentBuilder.js:23 [Document Builder] 开始创建Word文档...
-15:36:24.050 documentBuilder.js:24 [Document Builder] 格式设置: {content: Array(6), page: {…}, latin: {…}}
-15:36:24.050 documentBuilder.js:30 [Document Builder] 页面设置: {margins: {…}, pageSize: {…}}
-15:36:24.051 documentBuilder.js:225 [Document Builder] 开始解析 8 个tokens为Word文档元素
-15:36:24.051 documentBuilder.js:226 [Document Builder] tokens类型统计: {space: 1, heading: 4, html: 3}
-15:36:24.052 documentBuilder.js:279 [Document Builder] 未处理的token类型: space
-parseTokensToDocxElements @ documentBuilder.js:279
-createWordDocument @ documentBuilder.js:57
-exportToWord @ index.js:79
-await in exportToWord
-handleExport @ Header.js:187
-（匿名） @ button.js:186
-executeDispatch @ react-dom-client.development.js:16368
-runWithFiberInDEV @ react-dom-client.development.js:1518
-processDispatchQueue @ react-dom-client.development.js:16417
-（匿名） @ react-dom-client.development.js:17016
-batchedUpdates$1 @ react-dom-client.development.js:3262
-dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
-dispatchEvent @ react-dom-client.development.js:20657
-dispatchDiscreteEvent @ react-dom-client.development.js:20625
-15:36:24.052 textUtils.js:114 处理内联格式: 测试公式 (标题)
-15:36:24.052 documentBuilder.js:339 [Document Builder] 标题2设置: {spacingBefore: 12, spacingBeforeTwips: 240, spacingAfter: 8, spacingAfterTwips: 160, lineHeight: 1.5, …}
-15:36:24.052 textUtils.js:114 处理内联格式: 1. 拉格朗日插值多项式（原问题） (标题)
-15:36:24.053 textUtils.js:216 文本分段: [{…}]
-15:36:24.053 documentBuilder.js:339 [Document Builder] 标题3设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
-15:36:24.053 documentBuilder.js:268 [Document Builder] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_1-->
-15:36:24.054 textUtils.js:114 处理内联格式: 2. 拉普拉斯变换（原问题） (标题)
-15:36:24.054 textUtils.js:216 文本分段: [{…}]
-15:36:24.054 documentBuilder.js:339 [Document Builder] 标题3设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
-15:36:24.054 documentBuilder.js:268 [Document Builder] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_2-->
-15:36:24.054 textUtils.js:114 处理内联格式: 3. 复杂求和公式 (标题)
-15:36:24.054 textUtils.js:216 文本分段: [{…}]
-15:36:24.054 documentBuilder.js:339 [Document Builder] 标题3设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
-15:36:24.054 documentBuilder.js:268 [Document Builder] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_3-->
-15:36:24.055 documentBuilder.js:294 [Document Builder] 解析完成，共生成 7 个Word文档元素
-15:36:24.055 documentBuilder.js:295 [Document Builder] Word文档元素类型统计: {Paragraph: 7}
-15:36:24.056 documentBuilder.js:62 [Document Builder] Word文档创建完成
-15:36:24.056 documentBuilder.js:63 [Document Builder] 样式已注入：paragraph-2-chars / paragraph-4-chars / paragraph-no-indent
-15:36:24.056 index.js:80 [Export Service] Word文档创建完成
-15:36:24.056 index.js:85 [Export Service] LaTeX 导出统计: {totalExports: 18, totalFormulas: 40, successfulConversions: 40, failedConversions: 0, cacheHits: 36, …}
-15:36:24.056 index.js:89 [Export Service] === 阶段4: 文档序列化 ===
-15:36:24.140  [Export Service] 文档序列化完成，大小: 8167 字节
-15:36:24.141  [Export Service] 检查生成的docx中的占位符...
-15:36:24.141  [Export Service] === 阶段5: 后处理 ===
-15:36:24.141  [XML Post-Processor] 开始XML后处理...
-15:36:24.146  [XML Post-Processor] 🚀 原始Word文档包含 7 个段落, 0 个表格, 0 个数学公式
-15:36:24.152  [XML Post-Processor] 原始段落分析:
-15:36:24.152  [XML Post-Processor] 段落 1: 📝 文本内容 - "测试公式"
-15:36:24.152  [XML Post-Processor] 段落 2: 📝 文本内容 - "1. 拉格朗日插值多项式（原问题）"
-15:36:24.152  [XML Post-Processor] 段落 3: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formul...
-15:36:24.152  [XML Post-Processor] 段落 4: 📝 文本内容 - "2. 拉普拉斯变换（原问题）"
-15:36:24.152  [XML Post-Processor] 段落 5: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formul...
-15:36:24.152  [XML Post-Processor] 段落 6: 📝 文本内容 - "3. 复杂求和公式"
-15:36:24.152  [XML Post-Processor] 段落 7: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formul...
-15:36:24.152  [XML Post-Processor] 开始OMML占位符替换阶段...
-15:36:24.152  [OMML Replacer] 开始替换 3 个公式占位符
-15:36:24.152  [OMML Replacer] XML文档长度: 5354
-15:36:24.153  [OMML Replacer] XML中找到 0 个占位符: []
-15:36:24.153  [OMML Replacer] 发现 0 个表格区域需要保护
-15:36:24.153  [OMML Replacer] XML中占位符顺序: (3) ['formula_1@3481', 'formula_2@4266', 'formula_3@5046']
-15:36:24.153  [OMML Replacer] 处理OMML结果: {id: 'formula_1', success: true, hasOmml: true, latex: 'L(x) = \\sum_{j=0}^{n} y_j \\pro', isDisplayMode: true, …}
-15:36:24.153  [OMML Replacer] 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_1--&gt;
-15:36:24.153  [OMML Replacer] XML中包含占位符: true
-15:36:24.153  [OMML Replacer] 🔍 接收到的原始OMML (前800字符): <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>L(x)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>j=0</m:t></m:r></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary><m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:eqArr><m:e><m:r><m:t>k=0</m:t></m:r></m:e><m:e><m:r><m:t>k≠j</m:t></m:r></m:e></m:eqArr></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary>
-15:36:24.153  [OMML Replacer] 🔍 完整OMML内容: <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>L(x)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>j=0</m:t></m:r></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary><m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:eqArr><m:e><m:r><m:t>k=0</m:t></m:r></m:e><m:e><m:r><m:t>k≠j</m:t></m:r></m:e></m:eqArr></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>x−</m:t></m:r><m:sSub><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sub><m:r><m:t>k</m:t></m:r></m:sub></m:sSub></m:num><m:den><m:sSub><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:r><m:t>−</m:t></m:r><m:sSub><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sub><m:r><m:t>k</m:t></m:r></m:sub></m:sSub></m:den></m:f></m:oMath>
+## 双重求和测试
 
-15:36:24.153  [OMML Replacer] 🔍 发现 2 个nary结构:
-15:36:24.153  [OMML Replacer] 🔍 Nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>j=0</m:t></m:r></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary>
-15:36:24.153  [OMML Replacer] 🔍 Nary 1 是否包含m:e元素: false
-15:36:24.153  [OMML Replacer] 🔍 Nary 2: <m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:eqArr><m:e><m:r><m:t>k=0</m:t></m:r></m:e><m:e><m:r><m:t>k≠j</m:t></m:r></m:e></m:eqArr></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary>
-15:36:24.153  [OMML Replacer] 🔍 Nary 2 是否包含m:e元素: true
-15:36:24.153  [OMML Replacer] 🔧 开始nary结构重组分析...
-15:36:24.153  [OMML Replacer] 🔍 智能判断nary ∑: 原始有m:e=false, 主体有m:e=false
-15:36:24.153  [OMML Replacer] 🔧 ∑符号需要重组
-15:36:24.153  [OMML Replacer] 🔍 智能判断nary ∏: 原始有m:e=true, 主体有m:e=false
-15:36:24.154  [OMML Replacer] 🔧 ∏符号需要重组
-15:36:24.154  [OMML Replacer] 🔧 发现 2 个缺少m:e的nary结构
-15:36:24.154  [OMML Replacer] 🔧 分析nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
-15:36:24.154  [OMML Replacer] 🔧 nary后内容: <m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:nary><m:...
-15:36:24.154  [OMML Replacer] 🔧 模式1: 求和+y_j
-15:36:24.154  [OMML Replacer] 🔧 将表达式移入nary的m:e中: <m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><...
-15:36:24.154  [OMML Replacer] 🔧 分析nary 2: <m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:va...
-15:36:24.154  [OMML Replacer] 🔧 nary后内容: p></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>x−</m:t></m:r><m:sSub><m:e><m:r...
-15:36:24.154  [OMML Replacer] ⚠️ 未找到合适的表达式模式
-15:36:24.154  [OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: 1202 → 1213
-15:36:24.154  [XML Utils] 🔧 保护nary结构 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
-15:36:24.154  [XML Utils] 🔧 保护nary结构 2: <m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
-15:36:24.154  [XML Utils] 🔧 保护了 2 个nary结构中的空m:e标签
-15:36:24.154  [OMML Replacer] 清理后的OMML长度: 1127
-15:36:24.154  [OMML Replacer] 🔍 formula_1 空标签清理对比: {清理前: '0个自闭合 + 0个标签对', 清理后: '0个自闭合 + 0个标签对', 是否有改善: false}
-15:36:24.154  [OMML Replacer] 查找包含占位符的段落: true
-15:36:24.154  [OMML Replacer] 🔍 段落是否包含其他文本内容: false
-15:36:24.154  [OMML Replacer] 🔄 处理独立公式，替换整个段落
-15:36:24.155  [OMML Replacer] 替换整个段落: formula_1，生成参考文档格式
-15:36:24.155  [OMML Replacer] 新段落结构: <w:p><m:oMath>...</w:p>
-15:36:24.155  [OMML Replacer] XML长度变化: 5354 → 6399
-15:36:24.155  [OMML Replacer] 长度减少: -1045 字节
-15:36:24.155  [OMML Replacer] 处理OMML结果: {id: 'formula_2', success: true, hasOmml: true, latex: '\\mathcal{L}\\{f(t)\\} = F(s) = \\', isDisplayMode: true, …}
-15:36:24.155  [OMML Replacer] 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_2--&gt;
-15:36:24.155  [OMML Replacer] XML中包含占位符: true
-15:36:24.155  [OMML Replacer] 🔍 接收到的原始OMML (前800字符): <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:rPr><m:scr m:val="script"/></m:rPr><m:t>L</m:t></m:r><m:r><m:t>{f(t)}=F(s)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>−st</m:t></m:r></m:sup></m:sSup><m:r><m:t>dt</m:t></m:r></m:oMath>
+<!--OMML_PLACEHOLDER_formula_2-->...
+21:11:32.029 index.js:46 [Export Service] 解析的Markdown tokens: 6 个
+21:11:32.029 index.js:121 [Export Service] 详细检查解析后的tokens:
+21:11:32.029 index.js:123 [Export Service] Token 0: {type: 'heading', text: '调试修复测试', raw: '# 调试修复测试\n\n', hasTokens: true, tokensCount: 1}
+21:11:32.029 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '调试修复测试', raw: '调试修复测试'}
+21:11:32.029 index.js:123 [Export Service] Token 1: {type: 'heading', text: '积分公式测试', raw: '## 积分公式测试\n\n', hasTokens: true, tokensCount: 1}
+21:11:32.029 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '积分公式测试', raw: '积分公式测试'}
+21:11:32.031 index.js:123 [Export Service] Token 2: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_1-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_1-->\n\n', hasTokens: false, tokensCount: 0}
+21:11:32.031 index.js:123 [Export Service] Token 3: {type: 'heading', text: '双重求和测试', raw: '## 双重求和测试\n\n', hasTokens: true, tokensCount: 1}
+21:11:32.031 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '双重求和测试', raw: '双重求和测试'}
+21:11:32.031 index.js:123 [Export Service] Token 4: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_2-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_2-->\n\n', hasTokens: false, tokensCount: 0}
+21:11:32.031 index.js:123 [Export Service] Token 5: {type: 'paragraph', text: '这个文档用于测试调试版本的修复效果。', raw: '这个文档用于测试调试版本的修复效果。\n', hasTokens: true, tokensCount: 1}
+21:11:32.031 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '这个文档用于测试调试版本的修复效果。', raw: '这个文档用于测试调试版本的修复效果。'}
+21:11:32.031 index.js:52 [Export Service] LaTeX 处理完成: {hasFormulas: true, formulaCount: 2, conversionTime: 833, fallbackMode: false}
+21:11:32.031 index.js:62 [Export Service] 文档标题: 调试修复测试
+21:11:32.031 index.js:177 [Export Service] Token类型统计: {heading: 3, html: 2, paragraph: 1}
+21:11:32.031 index.js:68 [Export Service] === 阶段2: 特殊内容处理 ===
+21:11:32.031 imageProcessor.js:41 [Image Processor] 预处理完成，共处理 0 张图片
+21:11:32.032 imageProcessor.js:153 [Image Processor] 处理后的tokens: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
+21:11:32.032 index.js:70 [Export Service] 特殊内容处理完成，tokens数量: 6
+21:11:32.032 latexProcessor.js:94 [LaTeX Processor] 检查tokens中的占位符...
+21:11:32.032 latexProcessor.js:103 [LaTeX Processor] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_1-->'] html
+21:11:32.032 latexProcessor.js:109 [LaTeX Processor] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_1-->'] html
+21:11:32.032 latexProcessor.js:103 [LaTeX Processor] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_2-->'] html
+21:11:32.032 latexProcessor.js:109 [LaTeX Processor] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_2-->'] html
+21:11:32.033 latexProcessor.js:124 [LaTeX Processor] 期望在tokens中找到的占位符:
+21:11:32.033 latexProcessor.js:127 [LaTeX Processor] - <!--OMML_PLACEHOLDER_formula_1-->
+21:11:32.033 latexProcessor.js:127 [LaTeX Processor] - <!--OMML_PLACEHOLDER_formula_2-->
+21:11:32.033 index.js:78 [Export Service] === 阶段3: Word文档创建 ===
+21:11:32.033 documentBuilder.js:23 [Document Builder] 开始创建Word文档...
+21:11:32.033 documentBuilder.js:24 [Document Builder] 格式设置: {content: Array(6), page: {…}, latin: {…}}
+21:11:32.033 documentBuilder.js:30 [Document Builder] 页面设置: {margins: {…}, pageSize: {…}}
+21:11:32.035 documentBuilder.js:225 [Document Builder] 开始解析 6 个tokens为Word文档元素
+21:11:32.035 documentBuilder.js:226 [Document Builder] tokens类型统计: {heading: 3, html: 2, paragraph: 1}
+21:11:32.035 textUtils.js:232 处理内联格式: 调试修复测试 (标题)
+21:11:32.036 documentBuilder.js:339 [Document Builder] 标题1设置: {spacingBefore: 12, spacingBeforeTwips: 240, spacingAfter: 8, spacingAfterTwips: 160, lineHeight: 1.5, …}
+21:11:32.036 textUtils.js:232 处理内联格式: 积分公式测试 (标题)
+21:11:32.036 documentBuilder.js:339 [Document Builder] 标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+21:11:32.036 documentBuilder.js:268 [Document Builder] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_1-->
+21:11:32.036 textUtils.js:232 处理内联格式: 双重求和测试 (标题)
+21:11:32.037 documentBuilder.js:339 [Document Builder] 标题2设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+21:11:32.037 documentBuilder.js:268 [Document Builder] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_2-->
+21:11:32.037 converters.js:27 首行缩进计算详情: {fontSizeInPoints: 12, charCount: 2, fontFamily: '宋体', isChineseFont: true, charWidthRatio: 1, …}
+21:11:32.037 documentBuilder.js:393 [Document Builder] 段落设置: {firstLineIndent: 2, firstLineIndentTwips: 480, paragraphSpacing: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+21:11:32.037 documentBuilder.js:418 [Document Builder] 创建段落： {chosenStyleId: 'paragraph-2-chars', firstLineIndent: 2, willSetIndentAtParagraphLevel: false}
+21:11:32.037 documentBuilder.js:294 [Document Builder] 解析完成，共生成 6 个Word文档元素
+21:11:32.037 documentBuilder.js:295 [Document Builder] Word文档元素类型统计: {Paragraph: 6}
+21:11:32.042 documentBuilder.js:62 [Document Builder] Word文档创建完成
+21:11:32.042 documentBuilder.js:63 [Document Builder] 样式已注入：paragraph-2-chars / paragraph-4-chars / paragraph-no-indent
+21:11:32.042 index.js:80 [Export Service] Word文档创建完成
+21:11:32.042 index.js:85 [Export Service] LaTeX 导出统计: {totalExports: 1, totalFormulas: 2, successfulConversions: 2, failedConversions: 0, cacheHits: 0, …}
+21:11:32.042 index.js:89 [Export Service] === 阶段4: 文档序列化 ===
+21:11:32.089  [Export Service] 文档序列化完成，大小: 8194 字节
+21:11:32.090  [Export Service] 检查生成的docx中的占位符...
+21:11:32.090  [Export Service] === 阶段5: 后处理 ===
+21:11:32.090  [XML Post-Processor] 开始XML后处理...
+21:11:32.096  [XML Post-Processor] 🚀 原始Word文档包含 6 个段落, 0 个表格, 0 个数学公式
+21:11:32.096  [XML Post-Processor] 原始段落分析:
+21:11:32.096  [XML Post-Processor] 段落 1: 📝 文本内容 - "调试修复测试"
+21:11:32.096  [XML Post-Processor] 段落 2: 📝 文本内容 - "积分公式测试"
+21:11:32.096  [XML Post-Processor] 段落 3: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formul...
+21:11:32.096  [XML Post-Processor] 段落 4: 📝 文本内容 - "双重求和测试"
+21:11:32.097  [XML Post-Processor] 段落 5: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formul...
+21:11:32.097  [XML Post-Processor] 段落 6: 📝 文本内容 - "这个文档用于测试调试版本的修复效果。"
+21:11:32.097  [XML Post-Processor] 开始OMML占位符替换阶段...
+21:11:32.097  [OMML Replacer] 开始替换 2 个公式占位符
+21:11:32.097  [OMML Replacer] XML文档长度: 4438
+21:11:32.097  [OMML Replacer] XML中找到 0 个占位符: []
+21:11:32.100  [OMML Replacer] 发现 0 个表格区域需要保护
+21:11:32.100  [OMML Replacer] XML中占位符顺序: (2) ['formula_1@3198', 'formula_2@3691']
+21:11:32.106  [OMML Replacer] 处理OMML结果: {id: 'formula_1', success: true, hasOmml: true, latex: '(f * g)(t) = \\int_{-\\infty}^{\\', isDisplayMode: true, …}
+21:11:32.106  [OMML Replacer] 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_1--&gt;
+21:11:32.106  [OMML Replacer] XML中包含占位符: true
+21:11:32.107  [OMML Replacer] 🔍 接收到的原始OMML (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>(f∗g)(t)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>−</m:t></m:r><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:r><m:t>f(τ)g(t−τ)dτ</m:t></m:r></m:oMath>
 
-15:36:24.155  [OMML Replacer] 🔍 完整OMML内容: <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:rPr><m:scr m:val="script"/></m:rPr><m:t>L</m:t></m:r><m:r><m:t>{f(t)}=F(s)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>−st</m:t></m:r></m:sup></m:sSup><m:r><m:t>dt</m:t></m:r></m:oMath>
+21:11:32.107  [OMML Replacer] 🔍 完整OMML内容: <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>(f∗g)(t)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>−</m:t></m:r><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:r><m:t>f(τ)g(t−τ)dτ</m:t></m:r></m:oMath>
 
-15:36:24.156  [OMML Replacer] 🔍 发现 1 个nary结构:
-15:36:24.156  [OMML Replacer] 🔍 Nary 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary>
-15:36:24.156  [OMML Replacer] 🔍 Nary 1 是否包含m:e元素: false
-15:36:24.156  [OMML Replacer] 🔧 开始nary结构重组分析...
-15:36:24.156  [OMML Replacer] 🔍 智能判断nary ∫: 原始有m:e=false, 主体有m:e=false
-15:36:24.156  [OMML Replacer] 🔧 ∫符号需要重组
-15:36:24.156  [OMML Replacer] 🔧 发现 1 个缺少m:e的nary结构
-15:36:24.156  [OMML Replacer] 🔧 分析nary 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:va...
-15:36:24.156  [OMML Replacer] 🔧 nary后内容: <m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>−st</m:t></m:r>...
-15:36:24.156  [OMML Replacer] 🔧 模式4: 积分+复杂表达式
-15:36:24.156  [OMML Replacer] 🔧 将表达式移入nary的m:e中: <m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e...
-15:36:24.156  [OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: 669 → 680
-15:36:24.156  [XML Utils] 🔧 保护nary结构 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="o...
-15:36:24.156  [XML Utils] 🔧 保护了 1 个nary结构中的空m:e标签
-15:36:24.156  [OMML Replacer] 清理后的OMML长度: 594
-15:36:24.157  [OMML Replacer] 🔍 formula_2 空标签清理对比: {清理前: '0个自闭合 + 0个标签对', 清理后: '0个自闭合 + 0个标签对', 是否有改善: false}
-15:36:24.157  [OMML Replacer] 查找包含占位符的段落: true
-15:36:24.157  [OMML Replacer] 🔍 段落是否包含其他文本内容: false
-15:36:24.157  [OMML Replacer] 🔄 处理独立公式，替换整个段落
-15:36:24.157  [OMML Replacer] 替换整个段落: formula_2，生成参考文档格式
-15:36:24.157  [OMML Replacer] 新段落结构: <w:p><m:oMath>...</w:p>
-15:36:24.157  [OMML Replacer] XML长度变化: 6399 → 6911
-15:36:24.157  [OMML Replacer] 长度减少: -512 字节
-15:36:24.157  [OMML Replacer] 处理OMML结果: {id: 'formula_3', success: true, hasOmml: true, latex: '\\sum_{n=1}^{\\infty} \\frac{1}{n', isDisplayMode: true, …}
-15:36:24.157  [OMML Replacer] 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_3--&gt;
-15:36:24.157  [OMML Replacer] XML中包含占位符: true
-15:36:24.157  [OMML Replacer] 🔍 接收到的原始OMML (前800字符): <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>n=1</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:sSup><m:e><m:r><m:t>n</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:den></m:f><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:sSup><m:e><m:r><m:t>π</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:num><m:den><m:r><m:t>6<
-15:36:24.157  [OMML Replacer] 🔍 完整OMML内容: <?xml version="1.0" encoding="UTF-8"?>
-<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>n=1</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:sSup><m:e><m:r><m:t>n</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:den></m:f><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:sSup><m:e><m:r><m:t>π</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:num><m:den><m:r><m:t>6</m:t></m:r></m:den></m:f></m:oMath>
+21:11:32.107  [OMML Replacer] 🔍 发现 1 个nary结构:
+21:11:32.107  [OMML Replacer] 🔍 Nary 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>−</m:t></m:r><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary>
+21:11:32.107  [OMML Replacer] 🔍 Nary 1 是否包含m:e元素: false
+21:11:32.107  [OMML Replacer] 🔧 开始nary结构重组分析...
+21:11:32.107  [OMML Replacer] 🔍 智能判断nary ∫: 原始有m:e=false, 主体有m:e=false
+21:11:32.108  [OMML Replacer] 🔧 ∫符号需要重组
+21:11:32.108  [OMML Replacer] 🔧 发现 1 个缺少m:e的nary结构
+21:11:32.108  [OMML Replacer] 🔧 分析nary 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:va...
+21:11:32.108  [OMML Replacer] 🔧 nary后内容: <m:r><m:t>f(τ)g(t−τ)dτ</m:t></m:r></m:oMath>
+...
+21:11:32.108  [OMML Replacer] 🚀🚀🚀 CRITICAL DEBUG: 即将启动终极硬编码修复方案 🚀🚀🚀
+21:11:32.108  [OMML Replacer] 🎯 启动终极硬编码修复方案...
+21:11:32.108  [OMML Replacer] 🎯 当前符号: ∫
+21:11:32.108  [OMML Replacer] 🎯 afterNary完整内容: "<m:r><m:t>f(τ)g(t−τ)dτ</m:t></m:r></m:oMath>
+"
+21:11:32.108  [OMML Replacer] 🔍 检查积分匹配: afterNary长度=45
+21:11:32.108  [OMML Replacer] 🔍 预期积分模式长度=44
+21:11:32.108  [OMML Replacer] 🎯 ✅ 备用积分公式匹配成功！
+21:11:32.109  [OMML Replacer] 🎯 执行终极重组...
+21:11:32.109  [OMML Replacer] 🎯 原始nary: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.109  [OMML Replacer] 🎯 要移动的表达式: <m:r><m:t>f(τ)g(t−τ)dτ</m:t></m:r>
+21:11:32.109  [OMML Replacer] 🎯 检测到普通结构，使用标准替换逻辑
+21:11:32.109  [OMML Replacer] 🎯 替换模式: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.109  [OMML Replacer] 🎯 替换目标: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.109  [OMML Replacer] 🎯 终极重组完成! 长度变化: 554 → 565
+21:11:32.109  [OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: 554 → 565
+21:11:32.109  [XML Utils] 🔧 保护nary结构 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.109  [XML Utils] 🔧 保护了 1 个nary结构中的空m:e标签
+21:11:32.109  [OMML Replacer] 清理后的OMML长度: 479
+21:11:32.109  [OMML Replacer] 🔍 formula_1 空标签清理对比: {清理前: '0个自闭合 + 0个标签对', 清理后: '0个自闭合 + 0个标签对', 是否有改善: false}
+21:11:32.110  [OMML Replacer] 查找包含占位符的段落: true
+21:11:32.112  [OMML Replacer] 🔍 段落是否包含其他文本内容: false
+21:11:32.113  [OMML Replacer] 🔄 处理独立公式，替换整个段落
+21:11:32.113  [OMML Replacer] 替换整个段落: formula_1，生成参考文档格式
+21:11:32.113  [OMML Replacer] 新段落结构: <w:p><m:oMath>...</w:p>
+21:11:32.113  [OMML Replacer] XML长度变化: 4438 → 4835
+21:11:32.113  [OMML Replacer] 长度减少: -397 字节
+21:11:32.113  [OMML Replacer] 处理OMML结果: {id: 'formula_2', success: true, hasOmml: true, latex: 'S(i,j) = (I * K)(i,j) = \\sum_m', isDisplayMode: true, …}
+21:11:32.113  [OMML Replacer] 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_2--&gt;
+21:11:32.113  [OMML Replacer] XML中包含占位符: true
+21:11:32.113  [OMML Replacer] 🔍 接收到的原始OMML (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>S(i,j)=(I∗K)(i,j)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>m</m:t></m:r></m:sub><m:sup/></m:nary><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
 
-15:36:24.157  [OMML Replacer] 🔍 发现 1 个nary结构:
-15:36:24.157  [OMML Replacer] 🔍 Nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>n=1</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary>
-15:36:24.157  [OMML Replacer] 🔍 Nary 1 是否包含m:e元素: false
-15:36:24.157  [OMML Replacer] 🔧 开始nary结构重组分析...
-15:36:24.157  [OMML Replacer] 🔍 智能判断nary ∑: 原始有m:e=false, 主体有m:e=false
-15:36:24.157  [OMML Replacer] 🔧 ∑符号需要重组
-15:36:24.157  [OMML Replacer] 🔧 发现 1 个缺少m:e的nary结构
-15:36:24.158  [OMML Replacer] 🔧 分析nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
-15:36:24.158  [OMML Replacer] 🔧 nary后内容: <m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:sSup><m:e><...
-15:36:24.158  [OMML Replacer] 🔧 模式2: 求和+分数
-15:36:24.158  [OMML Replacer] 🔧 将表达式移入nary的m:e中: <m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m...
-15:36:24.158  [OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: 836 → 847
-15:36:24.158  [XML Utils] 🔧 保护nary结构 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
-15:36:24.158  [XML Utils] 🔧 保护了 1 个nary结构中的空m:e标签
-15:36:24.158  [OMML Replacer] 清理后的OMML长度: 761
-15:36:24.158  [OMML Replacer] 🔍 formula_3 空标签清理对比: {清理前: '0个自闭合 + 0个标签对', 清理后: '0个自闭合 + 0个标签对', 是否有改善: false}
-15:36:24.158  [OMML Replacer] 查找包含占位符的段落: true
-15:36:24.158  [OMML Replacer] 🔍 段落是否包含其他文本内容: false
-15:36:24.158  [OMML Replacer] 🔄 处理独立公式，替换整个段落
-15:36:24.158  [OMML Replacer] 替换整个段落: formula_3，生成参考文档格式
-15:36:24.158  [OMML Replacer] 新段落结构: <w:p><m:oMath>...</w:p>
-15:36:24.158  [OMML Replacer] XML长度变化: 6911 → 7590
-15:36:24.158  [OMML Replacer] 长度减少: -679 字节
-15:36:24.158 ommlReplacer.js:55 [OMML Replacer] 处理完成，剩余占位符: 0 []
-15:36:24.159 orderManager.js:231 [XML Post-Processor] OMML替换验证结果: {isValid: false, originalPlaceholders: 0, remainingPlaceholders: 0, mathElements: 3, expectedReplacements: 3, …}
-15:36:24.159 orderManager.js:236 [XML Post-Processor] OMML替换后文档包含 7 个段落, 0 个表格, 3 个数学公式
-15:36:24.159 orderManager.js:246 [XML Post-Processor] OMML替换后XML中有 7 个段落
-15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 1: 📝 文本 - "测试公式"
-15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 2: 📝 文本 - "1. 拉格朗日插值多项式（原问题）"
-15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 3: 📊 包含OMML公式
-15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 4: 📝 文本 - "2. 拉普拉斯变换（原问题）"
-15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 5: 📊 包含OMML公式
-15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 6: 📝 文本 - "3. 复杂求和公式"
-15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 7: 📊 包含OMML公式
-15:36:24.159 orderManager.js:247 [XML Post-Processor] 开始字符缩进处理阶段...
-15:36:24.159 xmlPostProcessor.js:85 [XML Post-Processor] 在已替换OMML的XML中找到 3 个OMML需要保护
-15:36:24.159 xmlPostProcessor.js:91 [XML Post-Processor] 保护OMML 1: __OMML_PROTECTED_0__ (长度: 1127)
-15:36:24.159 xmlPostProcessor.js:91 [XML Post-Processor] 保护OMML 2: __OMML_PROTECTED_1__ (长度: 594)
-15:36:24.159 xmlPostProcessor.js:91 [XML Post-Processor] 保护OMML 3: __OMML_PROTECTED_2__ (长度: 761)
-15:36:24.162 orderManager.js:247 [XML Post-Processor] XML解析完成，检查JSON结构
-15:36:24.162 orderManager.js:247 [XML Post-Processor] JSON根键: ?xml, w:document
-15:36:24.162 xmlPostProcessor.js:3 [XML Post-Processor] ✅ 找到w:document
-15:36:24.162 xmlPostProcessor.js:9 [XML Post-Processor] ✅ 找到w:body
-15:36:24.162 xmlPostProcessor.js:11 [XML Post-Processor] 段落类型: object, 是否为数组: true
-15:36:24.162 xmlPostProcessor.js:15 [XML Post-Processor] 找到 7 个段落数组
-15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 1: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading2"},"w:spacing":{"@_w:before":"240","@_w:after":"160","@_w:l...
-15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 2: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading3"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
-15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 3: "__OMML_PROTECTED_0__"...
-15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 4: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading3"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
-15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 5: "__OMML_PROTECTED_1__"...
-15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 6: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading3"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
-15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 7: "__OMML_PROTECTED_2__"...
-15:36:24.162 xmlPostProcessor.js:28 [XML Post-Processor] w:body的所有键: w:p, w:sectPr
-15:36:24.163 xmlPostProcessor.js:31 [XML Post-Processor] 🔍 分析body结构中的所有子元素:
-15:36:24.163 xmlPostProcessor.js:34 [XML Post-Processor] - w:p: 7 个段落
-15:36:24.163 xmlPostProcessor.js:38 [XML Post-Processor] - w:sectPr: object
-15:36:24.163 bundle.js:303523 [Order Manager] 🔧 启动原始元素顺序记录方案...
-15:36:24.163 bundle.js:303560 [Order Manager] 📊 扫描到 8 个body子元素:
-15:36:24.163 bundle.js:303562 [Order Manager] 1. 段落: "测试公式" (类型: w:p, 位置: 0)
-15:36:24.163 bundle.js:303562 [Order Manager] 2. 段落: "1. 拉格朗日插值多项式（原问..." (类型: w:p, 位置: 390)
-15:36:24.163 bundle.js:303562 [Order Manager] 3. 段落: "" (类型: w:p, 位置: 1085)
-15:36:24.163 bundle.js:303562 [Order Manager] 4. 段落: "2. 拉普拉斯变换（原问题）" (类型: w:p, 位置: 2223)
-15:36:24.163 bundle.js:303562 [Order Manager] 5. 段落: "" (类型: w:p, 位置: 2915)
-15:36:24.163 bundle.js:303562 [Order Manager] 6. 段落: "3. 复杂求和公式" (类型: w:p, 位置: 3520)
-15:36:24.163 bundle.js:303562 [Order Manager] 7. 段落: "" (类型: w:p, 位置: 4207)
-15:36:24.163 bundle.js:303562 [Order Manager] 8. 页面设置 (类型: w:sectPr, 位置: 4979)
-15:36:24.163 bundle.js:303572 [Order Manager] ✅ 原始元素顺序信息已保存，共 8 个元素
-15:36:24.163 xmlPostProcessor.js:49 [XML Post-Processor] XMLBuilder构建完成，准备开始恢复阶段
-15:36:24.163 xmlPostProcessor.js:50 [XML Post-Processor] 构建后XML长度: 5713
-15:36:24.163 xmlPostProcessor.js:50 [XML Post-Processor] 保护映射表大小: 3
-15:36:24.164 bundle.js:303585 [Order Manager] 🔧 开始完整的XML元素顺序重建...
-15:36:24.164 bundle.js:303602 [Order Manager] 📊 当前XML中元素统计: 7个段落, 0个表格, 1个sectPr
-15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第1个元素: 段落: "测试公式"
-15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落1: "测试公式"
-15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第2个元素: 段落: "1. 拉格朗日插值多项式（原问..."
-15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落2: "1. 拉格朗日插值多项式（原问题）"
-15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第3个元素: 段落: ""
-15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落3: ""
-15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第4个元素: 段落: "2. 拉普拉斯变换（原问题）"
-15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落4: "2. 拉普拉斯变换（原问题）"
-15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第5个元素: 段落: ""
-15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落5: ""
-15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第6个元素: 段落: "3. 复杂求和公式"
-15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落6: "3. 复杂求和公式"
-15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第7个元素: 段落: ""
-15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落7: ""
-15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第8个元素: 页面设置
-15:36:24.164 orderManager.js:23 [Order Manager] ✅ 添加页面设置
-15:36:24.164 orderManager.js:33 [Order Manager] ✅ XML元素顺序重建完成！
-15:36:24.164 orderManager.js:34 [Order Manager] 📊 重建后XML长度: 5713
-15:36:24.164 orderManager.js:36 [Order Manager] 📊 重建后元素顺序: 8个元素按原始顺序排列
-15:36:24.164 xmlPostProcessor.js:58 [XML Post-Processor] XML重建后有 7 个段落, 0 个表格
-15:36:24.164 orderManager.js:45 [Order Manager] 🔍 分析重建XML中所有body子元素的顺序:
-15:36:24.165 orderManager.js:59 [Order Manager] 元素 1: 📝 段落 - "测试公式..." (位置: 2360)
-15:36:24.165 orderManager.js:59 [Order Manager] 元素 2: 📝 段落 - "1.拉格朗日插值多项式（原问题）..." (位置: 2834)
-15:36:24.165 orderManager.js:61 [Order Manager] 元素 3: 📄 空段落 (位置: 3669)
-15:36:24.165 orderManager.js:59 [Order Manager] 元素 4: 📝 段落 - "2.拉普拉斯变换（原问题）..." (位置: 3700)
-15:36:24.165 orderManager.js:61 [Order Manager] 元素 5: 📄 空段落 (位置: 4532)
-15:36:24.165 orderManager.js:59 [Order Manager] 元素 6: 📝 段落 - "3.复杂求和公式..." (位置: 4563)
-15:36:24.165 orderManager.js:61 [Order Manager] 元素 7: 📄 空段落 (位置: 5390)
-15:36:24.165 xmlPostProcessor.js:65 [XML Post-Processor] 元素顺序验证结果: {isValid: true, tableIntact: true, paragraphReasonable: true, originalStats: {…}, reorderedStats: {…}, …}
-15:36:24.165 xmlPostProcessor.js:110 [XML Post-Processor] 开始恢复 3 个被保护的OMML
-15:36:24.165 xmlPostProcessor.js:111 [XML Post-Processor] 恢复前XML长度: 5713
-15:36:24.165 xmlPostProcessor.js:114 [XML Post-Processor] XML中是否包含保护键: true
-15:36:24.165 xmlPostProcessor.js:122 [XML Post-Processor] ✅ 恢复OMML: __OMML_PROTECTED_0__ → OMML内容 (XML长度: 5713 → 6820)
-15:36:24.165 xmlPostProcessor.js:122 [XML Post-Processor] ✅ 恢复OMML: __OMML_PROTECTED_1__ → OMML内容 (XML长度: 6820 → 7394)
-15:36:24.165 xmlPostProcessor.js:122 [XML Post-Processor] ✅ 恢复OMML: __OMML_PROTECTED_2__ → OMML内容 (XML长度: 7394 → 8135)
-15:36:24.165 xmlPostProcessor.js:139 [XML Post-Processor] 恢复后XML长度: 8135
-15:36:24.165 xmlPostProcessor.js:69 [XML Post-Processor] OMML恢复完成，最终XML长度: 8135
-15:36:24.185 orderManager.js:247 [XML Post-Processor] docx后处理完成：已写入 firstLineChars 和 OMML 公式
-15:36:24.185 orderManager.js:106 [Order Manager] 顺序管理状态已清理
-15:36:24.185 index.js:102 [Export Service] 后处理完成，最终大小: 29236 字节
-15:36:24.185 index.js:105 [Export Service] === 阶段6: 文件保存 ===
-15:36:24.185 index.js:107 [Export Service] ✅ Word文档导出成功!
+21:11:32.113  [OMML Replacer] 🔍 完整OMML内容: <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>S(i,j)=(I∗K)(i,j)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>m</m:t></m:r></m:sub><m:sup/></m:nary><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+
+21:11:32.113  [OMML Replacer] 🔍 发现 2 个nary结构:
+21:11:32.113  [OMML Replacer] 🔍 Nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>m</m:t></m:r></m:sub><m:sup/></m:nary>
+21:11:32.113  [OMML Replacer] 🔍 Nary 1 是否包含m:e元素: false
+21:11:32.113  [OMML Replacer] 🔍 Nary 2: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary>
+21:11:32.113  [OMML Replacer] 🔍 Nary 2 是否包含m:e元素: false
+21:11:32.113  [OMML Replacer] 🔧 开始nary结构重组分析...
+21:11:32.114  [OMML Replacer] 🔍 智能判断nary ∑: 原始有m:e=false, 主体有m:e=false
+21:11:32.114  [OMML Replacer] 🔧 ∑符号需要重组
+21:11:32.114  [OMML Replacer] 🔍 智能判断nary ∑: 原始有m:e=false, 主体有m:e=false
+21:11:32.114  [OMML Replacer] 🔧 ∑符号需要重组
+21:11:32.114  [OMML Replacer] 🔧 发现 2 个缺少m:e的nary结构
+21:11:32.114  [OMML Replacer] 🔧 分析nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
+21:11:32.114  [OMML Replacer] 🔧 nary后内容: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.114  [OMML Replacer] 🚀🚀🚀 CRITICAL DEBUG: 即将启动终极硬编码修复方案 🚀🚀🚀
+21:11:32.114  [OMML Replacer] 🎯 启动终极硬编码修复方案...
+21:11:32.114  [OMML Replacer] 🎯 当前符号: ∑
+21:11:32.114  [OMML Replacer] 🎯 afterNary完整内容: "<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+"
+21:11:32.114  [OMML Replacer] 🔍 检查积分匹配: afterNary长度=243
+21:11:32.114  [OMML Replacer] 🔍 预期积分模式长度=44
+21:11:32.114  [OMML Replacer] 🔍 当前nary符号: ∑ - 进入备用匹配逻辑
+21:11:32.114  [OMML Replacer] 🔍 开始智能模式匹配 for ∑...
+21:11:32.114  [OMML Replacer] 🚀 尝试智能通用匹配策略...
+21:11:32.116  [OMML Replacer] 🔬 开始精确模式匹配，afterNary: "<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+"
+21:11:32.116  [OMML Replacer] 🔬 未匹配到精确模式，尝试通用模式...
+21:11:32.116  [OMML Replacer] 🔧 nary后内容长度: 243
+21:11:32.116  [OMML Replacer] 🔧 nary后内容前200字符: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><
+21:11:32.116  [OMML Replacer] 🔧 nary后内容后100字符: ub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+
+21:11:32.116  [OMML Replacer] 🔧 开始测试6个模式...
+21:11:32.116  [OMML Replacer] 🔬 开始详细诊断模式匹配
+21:11:32.116  [OMML Replacer] 🔬 待匹配内容长度: 243
+21:11:32.116  [OMML Replacer] 🔬 待匹配内容: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+
+21:11:32.116  [OMML Replacer] 🔬 测试模式1: /^(<m:r><m:t>.*?<\/m:t><\/m:r>)<\/m:oMath>$/
+21:11:32.116  [OMML Replacer] 🔬 模式1结果: 不匹配
+21:11:32.116  [OMML Replacer] 🔬 测试模式2: /^(<m:r><m:t>.*?<\/m:t><\/m:r>)<\/m:e><\/m:nary><\/m:oMath>$/
+21:11:32.116  [OMML Replacer] 🔬 模式2结果: 不匹配
+21:11:32.117  [OMML Replacer] 🔬 测试模式3: /^([\s\S]*?)<\/m:oMath>$/
+21:11:32.117  [OMML Replacer] 🔬 模式3结果: 不匹配
+21:11:32.117  [OMML Replacer] 🔬 测试模式4: /^([\s\S]*?)(?=<m:nary>)/
+21:11:32.117  [OMML Replacer] 🔬 模式4结果: 匹配
+21:11:32.117  [OMML Replacer] 🔬 模式4捕获组数量: 2
+21:11:32.117  [OMML Replacer] 🔬 模式4捕获组0: (空)
+21:11:32.117  [OMML Replacer] 🔬 模式4捕获组1: (空)
+21:11:32.117  [OMML Replacer] 🔬 测试模式5: /^(<m:r><m:t>.*?<\/m:t><\/m:r>)/
+21:11:32.117  [OMML Replacer] 🔬 模式5结果: 不匹配
+21:11:32.117  [OMML Replacer] 🔬 测试模式6: /^([\s\S]+)/
+21:11:32.117  [OMML Replacer] 🔬 模式6结果: 匹配
+21:11:32.117  [OMML Replacer] 🔬 模式6捕获组数量: 2
+21:11:32.117  [OMML Replacer] 🔬 模式6捕获组0: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
+21:11:32.117  [OMML Replacer] 🔬 模式6捕获组1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
+21:11:32.117  [OMML Replacer] 🔬 超级调试 - afterNary 的完整信息:
+21:11:32.117  [OMML Replacer] 🔬 长度: 243
+21:11:32.117  [OMML Replacer] 🔬 内容: "<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+"
+21:11:32.117  [OMML Replacer] 🔬 字符码: [60, 109, 58, 110, 97, 114, 121, 62, 60, 109, 58, 110, 97, 114, 121, 80, 114, 62, 60, 109...]
+21:11:32.117  [OMML Replacer] 🔬 开始字符: "<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va"
+21:11:32.117  [OMML Replacer] 🔬 结束字符: "><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+"
+21:11:32.117  [OMML Replacer] 🔬 测试模式1: /^(<m:r><m:t>.*?<\/m:t><\/m:r>)<\/m:oMath>$/
+21:11:32.117  [OMML Replacer] 🔬 模式1不匹配
+21:11:32.118  [OMML Replacer] 🔬 测试模式2: /^(<m:r><m:t>.*?<\/m:t><\/m:r>)<\/m:e><\/m:nary><\/m:oMath>$/
+21:11:32.118  [OMML Replacer] 🔬 模式2不匹配
+21:11:32.118  [OMML Replacer] 🔬 测试模式3: /^([\s\S]*?)<\/m:oMath>$/
+21:11:32.118  [OMML Replacer] 🔬 模式3不匹配
+21:11:32.118  [OMML Replacer] 🔬 测试模式4: /^([\s\S]*?)(?=<m:nary>)/
+21:11:32.118  [OMML Replacer] 🔧 模式4匹配成功，捕获组数量: 2
+21:11:32.118  [OMML Replacer] 🔧 捕获组0 (完整匹配): "(空)"
+21:11:32.118  [OMML Replacer] 🔧 捕获组1 (表达式): "(空)"
+21:11:32.118  [OMML Replacer] 🔍 模式4发现内容: ...
+21:11:32.118  [OMML Replacer] 🔧 清理后的表达式: 
+21:11:32.118  [OMML Replacer] ⚠️ 模式4发现无效表达式，继续尝试下一个模式
+21:11:32.118  [OMML Replacer] 🔬 测试模式5: /^(<m:r><m:t>.*?<\/m:t><\/m:r>)/
+21:11:32.118  [OMML Replacer] 🔬 模式5不匹配
+21:11:32.118  [OMML Replacer] 🔬 测试模式6: /^([\s\S]+)/
+21:11:32.121  [OMML Replacer] 🔧 模式6匹配成功，捕获组数量: 2
+21:11:32.121  [OMML Replacer] 🔧 捕获组0 (完整匹配): "<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+"
+21:11:32.121  [OMML Replacer] 🔧 捕获组1 (表达式): "<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:oMath>
+"
+21:11:32.121  [OMML Replacer] 🔍 模式6发现内容: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.121  [OMML Replacer] 🔧 清理后的表达式: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r>
+21:11:32.122  [OMML Replacer] ✅ 模式6匹配成功 - ∑符号后的表达式已识别
+21:11:32.122  [OMML Replacer] 📝 最终表达式: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="on"/></m:naryPr><m:sub><m:r><m:t>n</m:t></m:r></m:sub><m:sup/></m:nary><m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r>
+21:11:32.122  [OMML Replacer] 🔧 将表达式移入nary的m:e中: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
+21:11:32.122  [OMML Replacer] 🔧 nary 1 重组成功
+21:11:32.122  [OMML Replacer] 🔧 分析nary 2: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
+21:11:32.122  [OMML Replacer] 🔧 nary后内容: <m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:e></m:nary></m:oMath>
+...
+21:11:32.122  [OMML Replacer] 🚀🚀🚀 CRITICAL DEBUG: 即将启动终极硬编码修复方案 🚀🚀🚀
+21:11:32.122  [OMML Replacer] 🎯 启动终极硬编码修复方案...
+21:11:32.122  [OMML Replacer] 🎯 当前符号: ∑
+21:11:32.122  [OMML Replacer] 🎯 afterNary完整内容: "<m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r></m:e></m:nary></m:oMath>
+"
+21:11:32.122  [OMML Replacer] 🔍 检查积分匹配: afterNary长度=64
+21:11:32.122  [OMML Replacer] 🔍 预期积分模式长度=44
+21:11:32.122  [OMML Replacer] 🎯 ✅ 备用双重求和公式匹配成功！
+21:11:32.122  [OMML Replacer] 🎯 执行终极重组...
+21:11:32.122  [OMML Replacer] 🎯 原始nary: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.122  [OMML Replacer] 🎯 要移动的表达式: <m:r><m:t>I(m,n)K(i−m,j−n)</m:t></m:r>
+21:11:32.122  [OMML Replacer] 🎯 检测到普通结构，使用标准替换逻辑
+21:11:32.122  [OMML Replacer] 🎯 替换模式: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.122  [OMML Replacer] 🎯 替换目标: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
+21:11:32.122  [OMML Replacer] 🎯 终极重组完成! 长度变化: 652 → 652
+21:11:32.122  [OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: 641 → 652
+21:11:32.123  [OMML Replacer] 清理后的OMML长度: 566
+21:11:32.123 ommlReplacer.js:548 [OMML Replacer] 🔍 formula_2 空标签清理对比: {清理前: '0个自闭合 + 0个标签对', 清理后: '0个自闭合 + 0个标签对', 是否有改善: false}
+21:11:32.123 ommlReplacer.js:718 [OMML Replacer] 查找包含占位符的段落: true
+21:11:32.123 ommlReplacer.js:729 [OMML Replacer] 🔍 段落是否包含其他文本内容: false
+21:11:32.123 ommlReplacer.js:805 [OMML Replacer] 🔄 处理独立公式，替换整个段落
+21:11:32.123 ommlReplacer.js:812 [OMML Replacer] 替换整个段落: formula_2，生成参考文档格式
+21:11:32.123 ommlReplacer.js:813 [OMML Replacer] 新段落结构: <w:p><m:oMath>...</w:p>
+21:11:32.123 ommlReplacer.js:814 [OMML Replacer] XML长度变化: 4835 → 5319
+21:11:32.123 ommlReplacer.js:815 [OMML Replacer] 长度减少: -484 字节
+21:11:32.124 ommlReplacer.js:55 [OMML Replacer] 处理完成，剩余占位符: 0 []
+21:11:32.124 xmlPostProcessor.js:50 [XML Post-Processor] OMML替换验证结果: {isValid: false, originalPlaceholders: 0, remainingPlaceholders: 0, mathElements: 2, expectedReplacements: 2, …}
+21:11:32.124 xmlPostProcessor.js:54 [XML Post-Processor] OMML替换后文档包含 6 个段落, 0 个表格, 2 个数学公式
+21:11:32.124 xmlPostProcessor.js:65 [XML Post-Processor] OMML替换后XML中有 6 个段落
+21:11:32.124 xmlPostProcessor.js:73 [XML Post-Processor] 段落 1: 📝 文本 - "调试修复测试"
+21:11:32.124 xmlPostProcessor.js:73 [XML Post-Processor] 段落 2: 📝 文本 - "积分公式测试"
+21:11:32.124 xmlPostProcessor.js:71 [XML Post-Processor] 段落 3: 📊 包含OMML公式
+21:11:32.124 xmlPostProcessor.js:73 [XML Post-Processor] 段落 4: 📝 文本 - "双重求和测试"
+21:11:32.124 xmlPostProcessor.js:71 [XML Post-Processor] 段落 5: 📊 包含OMML公式
+21:11:32.124 xmlPostProcessor.js:73 [XML Post-Processor] 段落 6: 📝 文本 - "这个文档用于测试调试版本的修复效果。"
+21:11:32.124 xmlPostProcessor.js:80 [XML Post-Processor] 开始字符缩进处理阶段...
+21:11:32.124 xmlPostProcessor.js:207 [XML Post-Processor] 在已替换OMML的XML中找到 2 个OMML需要保护
+21:11:32.125 xmlPostProcessor.js:214 [XML Post-Processor] 保护OMML 1: __OMML_PROTECTED_0__ (长度: 479)
+21:11:32.125 xmlPostProcessor.js:214 [XML Post-Processor] 保护OMML 2: __OMML_PROTECTED_1__ (长度: 566)
+21:11:32.129 xmlPostProcessor.js:111 [XML Post-Processor] XML解析完成，检查JSON结构
+21:11:32.129 xmlPostProcessor.js:111 [XML Post-Processor] JSON根键: ?xml, w:document
+21:11:32.129 xmlPostProcessor.js:121 [XML Post-Processor] ✅ 找到w:document
+21:11:32.129 xmlPostProcessor.js:128 [XML Post-Processor] ✅ 找到w:body
+21:11:32.129 xmlPostProcessor.js:130 [XML Post-Processor] 段落类型: object, 是否为数组: true
+21:11:32.129 xmlPostProcessor.js:135 [XML Post-Processor] 找到 6 个段落数组
+21:11:32.129 xmlPostProcessor.js:137 [XML Post-Processor] 段落 1: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading1"},"w:spacing":{"@_w:before":"240","@_w:after":"160","@_w:l...
+21:11:32.129 xmlPostProcessor.js:137 [XML Post-Processor] 段落 2: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading2"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
+21:11:32.129 xmlPostProcessor.js:137 [XML Post-Processor] 段落 3: "__OMML_PROTECTED_0__"...
+21:11:32.130 xmlPostProcessor.js:137 [XML Post-Processor] 段落 4: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading2"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
+21:11:32.130 xmlPostProcessor.js:137 [XML Post-Processor] 段落 5: "__OMML_PROTECTED_1__"...
+21:11:32.130 xmlPostProcessor.js:137 [XML Post-Processor] 段落 6: {"w:pPr":{"w:pStyle":{"@_w:val":"paragraph-2-chars"},"w:spacing":{"@_w:before":"0","@_w:after":"120"...
+21:11:32.130 xmlPostProcessor.js:146 [XML Post-Processor] w:body的所有键: w:p, w:sectPr
+21:11:32.130 xmlPostProcessor.js:149 [XML Post-Processor] 🔍 分析body结构中的所有子元素:
+21:11:32.130 xmlPostProcessor.js:152 [XML Post-Processor] - w:p: 6 个段落
+21:11:32.130 xmlPostProcessor.js:156 [XML Post-Processor] - w:sectPr: object
+21:11:32.131 orderManager.js:12 [Order Manager] 🔧 启动原始元素顺序记录方案...
+21:11:32.131 orderManager.js:52 [Order Manager] 📊 扫描到 7 个body子元素:
+21:11:32.131 orderManager.js:55 [Order Manager] 1. 段落: "调试修复测试" (类型: w:p, 位置: 0)
+21:11:32.132 orderManager.js:55 [Order Manager] 2. 段落: "积分公式测试" (类型: w:p, 位置: 402)
+21:11:32.132 orderManager.js:55 [Order Manager] 3. 段落: "" (类型: w:p, 位置: 802)
+21:11:32.132 orderManager.js:55 [Order Manager] 4. 段落: "双重求和测试" (类型: w:p, 位置: 1292)
+21:11:32.132 orderManager.js:55 [Order Manager] 5. 段落: "" (类型: w:p, 位置: 1692)
+21:11:32.132 orderManager.js:55 [Order Manager] 6. 段落: "这个文档用于测试调试版本的修复..." (类型: w:p, 位置: 2269)
+21:11:32.132 orderManager.js:55 [Order Manager] 7. 页面设置 (类型: w:sectPr, 位置: 2708)
+21:11:32.132 orderManager.js:66 [Order Manager] ✅ 原始元素顺序信息已保存，共 7 个元素
+21:11:32.132 xmlPostProcessor.js:167 [XML Post-Processor] XMLBuilder构建完成，准备开始恢复阶段
+21:11:32.132 xmlPostProcessor.js:168 [XML Post-Processor] 构建后XML长度: 4729
+21:11:32.132 xmlPostProcessor.js:170 [XML Post-Processor] 保护映射表大小: 2
+21:11:32.132 orderManager.js:80 [Order Manager] 🔧 开始完整的XML元素顺序重建...
+21:11:32.132 orderManager.js:99 [Order Manager] 📊 当前XML中元素统计: 6个段落, 0个表格, 1个sectPr
+21:11:32.133 orderManager.js:108 [Order Manager] 🔧 处理第1个元素: 段落: "调试修复测试"
+21:11:32.133 orderManager.js:115 [Order Manager] ✅ 添加段落1: "调试修复测试"
+21:11:32.133 orderManager.js:108 [Order Manager] 🔧 处理第2个元素: 段落: "积分公式测试"
+21:11:32.133 orderManager.js:115 [Order Manager] ✅ 添加段落2: "积分公式测试"
+21:11:32.133 orderManager.js:108 [Order Manager] 🔧 处理第3个元素: 段落: ""
+21:11:32.133 orderManager.js:115 [Order Manager] ✅ 添加段落3: ""
+21:11:32.133 orderManager.js:108 [Order Manager] 🔧 处理第4个元素: 段落: "双重求和测试"
+21:11:32.133 orderManager.js:115 [Order Manager] ✅ 添加段落4: "双重求和测试"
+21:11:32.133 orderManager.js:108 [Order Manager] 🔧 处理第5个元素: 段落: ""
+21:11:32.133 orderManager.js:115 [Order Manager] ✅ 添加段落5: ""
+21:11:32.133 orderManager.js:108 [Order Manager] 🔧 处理第6个元素: 段落: "这个文档用于测试调试版本的修复..."
+21:11:32.133 orderManager.js:115 [Order Manager] ✅ 添加段落6: "这个文档用于测试调试版本的修复效果。"
+21:11:32.133 orderManager.js:108 [Order Manager] 🔧 处理第7个元素: 页面设置
+21:11:32.133 orderManager.js:153 [Order Manager] ✅ 添加页面设置
+21:11:32.133 orderManager.js:160 [Order Manager] ✅ XML元素顺序重建完成！
+21:11:32.133 orderManager.js:162 [Order Manager] 📊 重建后XML长度: 4729
+21:11:32.133 orderManager.js:163 [Order Manager] 📊 重建后元素顺序: 7个元素按原始顺序排列
+21:11:32.133 xmlPostProcessor.js:178 [XML Post-Processor] XML重建后有 6 个段落, 0 个表格
+21:11:32.133 orderManager.js:174 [Order Manager] 🔍 分析重建XML中所有body子元素的顺序:
+21:11:32.134 orderManager.js:188 [Order Manager] 元素 1: 📝 段落 - "调试修复测试..." (位置: 2360)
+21:11:32.134 orderManager.js:188 [Order Manager] 元素 2: 📝 段落 - "积分公式测试..." (位置: 2846)
+21:11:32.134 orderManager.js:190 [Order Manager] 元素 3: 📄 空段落 (位置: 3330)
+21:11:32.134 orderManager.js:188 [Order Manager] 元素 4: 📝 段落 - "双重求和测试..." (位置: 3361)
+21:11:32.134 orderManager.js:190 [Order Manager] 元素 5: 📄 空段落 (位置: 3845)
+21:11:32.134 orderManager.js:188 [Order Manager] 元素 6: 📝 段落 - "这个文档用于测试调试版本的修复效果。..." (位置: 3876)
+21:11:32.134 xmlPostProcessor.js:185 [XML Post-Processor] 元素顺序验证结果: {isValid: true, tableIntact: true, paragraphReasonable: true, originalStats: {…}, reorderedStats: {…}, …}
+21:11:32.134 xmlPostProcessor.js:233 [XML Post-Processor] 开始恢复 2 个被保护的OMML
+21:11:32.134 xmlPostProcessor.js:234 [XML Post-Processor] 恢复前XML长度: 4729
+21:11:32.134 xmlPostProcessor.js:240 [XML Post-Processor] XML中是否包含保护键: true
+21:11:32.134 xmlPostProcessor.js:248 [XML Post-Processor] ✅ 恢复OMML: __OMML_PROTECTED_0__ → OMML内容 (XML长度: 4729 → 5188)
+21:11:32.134 xmlPostProcessor.js:248 [XML Post-Processor] ✅ 恢复OMML: __OMML_PROTECTED_1__ → OMML内容 (XML长度: 5188 → 5734)
+21:11:32.134 xmlPostProcessor.js:264 [XML Post-Processor] 恢复后XML长度: 5734
+21:11:32.134 xmlPostProcessor.js:189 [XML Post-Processor] OMML恢复完成，最终XML长度: 5734
+21:11:32.149 xmlPostProcessor.js:88 [XML Post-Processor] docx后处理完成：已写入 firstLineChars 和 OMML 公式
+21:11:32.149 orderManager.js:234 [Order Manager] 顺序管理状态已清理
+21:11:32.149 index.js:102 [Export Service] 后处理完成，最终大小: 26889 字节
+21:11:32.149 index.js:105 [Export Service] === 阶段6: 文件保存 ===
+21:11:32.160 index.js:107 [Export Service] ✅ Word文档导出成功!

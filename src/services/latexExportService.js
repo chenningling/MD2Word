@@ -805,6 +805,35 @@ class LatexExportService {
     // 积分号、求和号等大型运算符后的空白问题
     cleaned = cleaned.replace(/(∫|∑|∏|∮|⋃|⋂|⋁|⋀)[\u200B-\u200D\uFEFF\uE000-\uF8FF]*/g, '$1');
     
+    // 🔧 新增：特别处理常见的空白小方块问题字符
+    // 移除Word中常见的问题字符编码
+    const problematicChars = [
+      '\uE000', '\uE001', '\uE002', '\uE003', '\uE004', '\uE005', // 私有区域字符
+      '\uF000', '\uF001', '\uF002', '\uF003', '\uF004', '\uF005', // 私有区域字符
+      '\u200B', '\u200C', '\u200D', '\uFEFF', // 零宽字符
+      '\u2028', '\u2029', // 行分隔符
+      '\u00A0' // 非断行空格
+    ];
+    
+    problematicChars.forEach(char => {
+      const regex = new RegExp(char, 'g');
+      cleaned = cleaned.replace(regex, '');
+    });
+    
+    // 🔧 增强：修复字符实体编码问题
+    const entityFixes = {
+      '&#xE000;': '', '&#xE001;': '', '&#xE002;': '', '&#xE003;': '',
+      '&#57344;': '', '&#57345;': '', '&#57346;': '', '&#57347;': '',
+      '&#8203;': '',  // 零宽空格
+      '&#8204;': '',  // 零宽非连字符
+      '&#8205;': '',  // 零宽连字符
+      '&#65279;': '', // 字节顺序标记
+    };
+    
+    Object.entries(entityFixes).forEach(([entity, replacement]) => {
+      cleaned = cleaned.replace(new RegExp(entity, 'g'), replacement);
+    });
+    
     // 5. 清理m:t标签内的问题字符
     cleaned = cleaned.replace(/<m:t>([^<]*)<\/m:t>/g, (match, content) => {
       const cleanContent = content
@@ -847,11 +876,29 @@ class LatexExportService {
       return `m:val="${cleanValue}"`;
     });
     
+    const lengthChange = ommlXml.length - cleaned.length;
     console.log(`[LaTeX Export] OMML预清理完成`, {
       原始长度: ommlXml.length,
       清理后长度: cleaned.length,
-      变化: ommlXml.length - cleaned.length
+      变化: lengthChange,
+      清理效果: lengthChange > 0 ? `移除了${lengthChange}个问题字符` : '无问题字符'
     });
+    
+    // 🔍 增强调试：详细检查剩余的空标签
+    const remainingEmptyTags = (cleaned.match(/<m:e\s*\/>/g) || []).length;
+    const remainingEmptyPairs = (cleaned.match(/<m:e>\s*<\/m:e>/g) || []).length;
+    const remainingSpaceEmpty = (cleaned.match(/<m:e\s+\/>/g) || []).length;
+    const remainingSpacePairs = (cleaned.match(/<m:e\s*>\s+<\/m:e>/g) || []).length;
+    
+    if (remainingEmptyTags > 0 || remainingEmptyPairs > 0 || remainingSpaceEmpty > 0 || remainingSpacePairs > 0) {
+      console.log(`[LaTeX Export] ⚠️ 预清理后仍有空标签残留:`, {
+        空自闭合标签: remainingEmptyTags,
+        空标签对: remainingEmptyPairs, 
+        空格自闭合: remainingSpaceEmpty,
+        空格标签对: remainingSpacePairs
+      });
+      console.log(`[LaTeX Export] 🔍 预清理后内容预览:`, cleaned.substring(0, 400));
+    }
     
     // 🔍 详细调试：无论是否有变化都进行分析
     console.log(`[LaTeX Export] 🔍 分析OMML内容 (前800字符):`, ommlXml.substring(0, 800));
