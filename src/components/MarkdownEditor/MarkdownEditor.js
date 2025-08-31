@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
 import { EditorView } from '@codemirror/view';
 import { Button, Tooltip, message, Modal } from 'antd';
-import { ReloadOutlined, PictureOutlined } from '@ant-design/icons';
+import { ReloadOutlined, PictureOutlined, InfoCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import { uploadImageFromClipboard, uploadImageFromLocal, imageUrlToMarkdown } from '../../services/ossService';
 import { getWordSupportedImageFormats } from '../../utils/imageUtils';
 import { uploadImage } from '../../services/apiService';
@@ -56,6 +56,62 @@ const EditorContent = styled.div`
 // 隐藏的文件输入框
 const HiddenFileInput = styled.input`
   display: none;
+`;
+
+// 段落提醒组件
+const ParagraphWarning = styled.div`
+  background-color: #fff9e6;
+  border: 1px solid #ffec3d;
+  border-radius: 4px;
+  padding: 10px 16px;
+  margin: 0;
+  font-size: 12px;
+  color: #ff8c00;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slideDown 0.3s ease-out;
+  box-sizing: border-box;
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .warning-content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .warning-icon {
+    margin-right: 6px;
+    color: #ff8c00;
+    font-size: 12px;
+  }
+  
+  .close-btn {
+    color: #ff8c00;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    
+    &:hover {
+      background-color: rgba(255, 140, 0, 0.1);
+      color: #e07600;
+    }
+  }
 `;
 
 // 右键菜单样式 - 不再需要，可以移除或保留以备将来使用
@@ -151,11 +207,80 @@ const MarkdownEditor = () => {
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  
+  // 段落提醒相关状态
+  const [showParagraphWarning, setShowParagraphWarning] = useState(false);
+  const [warningDismissed, setWarningDismissed] = useState(false);
+  const detectionTimeoutRef = useRef(null);
 
   // 获取编辑器实例
   const handleEditorCreated = (editor) => {
     editorRef.current = editor;
   };
+
+  // 段落检测函数
+  const detectParagraphIssues = useCallback((text) => {
+    // 如果是默认文案或空内容，不检测
+    if (!text || text === placeholderText || text.trim().length === 0) {
+      return false;
+    }
+
+    // 缺少段落分隔（双换行）是基础条件
+    const lacksParagraphBreaks = !text.includes('\n\n');
+    if (!lacksParagraphBreaks) return false;
+
+    // 移除代码块和公式，计算实际内容长度
+    const cleanText = text
+      .replace(/```[\s\S]*?```/g, '') // 移除代码块
+      .replace(/\$\$[\s\S]*?\$\$/g, '') // 移除块级数学公式
+      .replace(/\$[^$\n]*?\$/g, '') // 移除行内数学公式
+      .trim();
+
+    // 方案1：全文字数检测（更宽泛的条件）
+    // 如果全文超过500字且没有空行，直接提醒
+    if (cleanText.length >= 500) {
+      return true;
+    }
+
+    // 方案2：段落文本检测（原有的精确条件）
+    // 针对较短但明显是段落文本的内容
+    if (cleanText.length < 200) return false; // 太短不检测
+
+    const textWithoutStructure = cleanText
+      .replace(/#+\s+[^\n]*/g, '') // 移除标题行
+      .replace(/>\s+[^\n]*/g, '') // 移除引用行
+      .replace(/[-*+]\s+[^\n]*/g, '') // 移除列表项
+      .replace(/\d+\.\s+[^\n]*/g, '') // 移除有序列表项
+      .trim();
+
+    const lines = text.split('\n');
+    const nonEmptyLines = lines.filter(line => line.trim().length > 0);
+    
+    // 检测条件：针对段落文本的精确判断
+    const hasMultipleSentences = textWithoutStructure.split(/[。！？.!?]/).filter(s => s.trim().length > 0).length >= 3;
+    const hasConsecutiveLines = nonEmptyLines.length >= 5; // 连续多行文本
+    const averageLineLength = textWithoutStructure.length > 0 ? (textWithoutStructure.length / nonEmptyLines.length > 25) : false;
+
+    // 段落文本需要同时满足多个条件
+    return hasMultipleSentences && hasConsecutiveLines && averageLineLength;
+  }, []);
+
+  // 处理段落检测
+  const handleParagraphDetection = useCallback((text) => {
+    // 清除之前的检测定时器
+    if (detectionTimeoutRef.current) {
+      clearTimeout(detectionTimeoutRef.current);
+    }
+
+    // 如果用户已经关闭过警告，不再显示
+    if (warningDismissed) return;
+
+    // 延迟检测，避免频繁触发
+    detectionTimeoutRef.current = setTimeout(() => {
+      const shouldWarn = detectParagraphIssues(text);
+      setShowParagraphWarning(shouldWarn);
+    }, 3000); // 3秒延迟检测
+  }, [detectParagraphIssues, warningDismissed]);
 
   useEffect(() => {
     // 只在组件首次加载且内容为空时设置默认内容
@@ -165,8 +290,25 @@ const MarkdownEditor = () => {
     }
   }, [updateMarkdown, content]);
 
+  // 清理定时器
+  useEffect(() => {
+    return () => {
+      if (detectionTimeoutRef.current) {
+        clearTimeout(detectionTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleChange = (value) => {
     updateMarkdown(value);
+    // 触发段落检测
+    handleParagraphDetection(value);
+  };
+
+  // 关闭段落提醒
+  const handleDismissWarning = () => {
+    setShowParagraphWarning(false);
+    setWarningDismissed(true);
   };
   
   // 恢复默认文案的处理函数
@@ -178,6 +320,9 @@ const MarkdownEditor = () => {
   const confirmRestore = () => {
     updateMarkdown(placeholderText);
     setConfirmModalVisible(false);
+    // 重置段落提醒状态
+    setShowParagraphWarning(false);
+    setWarningDismissed(false);
   };
   
   // 取消恢复默认文案
@@ -331,6 +476,24 @@ const MarkdownEditor = () => {
           </Tooltip>
         </div>
       </EditorHeader>
+      
+      {/* 段落提醒组件 */}
+      {showParagraphWarning && (
+        <div style={{ padding: '0 16px 8px 16px' }}>
+          <ParagraphWarning>
+            <div className="warning-content">
+              <InfoCircleOutlined className="warning-icon" />
+              <span>
+                检测到较长文本建议在段落间添加空行，这样导出的Word文档排版效果更佳
+              </span>
+            </div>
+            <button className="close-btn" onClick={handleDismissWarning}>
+              <CloseOutlined style={{ fontSize: '12px' }} />
+            </button>
+          </ParagraphWarning>
+        </div>
+      )}
+      
       <EditorContent>
         <CodeMirror
           value={content}
