@@ -1,1499 +1,347 @@
-00:21:18.142 已转到 http://localhost:3000/dashboard
-00:21:19.079 tex-svg.js:1 No version information available for component [tex]/ams
-（匿名） @ tex-svg.js:1
-Promise.then
-a @ tex-svg.js:1
-（匿名） @ tex-svg.js:1
-（匿名） @ tex-svg.js:1
-（匿名） @ tex-svg.js:1
-（匿名） @ tex-svg.js:1
-00:21:19.079 dashboard:50 [LaTeX] MathJax 初始化完成
-00:21:19.898 react refresh:37 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
-00:21:20.007 exportService.js:36 [Export Service] 📦 已加载重构后的模块化导出服务 v2.0.0
-00:21:20.007 exportService.js:37 [Export Service] 🚀 新模块化架构提供更好的性能和可维护性
-00:21:20.479 Sidebar.js:78 Warning: [antd: Menu] `children` is deprecated. Please use `items` instead.
-warning @ warning.js:30
-call @ warning.js:51
-warningOnce @ warning.js:58
-warning @ warning.js:12
-typeWarning @ warning.js:45
-typeWarning.deprecated @ warning.js:50
-（匿名） @ menu.js:69
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<ForwardRef>
-exports.createElement @ react.development.js:1025
-Menu @ index.js:21
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<Menu>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<Styled(Menu)>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-Sidebar @ Sidebar.js:78
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<Sidebar>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:249
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.542 App.js:268 styled-components: it looks like an unknown prop "editorWidth" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:268
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.560 WordPreview.js:1116 styled-components: it looks like an unknown prop "marginTop" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.561 WordPreview.js:1116 styled-components: it looks like an unknown prop "marginRight" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.561 WordPreview.js:1116 styled-components: it looks like an unknown prop "marginBottom" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.561 WordPreview.js:1116 styled-components: it looks like an unknown prop "marginLeft" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.561 WordPreview.js:1116 styled-components: it looks like an unknown prop "heading1" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.561 WordPreview.js:1116 styled-components: it looks like an unknown prop "heading2" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.561 WordPreview.js:1116 styled-components: it looks like an unknown prop "heading3" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.561 WordPreview.js:1116 styled-components: it looks like an unknown prop "heading4" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.561 WordPreview.js:1116 styled-components: it looks like an unknown prop "paragraph" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.562 WordPreview.js:1116 styled-components: it looks like an unknown prop "quote" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.562 WordPreview.js:1116 styled-components: it looks like an unknown prop "zoom" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.562 WordPreview.js:1116 styled-components: it looks like an unknown prop "latinFont" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
-（匿名） @ StyledComponent.ts:142
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.569 WordPreview.js:1116 React does not recognize the `marginTop` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `margintop` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
-validateProperty @ react-dom-client.development.js:3007
-warnUnknownProperties @ react-dom-client.development.js:3153
-validatePropertiesInDevelopment @ react-dom-client.development.js:17115
-setInitialProperties @ react-dom-client.development.js:17741
-completeWork @ react-dom-client.development.js:11390
-runWithFiberInDEV @ react-dom-client.development.js:1518
-completeUnitOfWork @ react-dom-client.development.js:15268
-performUnitOfWork @ react-dom-client.development.js:15148
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<div>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.569 WordPreview.js:1116 React does not recognize the `marginRight` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `marginright` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
-validateProperty @ react-dom-client.development.js:3007
-warnUnknownProperties @ react-dom-client.development.js:3153
-validatePropertiesInDevelopment @ react-dom-client.development.js:17115
-setInitialProperties @ react-dom-client.development.js:17741
-completeWork @ react-dom-client.development.js:11390
-runWithFiberInDEV @ react-dom-client.development.js:1518
-completeUnitOfWork @ react-dom-client.development.js:15268
-performUnitOfWork @ react-dom-client.development.js:15148
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<div>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.569 WordPreview.js:1116 React does not recognize the `marginBottom` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `marginbottom` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
-validateProperty @ react-dom-client.development.js:3007
-warnUnknownProperties @ react-dom-client.development.js:3153
-validatePropertiesInDevelopment @ react-dom-client.development.js:17115
-setInitialProperties @ react-dom-client.development.js:17741
-completeWork @ react-dom-client.development.js:11390
-runWithFiberInDEV @ react-dom-client.development.js:1518
-completeUnitOfWork @ react-dom-client.development.js:15268
-performUnitOfWork @ react-dom-client.development.js:15148
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<div>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.569 WordPreview.js:1116 React does not recognize the `marginLeft` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `marginleft` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
-validateProperty @ react-dom-client.development.js:3007
-warnUnknownProperties @ react-dom-client.development.js:3153
-validatePropertiesInDevelopment @ react-dom-client.development.js:17115
-setInitialProperties @ react-dom-client.development.js:17741
-completeWork @ react-dom-client.development.js:11390
-runWithFiberInDEV @ react-dom-client.development.js:1518
-completeUnitOfWork @ react-dom-client.development.js:15268
-performUnitOfWork @ react-dom-client.development.js:15148
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<div>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.570 WordPreview.js:1116 React does not recognize the `latinFont` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `latinfont` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
-validateProperty @ react-dom-client.development.js:3007
-warnUnknownProperties @ react-dom-client.development.js:3153
-validatePropertiesInDevelopment @ react-dom-client.development.js:17115
-setInitialProperties @ react-dom-client.development.js:17741
-completeWork @ react-dom-client.development.js:11390
-runWithFiberInDEV @ react-dom-client.development.js:1518
-completeUnitOfWork @ react-dom-client.development.js:15268
-performUnitOfWork @ react-dom-client.development.js:15148
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<div>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-WordPreview @ WordPreview.js:1116
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<WordPreview>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:269
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.570 App.js:268 React does not recognize the `editorWidth` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `editorwidth` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
-validateProperty @ react-dom-client.development.js:3007
-warnUnknownProperties @ react-dom-client.development.js:3153
-validatePropertiesInDevelopment @ react-dom-client.development.js:17115
-setInitialProperties @ react-dom-client.development.js:17741
-completeWork @ react-dom-client.development.js:11390
-runWithFiberInDEV @ react-dom-client.development.js:1518
-completeUnitOfWork @ react-dom-client.development.js:15268
-performUnitOfWork @ react-dom-client.development.js:15148
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<div>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<styled.div>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:268
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.630 FormatSettings.js:702 Warning: [antd: Tabs] `Tabs.TabPane` is deprecated. Please use `items` instead.
-warning @ warning.js:30
-call @ warning.js:51
-warningOnce @ warning.js:58
-warning @ warning.js:12
-typeWarning @ warning.js:45
-typeWarning.deprecated @ warning.js:50
-useLegacyItems @ useLegacyItems.js:18
-Tabs @ index.js:84
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<Tabs>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-FormatSettings @ FormatSettings.js:702
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<FormatSettings>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:277
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.661 FormatSettings.js:705 Warning: [antd: Select] `dropdownRender` is deprecated. Please use `popupRender` instead.
-warning @ warning.js:30
-call @ warning.js:51
-warningOnce @ warning.js:58
-warning @ warning.js:12
-typeWarning @ warning.js:45
-typeWarning.deprecated @ warning.js:50
-（匿名） @ index.js:193
-InternalSelect @ index.js:192
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<Select>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<Styled(Select)>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-FormatSettings @ FormatSettings.js:705
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<FormatSettings>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:277
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.750 FormatSettings.js:828 Warning: [rc-collapse] `children` will be removed in next major version. Please use `items` instead.
-warning @ warning.js:30
-call @ warning.js:51
-warningOnce @ warning.js:58
-（匿名） @ Collapse.js:67
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooks @ react-dom-client.development.js:5529
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<ForwardRef>
-exports.createElement @ react.development.js:1025
-Collapse @ Collapse.js:102
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<Collapse>
-exports.createElement @ react.development.js:1025
-（匿名） @ StyledComponent.ts:198
-O @ StyledComponent.ts:199
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateForwardRef @ react-dom-client.development.js:8645
-beginWork @ react-dom-client.development.js:10861
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<Styled(Collapse)>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-FormatSettings @ FormatSettings.js:828
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<FormatSettings>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-App @ App.js:277
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:15
-options.factory @ react refresh:37
-__webpack_require__ @ bootstrap:22
-（匿名） @ startup:7
-（匿名） @ startup:7
-00:21:20.843 latexDebug.js:106 [LaTeX Debug] 调试工具已添加到 window.latexDebug
-00:21:20.844 latexDebug.js:107 [LaTeX Debug] 可用命令:
-00:21:20.844 latexDebug.js:108   window.latexDebug.testMathJax() - 测试 MathJax
-00:21:20.844 latexDebug.js:109   window.latexDebug.renderFormula("E = mc^2") - 手动渲染公式
-00:21:20.844 latexDebug.js:110   window.latexDebug.testExtraction("$E = mc^2$") - 测试公式识别
-00:21:20.846 WordPreview.js:449 [Word Preview] 开始处理 Markdown 内容
-00:21:20.846 latexUtils.js:36 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 0
-00:21:20.846 latexUtils.js:95 [LaTeX Utils] 提取完成，共发现 0 个公式
-00:21:20.847 WordPreview.js:519 [Word Preview] 🔍 设置tempDiv.innerHTML后检查: {原始html包含amp: false, tempDiv包含amp: false, 是否被重新编码: false}
-00:21:20.847 WordPreview.js:570 [Word Preview] 没有Mermaid图表，但需要处理LaTeX公式
-00:21:20.848 WordPreview.js:618 [Word Preview] LaTeX 公式检查: 发现 0 个公式
-00:21:20.848 WordPreview.js:619 [Word Preview] 当前HTML长度: 0
-00:21:20.848 WordPreview.js:620 [Word Preview] HTML内容预览: 
-00:21:20.849 WordPreview.js:624 [Word Preview] 📊 进入LaTeX处理时HTML状态: 包含&amp;=false
-00:21:20.849 WordPreview.js:650 [Word Preview] 开始内联 LaTeX 公式处理
-00:21:20.849 WordPreview.js:658 [Word Preview] 发现 0 个块级公式
-00:21:20.850 WordPreview.js:763 [Word Preview] 发现 0 个行内公式
-00:21:20.850 WordPreview.js:825 [Word Preview] LaTeX 公式处理完成，共渲染 0 个公式
-00:21:20.851 WordPreview.js:894 [Word Preview] 最终 HTML 处理 - LaTeX 渲染
-00:21:20.851 WordPreview.js:901 [Word Preview] 最终处理 - 发现 0 个块级公式
-00:21:20.851 WordPreview.js:992 [Word Preview] 最终处理 - 发现 0 个行内公式
-00:21:20.851 WordPreview.js:1050 [Word Preview] 🎉 LaTeX 处理完成！总计渲染 0 个公式
-00:21:20.855 DocumentContext.js:144 加载自定义模板: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-00:21:20.855 DocumentContext.js:192 保存自定义模板: []
-00:21:20.863 latexDebug.js:106 [LaTeX Debug] 调试工具已添加到 window.latexDebug
-00:21:20.864 latexDebug.js:107 [LaTeX Debug] 可用命令:
-00:21:20.864 latexDebug.js:108   window.latexDebug.testMathJax() - 测试 MathJax
-00:21:20.864 latexDebug.js:109   window.latexDebug.renderFormula("E = mc^2") - 手动渲染公式
-00:21:20.864 latexDebug.js:110   window.latexDebug.testExtraction("$E = mc^2$") - 测试公式识别
-00:21:20.864 WordPreview.js:449 [Word Preview] 开始处理 Markdown 内容
-00:21:20.865 latexUtils.js:36 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 0
-00:21:20.865 latexUtils.js:95 [LaTeX Utils] 提取完成，共发现 0 个公式
-00:21:20.865 WordPreview.js:519 [Word Preview] 🔍 设置tempDiv.innerHTML后检查: {原始html包含amp: false, tempDiv包含amp: false, 是否被重新编码: false}
-00:21:20.865 WordPreview.js:570 [Word Preview] 没有Mermaid图表，但需要处理LaTeX公式
-00:21:20.866 WordPreview.js:618 [Word Preview] LaTeX 公式检查: 发现 0 个公式
-00:21:20.866 WordPreview.js:619 [Word Preview] 当前HTML长度: 0
-00:21:20.866 WordPreview.js:620 [Word Preview] HTML内容预览: 
-00:21:20.866 WordPreview.js:624 [Word Preview] 📊 进入LaTeX处理时HTML状态: 包含&amp;=false
-00:21:20.866 WordPreview.js:650 [Word Preview] 开始内联 LaTeX 公式处理
-00:21:20.867 WordPreview.js:658 [Word Preview] 发现 0 个块级公式
-00:21:20.867 WordPreview.js:763 [Word Preview] 发现 0 个行内公式
-00:21:20.867 WordPreview.js:825 [Word Preview] LaTeX 公式处理完成，共渲染 0 个公式
-00:21:20.867 WordPreview.js:894 [Word Preview] 最终 HTML 处理 - LaTeX 渲染
-00:21:20.867 WordPreview.js:901 [Word Preview] 最终处理 - 发现 0 个块级公式
-00:21:20.867 WordPreview.js:992 [Word Preview] 最终处理 - 发现 0 个行内公式
-00:21:20.868 WordPreview.js:1050 [Word Preview] 🎉 LaTeX 处理完成！总计渲染 0 个公式
-00:21:20.869 DocumentContext.js:144 加载自定义模板: []
-00:21:20.869 DocumentContext.js:192 保存自定义模板: []
-00:21:21.154 WordPreview.js:449 [Word Preview] 开始处理 Markdown 内容
-00:21:21.166 latexUtils.js:36 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 48
-00:21:21.167 latexUtils.js:86 [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: '\\begin{pmatrix}\na & b \\\\\nc & d\n\\end{pmatrix}', position: '0-48', isValid: true}
-00:21:21.167 latexUtils.js:95 [LaTeX Utils] 提取完成，共发现 1 个公式
-00:21:21.167 WordPreview.js:456 [Word Preview] 发现 1 个 LaTeX 公式
-00:21:21.177 WordPreview.js:468 [Word Preview] ⚠️ 检测到HTML中包含&amp;实体编码
-00:21:21.178 WordPreview.js:471 [Word Preview] 🔍 &amp;出现的上下文: (2) ['<p>$$\\begin{pmatrix}<br>a &amp; b \\<br>c ', '&amp; d<br>\\end{pmatrix}$$</p>\n']
-00:21:21.178 WordPreview.js:477 [Word Preview] 🔍 修复前完整HTML: <p>$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$</p>
+15:36:24.042 index.js:33 [Export Service] 开始导出Word文档...
+15:36:24.042 index.js:34 [Export Service] 格式设置: {template: 'academic', content: {…}, latin: {…}, page: {…}}
+15:36:24.042 index.js:37 [Export Service] === 阶段1: LaTeX处理 ===
+15:36:24.042 imageProcessor.js:288 [LaTeX Processor] 开始处理 LaTeX 公式...
+15:36:24.043  [LaTeX Export] 开始处理文档中的 LaTeX 公式
+15:36:24.043  [LaTeX Export Debug] 当前时间戳: 1756625784043 缓存大小: 4
+15:36:24.043  [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 289
+15:36:24.043  [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: 'L(x) = \\sum_{j=0}^{n} y_j \\prod_{\\substack{k=0 \\\\ ...', position: '32-128', isValid: true}
+15:36:24.043  [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'block', latex: '\\mathcal{L}\\{f(t)\\} = F(s) = \\int_0^{\\infty} f(t) ...', position: '149-215', isValid: true}
+15:36:24.044  [LaTeX Utils] 发现公式 {id: 'formula_3', type: 'block', latex: '\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6...', position: '231-288', isValid: true}
+15:36:24.044  [LaTeX Utils] 提取完成，共发现 3 个公式
+15:36:24.044  [LaTeX Export] 发现 3 个 LaTeX 公式
+15:36:24.044  [LaTeX Export] 开始转换 3 个公式为 OMML
+15:36:24.044  [LaTeX Export] 开始转换 3 个有效公式为 OMML
+15:36:24.044  [LaTeX Export] 处理批次 1/1，包含 3 个公式
+15:36:24.044  [LaTeX Export] OMML预清理完成 {原始长度: 1202, 清理后长度: 1202, 变化: 0}
+15:36:24.044  [LaTeX Export] 🔍 分析OMML内容 (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>L(x)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>j=0</m:t></m:r></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary><m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:eqArr><m:e><m:r><m:t>k=0</m:t></m:r></m:e><m:e><m:r><m:t>k≠j</m:t></m:r></m:e></m:eqArr></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary>
+15:36:24.045  [LaTeX Export] 🔍 标签检测结果: {空的自闭合标签: 0, 空的标签对: 0, 包含空格的空标签对: 0, 所有m:e标签: 6, 所有自闭合m:e: 0, …}
+15:36:24.045  [LaTeX Export] OMML预清理完成 {原始长度: 669, 清理后长度: 669, 变化: 0}
+15:36:24.045 latexExportService.js:857 [LaTeX Export] 🔍 分析OMML内容 (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:rPr><m:scr m:val="script"/></m:rPr><m:t>L</m:t></m:r><m:r><m:t>{f(t)}=F(s)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>−st</m:t></m:r></m:sup></m:sSup><m:r><m:t>dt</m:t></m:r></m:oMath>
 
-00:21:21.179 WordPreview.js:479 [Word Preview] 🔍 处理公式: "$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$"
-00:21:21.179 WordPreview.js:485 [Word Preview] 🔧 解码结果: "$$\begin{pmatrix}<br>a & b \<br>c & d<br>\end{pmatrix}$$"
-00:21:21.179 WordPreview.js:486 [Word Preview] 🔍 是否改变: true
-00:21:21.179 WordPreview.js:488 [Word Preview] 🔧 紧急修复公式HTML实体: "$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$" → "$$\begin{pmatrix}<br>a & b \<br>c & d<br>\end{pmatrix}$$"
-00:21:21.179 WordPreview.js:494 [Word Preview] 🔍 修复后完整HTML: <p>$$\begin{pmatrix}<br>a & b \<br>c & d<br>\end{pmatrix}$$</p>
+15:36:24.045 latexExportService.js:870 [LaTeX Export] 🔍 标签检测结果: {空的自闭合标签: 0, 空的标签对: 0, 包含空格的空标签对: 0, 所有m:e标签: 1, 所有自闭合m:e: 0, …}
+15:36:24.045 latexExportService.js:850 [LaTeX Export] OMML预清理完成 {原始长度: 836, 清理后长度: 836, 变化: 0}
+15:36:24.045 latexExportService.js:857 [LaTeX Export] 🔍 分析OMML内容 (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>n=1</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:sSup><m:e><m:r><m:t>n</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:den></m:f><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:sSup><m:e><m:r><m:t>π</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:num><m:den><m:r><m:t>6<
+15:36:24.045 latexExportService.js:870 [LaTeX Export] 🔍 标签检测结果: {空的自闭合标签: 0, 空的标签对: 0, 包含空格的空标签对: 0, 所有m:e标签: 2, 所有自闭合m:e: 0, …}
+15:36:24.045 latexExportService.js:324 [LaTeX Export] 批次缓存统计: 3 个缓存命中, 0 个需要转换
+15:36:24.045 latexExportService.js:412 [LaTeX Export] 批次转换完成 {total: 3, successful: 3, failed: 0, duration: 1}
+15:36:24.045 latexExportService.js:420 [LaTeX Export] 结果顺序验证: (3) ['1. formula_1', '2. formula_2', '3. formula_3']
+15:36:24.046 latexExportService.js:247 [LaTeX Export] 所有批次处理完成，总计 3 个有效公式结果
+15:36:24.046 latexExportService.js:483 [LaTeX Export] 开始在markdown中替换LaTeX公式为占位符
+15:36:24.046 latexDebug.js:55 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 289
+15:36:24.046 latexDebug.js:96 [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: 'L(x) = \\sum_{j=0}^{n} y_j \\prod_{\\substack{k=0 \\\\ ...', position: '32-128', isValid: true}
+15:36:24.046 latexDebug.js:96 [LaTeX Utils] 发现公式 {id: 'formula_2', type: 'block', latex: '\\mathcal{L}\\{f(t)\\} = F(s) = \\int_0^{\\infty} f(t) ...', position: '149-215', isValid: true}
+15:36:24.046 latexDebug.js:96 [LaTeX Utils] 发现公式 {id: 'formula_3', type: 'block', latex: '\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6...', position: '231-288', isValid: true}
+15:36:24.046 latexDebug.js:101 [LaTeX Utils] 提取完成，共发现 3 个公式
+15:36:24.046 latexExportService.js:509 [LaTeX Export] Markdown替换检查: L(x) = \sum_{j=0}^{n | 找到匹配: true | 结果ID: formula_1
+15:36:24.046 latexExportService.js:523 [LaTeX Export] 准备替换公式: L(x) = \sum_{j=0}^{n} y_j \pro → <!--OMML_PLACEHOLDER_formula_1-->
+15:36:24.046 latexExportService.js:509 [LaTeX Export] Markdown替换检查: \mathcal{L}\{f(t)\}  | 找到匹配: true | 结果ID: formula_2
+15:36:24.046 latexExportService.js:523 [LaTeX Export] 准备替换公式: \mathcal{L}\{f(t)\} = F(s) = \ → <!--OMML_PLACEHOLDER_formula_2-->
+15:36:24.046 latexExportService.js:509 [LaTeX Export] Markdown替换检查: \sum_{n=1}^{\infty}  | 找到匹配: true | 结果ID: formula_3
+15:36:24.046 latexExportService.js:523 [LaTeX Export] 准备替换公式: \sum_{n=1}^{\infty} \frac{1}{n → <!--OMML_PLACEHOLDER_formula_3-->
+15:36:24.046 latexExportService.js:532 [LaTeX Export] 公式替换顺序 (执行顺序，倒序): (3) ['formula_3', 'formula_2', 'formula_1']
+15:36:24.047 latexExportService.js:533 [LaTeX Export] 公式替换顺序 (文档中的原始顺序): (3) ['formula_1', 'formula_2', 'formula_3']
+15:36:24.047 latexExportService.js:541 [LaTeX Export] Markdown中公式已替换: \sum_{n=1}^{\infty} \frac{1}{n → <!--OMML_PLACEHOLDER_formula_3-->
+15:36:24.047 latexExportService.js:541 [LaTeX Export] Markdown中公式已替换: \mathcal{L}\{f(t)\} = F(s) = \ → <!--OMML_PLACEHOLDER_formula_2-->
+15:36:24.047 latexExportService.js:541 [LaTeX Export] Markdown中公式已替换: L(x) = \sum_{j=0}^{n} y_j \pro → <!--OMML_PLACEHOLDER_formula_1-->
+15:36:24.047 latexExportService.js:544 [LaTeX Export] Markdown替换完成，长度: 289 → 169
+15:36:24.047 latexExportService.js:154 [LaTeX Export] 处理完成 {totalFormulas: 3, successful: 3, failed: 0, totalTime: 4}
+15:36:24.047 imageProcessor.js:290 [LaTeX Processor] LaTeX 处理完成: {hasFormulas: true, formulaCount: 3, conversionTime: 4, fallbackMode: false}
+15:36:24.047 imageProcessor.js:323 [LaTeX Processor] 设置当前导出的 OMML 结果 {count: 3}
+15:36:24.047 index.js:42 [Export Service] 使用处理后的markdown: 
+## 测试公式
 
-00:21:21.179 WordPreview.js:496 [Word Preview] ✅ HTML阶段修复完成。还包含&amp;: false
-00:21:21.179 WordPreview.js:509 [Word Preview] ✅ 已在HTML阶段修复所有公式中的HTML实体编码
-00:21:21.182 WordPreview.js:519 [Word Preview] 🔍 设置tempDiv.innerHTML后检查: {原始html包含amp: false, tempDiv包含amp: true, 是否被重新编码: true}
-00:21:21.183 WordPreview.js:570 [Word Preview] 没有Mermaid图表，但需要处理LaTeX公式
-00:21:21.183 WordPreview.js:618 [Word Preview] LaTeX 公式检查: 发现 1 个公式
-00:21:21.183 WordPreview.js:619 [Word Preview] 当前HTML长度: 72
-00:21:21.183 WordPreview.js:620 [Word Preview] HTML内容预览: <p>$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$</p>
+### 1. 拉格朗日插值多项式（原问题）
+<!--OMML_PLACEHOLDER_formula_1-->
 
-00:21:21.183 WordPreview.js:624 [Word Preview] 📊 进入LaTeX处理时HTML状态: 包含&amp;=true
-00:21:21.183 WordPreview.js:627 [Word Preview] 🔍 &amp;出现的上下文: (2) ['<p>$$\\begin{pmatrix}<br>a &amp; b \\<br>c ', '&amp; d<br>\\end{pmatrix}$$</p>\n']
-00:21:21.184 WordPreview.js:630 [Word Preview] 🔧 DOM重新编码检测：开始修复tempDiv.innerHTML中的HTML实体
-00:21:21.184 WordPreview.js:639 [Word Preview] 🔧 DOM修复公式HTML实体: "$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$" → "$$\begin{pmatrix}<br>a & b \<br>c & d<br>\end{pmatrix}$$"
-00:21:21.184 WordPreview.js:646 [Word Preview] ✅ tempDiv.innerHTML HTML实体修复完成
-00:21:21.185 WordPreview.js:650 [Word Preview] 开始内联 LaTeX 公式处理
-00:21:21.185 WordPreview.js:658 [Word Preview] 发现 1 个块级公式
-00:21:21.185 WordPreview.js:666 [Word Preview] 🔍 正则匹配到块级公式: {完整匹配: '$$\\begin{pmatrix}<br>a &amp; b \\<br>c &amp; d<br>\\end{pmatrix}$$', LaTeX代码: '\\begin{pmatrix}<br>a &amp; b \\<br>c &amp; d<br>\\end{pmatrix}', 包含amp: true}
-00:21:21.185 WordPreview.js:685 [Word Preview] 🔧 块级公式HTML实体解码: {原始: '\\begin{pmatrix}<br>a &amp; b \\<br>c &amp; d<br>\\end{pmatrix}', 解码后: '\\begin{pmatrix}<br>a & b \\<br>c & d<br>\\end{pmatrix}', 解码生效: true}
-00:21:21.186 WordPreview.js:727 [Word Preview] 🔧 HTML标签清理过程: {1_原始: '\\begin{pmatrix}<br>a & b \\<br>c & d<br>\\end{pmatrix}', 2_br替换后: '\\begin{pmatrix} \\\\ a & b \\ \\\\ c & d \\\\ \\end{pmatrix}', 3_标签移除后: '\\begin{pmatrix} \\\\ a & b \\ \\\\ c & d \\\\ \\end{pmatrix}', 4_空白清理后: '\\begin{pmatrix} \\\\ a & b \\ \\\\ c & d \\\\ \\end{pmatrix}', 是否包含换行: true}
-00:21:21.186 WordPreview.js:738 [Word Preview] 🚀 最终传给MathJax的LaTeX代码: {代码: '\\begin{pmatrix} \\\\ a & b \\ \\\\ c & d \\\\ \\end{pmatrix}', 长度: 52, 包含双反斜杠: true, 包含换行: false, 代码展示: '"\\\\begin{pmatrix} \\\\\\\\ a & b \\\\ \\\\\\\\ c & d \\\\\\\\ \\\\end{pmatrix}"'}
-00:21:21.200 WordPreview.js:754 [Word Preview] 块级公式渲染成功 #1: \begin{pmatrix} \\ a & b \ \\ 
-00:21:21.201 WordPreview.js:763 [Word Preview] 发现 0 个行内公式
-00:21:21.201 WordPreview.js:825 [Word Preview] LaTeX 公式处理完成，共渲染 1 个公式
-00:21:21.202 WordPreview.js:894 [Word Preview] 最终 HTML 处理 - LaTeX 渲染
-00:21:21.202 WordPreview.js:901 [Word Preview] 最终处理 - 发现 0 个块级公式
-00:21:21.202 WordPreview.js:992 [Word Preview] 最终处理 - 发现 0 个行内公式
-00:21:21.202 WordPreview.js:1050 [Word Preview] 🎉 LaTeX 处理完成！总计渲染 0 个公式
-00:21:21.203 DocumentContext.js:192 保存自定义模板: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-00:21:21.448 WordPreview.js:449 [Word Preview] 开始处理 Markdown 内容
-00:21:21.449 latexUtils.js:36 [LaTeX Utils] 开始提取 LaTeX 公式，文本长度: 48
-00:21:21.450 latexUtils.js:86 [LaTeX Utils] 发现公式 {id: 'formula_1', type: 'block', latex: '\\begin{pmatrix}\na & b \\\\\nc & d\n\\end{pmatrix}', position: '0-48', isValid: true}
-00:21:21.450 latexUtils.js:95 [LaTeX Utils] 提取完成，共发现 1 个公式
-00:21:21.450 WordPreview.js:456 [Word Preview] 发现 1 个 LaTeX 公式
-00:21:21.453 WordPreview.js:468 [Word Preview] ⚠️ 检测到HTML中包含&amp;实体编码
-00:21:21.453 WordPreview.js:471 [Word Preview] 🔍 &amp;出现的上下文: (2) ['<p>$$\\begin{pmatrix}<br>a &amp; b \\<br>c ', '&amp; d<br>\\end{pmatrix}$$</p>\n']
-00:21:21.454 WordPreview.js:477 [Word Preview] 🔍 修复前完整HTML: <p>$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$</p>
+### 2. 拉普拉斯变换（原问题）
+<!--OMML_PLACE...
+15:36:24.047 index.js:46 [Export Service] 解析的Markdown tokens: 8 个
+15:36:24.047 index.js:121 [Export Service] 详细检查解析后的tokens:
+15:36:24.047 index.js:123 [Export Service] Token 0: {type: 'space', text: undefined, raw: '\n', hasTokens: false, tokensCount: 0}
+15:36:24.047 index.js:123 [Export Service] Token 1: {type: 'heading', text: '测试公式', raw: '## 测试公式\n\n', hasTokens: true, tokensCount: 1}
+15:36:24.047 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '测试公式', raw: '测试公式'}
+15:36:24.048 index.js:123 [Export Service] Token 2: {type: 'heading', text: '1. 拉格朗日插值多项式（原问题）', raw: '### 1. 拉格朗日插值多项式（原问题）\n', hasTokens: true, tokensCount: 1}
+15:36:24.048 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '1. 拉格朗日插值多项式（原问题）', raw: '1. 拉格朗日插值多项式（原问题）'}
+15:36:24.048 index.js:123 [Export Service] Token 3: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_1-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_1-->\n\n', hasTokens: false, tokensCount: 0}
+15:36:24.048 index.js:123 [Export Service] Token 4: {type: 'heading', text: '2. 拉普拉斯变换（原问题）', raw: '### 2. 拉普拉斯变换（原问题）\n', hasTokens: true, tokensCount: 1}
+15:36:24.048 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '2. 拉普拉斯变换（原问题）', raw: '2. 拉普拉斯变换（原问题）'}
+15:36:24.048 index.js:123 [Export Service] Token 5: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_2-->\n\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_2-->\n\n', hasTokens: false, tokensCount: 0}
+15:36:24.048 index.js:123 [Export Service] Token 6: {type: 'heading', text: '3. 复杂求和公式', raw: '### 3. 复杂求和公式\n', hasTokens: true, tokensCount: 1}
+15:36:24.048 index.js:134 [Export Service]   SubToken 0: {type: 'text', text: '3. 复杂求和公式', raw: '3. 复杂求和公式'}
+15:36:24.048 index.js:123 [Export Service] Token 7: {type: 'html', text: '\x3C!--OMML_PLACEHOLDER_formula_3-->\n', raw: '\x3C!--OMML_PLACEHOLDER_formula_3-->\n', hasTokens: false, tokensCount: 0}
+15:36:24.048 index.js:52 [Export Service] LaTeX 处理完成: {hasFormulas: true, formulaCount: 3, conversionTime: 4, fallbackMode: false}
+15:36:24.048 index.js:62 [Export Service] 文档标题: markdown-document
+15:36:24.048 index.js:177 [Export Service] Token类型统计: {space: 1, heading: 4, html: 3}
+15:36:24.049 index.js:68 [Export Service] === 阶段2: 特殊内容处理 ===
+15:36:24.049 xmlPostProcessor.js:285 [Image Processor] 预处理完成，共处理 0 张图片
+15:36:24.049 imageProcessor.js:39 [Image Processor] 处理后的tokens: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+15:36:24.049 index.js:70 [Export Service] 特殊内容处理完成，tokens数量: 8
+15:36:24.049 imageProcessor.js:335 [LaTeX Processor] 检查tokens中的占位符...
+15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_1-->'] html
+15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_1-->'] html
+15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_2-->'] html
+15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_2-->'] html
+15:36:24.049 imageProcessor.js:335 [LaTeX Processor] Token中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_3-->'] html
+15:36:24.050 imageProcessor.js:335 [LaTeX Processor] Token raw中发现占位符: ['\x3C!--OMML_PLACEHOLDER_formula_3-->'] html
+15:36:24.050 latexProcessor.js:3 [LaTeX Processor] 期望在tokens中找到的占位符:
+15:36:24.050 latexProcessor.js:6 [LaTeX Processor] - <!--OMML_PLACEHOLDER_formula_1-->
+15:36:24.050 latexProcessor.js:6 [LaTeX Processor] - <!--OMML_PLACEHOLDER_formula_2-->
+15:36:24.050 latexProcessor.js:6 [LaTeX Processor] - <!--OMML_PLACEHOLDER_formula_3-->
+15:36:24.050 index.js:78 [Export Service] === 阶段3: Word文档创建 ===
+15:36:24.050 documentBuilder.js:23 [Document Builder] 开始创建Word文档...
+15:36:24.050 documentBuilder.js:24 [Document Builder] 格式设置: {content: Array(6), page: {…}, latin: {…}}
+15:36:24.050 documentBuilder.js:30 [Document Builder] 页面设置: {margins: {…}, pageSize: {…}}
+15:36:24.051 documentBuilder.js:225 [Document Builder] 开始解析 8 个tokens为Word文档元素
+15:36:24.051 documentBuilder.js:226 [Document Builder] tokens类型统计: {space: 1, heading: 4, html: 3}
+15:36:24.052 documentBuilder.js:279 [Document Builder] 未处理的token类型: space
+parseTokensToDocxElements @ documentBuilder.js:279
+createWordDocument @ documentBuilder.js:57
+exportToWord @ index.js:79
+await in exportToWord
+handleExport @ Header.js:187
+（匿名） @ button.js:186
+executeDispatch @ react-dom-client.development.js:16368
+runWithFiberInDEV @ react-dom-client.development.js:1518
+processDispatchQueue @ react-dom-client.development.js:16417
+（匿名） @ react-dom-client.development.js:17016
+batchedUpdates$1 @ react-dom-client.development.js:3262
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
+dispatchEvent @ react-dom-client.development.js:20657
+dispatchDiscreteEvent @ react-dom-client.development.js:20625
+15:36:24.052 textUtils.js:114 处理内联格式: 测试公式 (标题)
+15:36:24.052 documentBuilder.js:339 [Document Builder] 标题2设置: {spacingBefore: 12, spacingBeforeTwips: 240, spacingAfter: 8, spacingAfterTwips: 160, lineHeight: 1.5, …}
+15:36:24.052 textUtils.js:114 处理内联格式: 1. 拉格朗日插值多项式（原问题） (标题)
+15:36:24.053 textUtils.js:216 文本分段: [{…}]
+15:36:24.053 documentBuilder.js:339 [Document Builder] 标题3设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+15:36:24.053 documentBuilder.js:268 [Document Builder] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_1-->
+15:36:24.054 textUtils.js:114 处理内联格式: 2. 拉普拉斯变换（原问题） (标题)
+15:36:24.054 textUtils.js:216 文本分段: [{…}]
+15:36:24.054 documentBuilder.js:339 [Document Builder] 标题3设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+15:36:24.054 documentBuilder.js:268 [Document Builder] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_2-->
+15:36:24.054 textUtils.js:114 处理内联格式: 3. 复杂求和公式 (标题)
+15:36:24.054 textUtils.js:216 文本分段: [{…}]
+15:36:24.054 documentBuilder.js:339 [Document Builder] 标题3设置: {spacingBefore: 10, spacingBeforeTwips: 200, spacingAfter: 6, spacingAfterTwips: 120, lineHeight: 1.5, …}
+15:36:24.054 documentBuilder.js:268 [Document Builder] 处理HTML token中的占位符: <!--OMML_PLACEHOLDER_formula_3-->
+15:36:24.055 documentBuilder.js:294 [Document Builder] 解析完成，共生成 7 个Word文档元素
+15:36:24.055 documentBuilder.js:295 [Document Builder] Word文档元素类型统计: {Paragraph: 7}
+15:36:24.056 documentBuilder.js:62 [Document Builder] Word文档创建完成
+15:36:24.056 documentBuilder.js:63 [Document Builder] 样式已注入：paragraph-2-chars / paragraph-4-chars / paragraph-no-indent
+15:36:24.056 index.js:80 [Export Service] Word文档创建完成
+15:36:24.056 index.js:85 [Export Service] LaTeX 导出统计: {totalExports: 18, totalFormulas: 40, successfulConversions: 40, failedConversions: 0, cacheHits: 36, …}
+15:36:24.056 index.js:89 [Export Service] === 阶段4: 文档序列化 ===
+15:36:24.140  [Export Service] 文档序列化完成，大小: 8167 字节
+15:36:24.141  [Export Service] 检查生成的docx中的占位符...
+15:36:24.141  [Export Service] === 阶段5: 后处理 ===
+15:36:24.141  [XML Post-Processor] 开始XML后处理...
+15:36:24.146  [XML Post-Processor] 🚀 原始Word文档包含 7 个段落, 0 个表格, 0 个数学公式
+15:36:24.152  [XML Post-Processor] 原始段落分析:
+15:36:24.152  [XML Post-Processor] 段落 1: 📝 文本内容 - "测试公式"
+15:36:24.152  [XML Post-Processor] 段落 2: 📝 文本内容 - "1. 拉格朗日插值多项式（原问题）"
+15:36:24.152  [XML Post-Processor] 段落 3: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formul...
+15:36:24.152  [XML Post-Processor] 段落 4: 📝 文本内容 - "2. 拉普拉斯变换（原问题）"
+15:36:24.152  [XML Post-Processor] 段落 5: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formul...
+15:36:24.152  [XML Post-Processor] 段落 6: 📝 文本内容 - "3. 复杂求和公式"
+15:36:24.152  [XML Post-Processor] 段落 7: 📊 包含占位符 - &lt;!--OMML_PLACEHOLDER_formul...
+15:36:24.152  [XML Post-Processor] 开始OMML占位符替换阶段...
+15:36:24.152  [OMML Replacer] 开始替换 3 个公式占位符
+15:36:24.152  [OMML Replacer] XML文档长度: 5354
+15:36:24.153  [OMML Replacer] XML中找到 0 个占位符: []
+15:36:24.153  [OMML Replacer] 发现 0 个表格区域需要保护
+15:36:24.153  [OMML Replacer] XML中占位符顺序: (3) ['formula_1@3481', 'formula_2@4266', 'formula_3@5046']
+15:36:24.153  [OMML Replacer] 处理OMML结果: {id: 'formula_1', success: true, hasOmml: true, latex: 'L(x) = \\sum_{j=0}^{n} y_j \\pro', isDisplayMode: true, …}
+15:36:24.153  [OMML Replacer] 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_1--&gt;
+15:36:24.153  [OMML Replacer] XML中包含占位符: true
+15:36:24.153  [OMML Replacer] 🔍 接收到的原始OMML (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>L(x)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>j=0</m:t></m:r></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary><m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:eqArr><m:e><m:r><m:t>k=0</m:t></m:r></m:e><m:e><m:r><m:t>k≠j</m:t></m:r></m:e></m:eqArr></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary>
+15:36:24.153  [OMML Replacer] 🔍 完整OMML内容: <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:t>L(x)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>j=0</m:t></m:r></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary><m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:eqArr><m:e><m:r><m:t>k=0</m:t></m:r></m:e><m:e><m:r><m:t>k≠j</m:t></m:r></m:e></m:eqArr></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>x−</m:t></m:r><m:sSub><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sub><m:r><m:t>k</m:t></m:r></m:sub></m:sSub></m:num><m:den><m:sSub><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:r><m:t>−</m:t></m:r><m:sSub><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sub><m:r><m:t>k</m:t></m:r></m:sub></m:sSub></m:den></m:f></m:oMath>
 
-00:21:21.454 WordPreview.js:479 [Word Preview] 🔍 处理公式: "$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$"
-00:21:21.454 WordPreview.js:485 [Word Preview] 🔧 解码结果: "$$\begin{pmatrix}<br>a & b \<br>c & d<br>\end{pmatrix}$$"
-00:21:21.454 WordPreview.js:486 [Word Preview] 🔍 是否改变: true
-00:21:21.455 WordPreview.js:488 [Word Preview] 🔧 紧急修复公式HTML实体: "$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$" → "$$\begin{pmatrix}<br>a & b \<br>c & d<br>\end{pmatrix}$$"
-00:21:21.455 WordPreview.js:494 [Word Preview] 🔍 修复后完整HTML: <p>$$\begin{pmatrix}<br>a & b \<br>c & d<br>\end{pmatrix}$$</p>
+15:36:24.153  [OMML Replacer] 🔍 发现 2 个nary结构:
+15:36:24.153  [OMML Replacer] 🔍 Nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>j=0</m:t></m:r></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary>
+15:36:24.153  [OMML Replacer] 🔍 Nary 1 是否包含m:e元素: false
+15:36:24.153  [OMML Replacer] 🔍 Nary 2: <m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:eqArr><m:e><m:r><m:t>k=0</m:t></m:r></m:e><m:e><m:r><m:t>k≠j</m:t></m:r></m:e></m:eqArr></m:sub><m:sup><m:r><m:t>n</m:t></m:r></m:sup></m:nary>
+15:36:24.153  [OMML Replacer] 🔍 Nary 2 是否包含m:e元素: true
+15:36:24.153  [OMML Replacer] 🔧 开始nary结构重组分析...
+15:36:24.153  [OMML Replacer] 🔍 智能判断nary ∑: 原始有m:e=false, 主体有m:e=false
+15:36:24.153  [OMML Replacer] 🔧 ∑符号需要重组
+15:36:24.153  [OMML Replacer] 🔍 智能判断nary ∏: 原始有m:e=true, 主体有m:e=false
+15:36:24.154  [OMML Replacer] 🔧 ∏符号需要重组
+15:36:24.154  [OMML Replacer] 🔧 发现 2 个缺少m:e的nary结构
+15:36:24.154  [OMML Replacer] 🔧 分析nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
+15:36:24.154  [OMML Replacer] 🔧 nary后内容: <m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><m:r><m:t>j</m:t></m:r></m:sub></m:sSub><m:nary><m:...
+15:36:24.154  [OMML Replacer] 🔧 模式1: 求和+y_j
+15:36:24.154  [OMML Replacer] 🔧 将表达式移入nary的m:e中: <m:sSub><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sub><...
+15:36:24.154  [OMML Replacer] 🔧 分析nary 2: <m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:va...
+15:36:24.154  [OMML Replacer] 🔧 nary后内容: p></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>x−</m:t></m:r><m:sSub><m:e><m:r...
+15:36:24.154  [OMML Replacer] ⚠️ 未找到合适的表达式模式
+15:36:24.154  [OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: 1202 → 1213
+15:36:24.154  [XML Utils] 🔧 保护nary结构 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
+15:36:24.154  [XML Utils] 🔧 保护nary结构 2: <m:nary><m:naryPr><m:chr m:val="∏"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
+15:36:24.154  [XML Utils] 🔧 保护了 2 个nary结构中的空m:e标签
+15:36:24.154  [OMML Replacer] 清理后的OMML长度: 1127
+15:36:24.154  [OMML Replacer] 🔍 formula_1 空标签清理对比: {清理前: '0个自闭合 + 0个标签对', 清理后: '0个自闭合 + 0个标签对', 是否有改善: false}
+15:36:24.154  [OMML Replacer] 查找包含占位符的段落: true
+15:36:24.154  [OMML Replacer] 🔍 段落是否包含其他文本内容: false
+15:36:24.154  [OMML Replacer] 🔄 处理独立公式，替换整个段落
+15:36:24.155  [OMML Replacer] 替换整个段落: formula_1，生成参考文档格式
+15:36:24.155  [OMML Replacer] 新段落结构: <w:p><m:oMath>...</w:p>
+15:36:24.155  [OMML Replacer] XML长度变化: 5354 → 6399
+15:36:24.155  [OMML Replacer] 长度减少: -1045 字节
+15:36:24.155  [OMML Replacer] 处理OMML结果: {id: 'formula_2', success: true, hasOmml: true, latex: '\\mathcal{L}\\{f(t)\\} = F(s) = \\', isDisplayMode: true, …}
+15:36:24.155  [OMML Replacer] 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_2--&gt;
+15:36:24.155  [OMML Replacer] XML中包含占位符: true
+15:36:24.155  [OMML Replacer] 🔍 接收到的原始OMML (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:rPr><m:scr m:val="script"/></m:rPr><m:t>L</m:t></m:r><m:r><m:t>{f(t)}=F(s)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>−st</m:t></m:r></m:sup></m:sSup><m:r><m:t>dt</m:t></m:r></m:oMath>
 
-00:21:21.455 WordPreview.js:496 [Word Preview] ✅ HTML阶段修复完成。还包含&amp;: false
-00:21:21.455 WordPreview.js:509 [Word Preview] ✅ 已在HTML阶段修复所有公式中的HTML实体编码
-00:21:21.456 WordPreview.js:519 [Word Preview] 🔍 设置tempDiv.innerHTML后检查: {原始html包含amp: false, tempDiv包含amp: true, 是否被重新编码: true}
-00:21:21.456 WordPreview.js:570 [Word Preview] 没有Mermaid图表，但需要处理LaTeX公式
-00:21:21.456 WordPreview.js:618 [Word Preview] LaTeX 公式检查: 发现 1 个公式
-00:21:21.456 WordPreview.js:619 [Word Preview] 当前HTML长度: 72
-00:21:21.457 WordPreview.js:620 [Word Preview] HTML内容预览: <p>$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$</p>
+15:36:24.155  [OMML Replacer] 🔍 完整OMML内容: <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:r><m:rPr><m:scr m:val="script"/></m:rPr><m:t>L</m:t></m:r><m:r><m:t>{f(t)}=F(s)=</m:t></m:r><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>−st</m:t></m:r></m:sup></m:sSup><m:r><m:t>dt</m:t></m:r></m:oMath>
 
-00:21:21.457 WordPreview.js:624 [Word Preview] 📊 进入LaTeX处理时HTML状态: 包含&amp;=true
-00:21:21.457 WordPreview.js:627 [Word Preview] 🔍 &amp;出现的上下文: (2) ['<p>$$\\begin{pmatrix}<br>a &amp; b \\<br>c ', '&amp; d<br>\\end{pmatrix}$$</p>\n']
-00:21:21.457 WordPreview.js:630 [Word Preview] 🔧 DOM重新编码检测：开始修复tempDiv.innerHTML中的HTML实体
-00:21:21.458 WordPreview.js:639 [Word Preview] 🔧 DOM修复公式HTML实体: "$$\begin{pmatrix}<br>a &amp; b \<br>c &amp; d<br>\end{pmatrix}$$" → "$$\begin{pmatrix}<br>a & b \<br>c & d<br>\end{pmatrix}$$"
-00:21:21.458 WordPreview.js:646 [Word Preview] ✅ tempDiv.innerHTML HTML实体修复完成
-00:21:21.458 WordPreview.js:650 [Word Preview] 开始内联 LaTeX 公式处理
-00:21:21.459 WordPreview.js:658 [Word Preview] 发现 1 个块级公式
-00:21:21.459 WordPreview.js:666 [Word Preview] 🔍 正则匹配到块级公式: {完整匹配: '$$\\begin{pmatrix}<br>a &amp; b \\<br>c &amp; d<br>\\end{pmatrix}$$', LaTeX代码: '\\begin{pmatrix}<br>a &amp; b \\<br>c &amp; d<br>\\end{pmatrix}', 包含amp: true}
-00:21:21.459 WordPreview.js:685 [Word Preview] 🔧 块级公式HTML实体解码: {原始: '\\begin{pmatrix}<br>a &amp; b \\<br>c &amp; d<br>\\end{pmatrix}', 解码后: '\\begin{pmatrix}<br>a & b \\<br>c & d<br>\\end{pmatrix}', 解码生效: true}
-00:21:21.459 WordPreview.js:727 [Word Preview] 🔧 HTML标签清理过程: {1_原始: '\\begin{pmatrix}<br>a & b \\<br>c & d<br>\\end{pmatrix}', 2_br替换后: '\\begin{pmatrix} \\\\ a & b \\ \\\\ c & d \\\\ \\end{pmatrix}', 3_标签移除后: '\\begin{pmatrix} \\\\ a & b \\ \\\\ c & d \\\\ \\end{pmatrix}', 4_空白清理后: '\\begin{pmatrix} \\\\ a & b \\ \\\\ c & d \\\\ \\end{pmatrix}', 是否包含换行: true}
-00:21:21.460 WordPreview.js:738 [Word Preview] 🚀 最终传给MathJax的LaTeX代码: {代码: '\\begin{pmatrix} \\\\ a & b \\ \\\\ c & d \\\\ \\end{pmatrix}', 长度: 52, 包含双反斜杠: true, 包含换行: false, 代码展示: '"\\\\begin{pmatrix} \\\\\\\\ a & b \\\\ \\\\\\\\ c & d \\\\\\\\ \\\\end{pmatrix}"'}
-00:21:21.465 WordPreview.js:754 [Word Preview] 块级公式渲染成功 #1: \begin{pmatrix} \\ a & b \ \\ 
-00:21:21.466 WordPreview.js:763 [Word Preview] 发现 0 个行内公式
-00:21:21.466 WordPreview.js:825 [Word Preview] LaTeX 公式处理完成，共渲染 1 个公式
-00:21:21.467 WordPreview.js:894 [Word Preview] 最终 HTML 处理 - LaTeX 渲染
-00:21:21.467 WordPreview.js:901 [Word Preview] 最终处理 - 发现 0 个块级公式
-00:21:21.468 WordPreview.js:992 [Word Preview] 最终处理 - 发现 0 个行内公式
-00:21:21.468 WordPreview.js:1050 [Word Preview] 🎉 LaTeX 处理完成！总计渲染 0 个公式
-00:21:21.480 scheduler.development.js:14 [Violation] 'message' handler took 1162ms
-00:21:22.944 latexDebug.js:119 [LaTeX Debug] 等待 MathJax 加载...
-00:21:22.944 latexDebug.js:126 [LaTeX Debug] MathJax 加载完成 (0ms)
-00:21:22.944 latexDebug.js:12 [LaTeX Debug] 开始测试 MathJax 功能
-00:21:22.944 latexDebug.js:42 [LaTeX Debug] 尝试渲染测试公式: E = mc^2
-00:21:22.946 latexDebug.js:49 [LaTeX Debug] 测试渲染成功
-00:21:22.947 latexDebug.js:59 [LaTeX Debug] MathJax 测试结果: {mathJaxLoaded: true, tex2svgAvailable: true, renderTest: true, error: null, details: {…}}
-00:21:22.947 WordPreview.js:390 [Word Preview] MathJax 功能测试: 成功
-00:21:22.947 latexDebug.js:119 [LaTeX Debug] 等待 MathJax 加载...
-00:21:22.947 latexDebug.js:126 [LaTeX Debug] MathJax 加载完成 (0ms)
-00:21:22.947 latexDebug.js:12 [LaTeX Debug] 开始测试 MathJax 功能
-00:21:22.947 latexDebug.js:42 [LaTeX Debug] 尝试渲染测试公式: E = mc^2
-00:21:22.949 latexDebug.js:49 [LaTeX Debug] 测试渲染成功
-00:21:22.949 latexDebug.js:59 [LaTeX Debug] MathJax 测试结果: {mathJaxLoaded: true, tex2svgAvailable: true, renderTest: true, error: null, details: {…}}
-00:21:22.949 WordPreview.js:390 [Word Preview] MathJax 功能测试: 成功
-00:21:22.953 debug.js:58 [00:21:22][Popup] Debug工具已初始化
-00:21:22.963 debug.js:55 [00:21:22][Popup] [ShareCard] 开始初始化ShareCard类
-00:21:23.074 content.js:1 chrome
-00:21:23.076 content.js:1 IS_SAFARI false
+15:36:24.156  [OMML Replacer] 🔍 发现 1 个nary结构:
+15:36:24.156  [OMML Replacer] 🔍 Nary 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary>
+15:36:24.156  [OMML Replacer] 🔍 Nary 1 是否包含m:e元素: false
+15:36:24.156  [OMML Replacer] 🔧 开始nary结构重组分析...
+15:36:24.156  [OMML Replacer] 🔍 智能判断nary ∫: 原始有m:e=false, 主体有m:e=false
+15:36:24.156  [OMML Replacer] 🔧 ∫符号需要重组
+15:36:24.156  [OMML Replacer] 🔧 发现 1 个缺少m:e的nary结构
+15:36:24.156  [OMML Replacer] 🔧 分析nary 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:va...
+15:36:24.156  [OMML Replacer] 🔧 nary后内容: <m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>−st</m:t></m:r>...
+15:36:24.156  [OMML Replacer] 🔧 模式4: 积分+复杂表达式
+15:36:24.156  [OMML Replacer] 🔧 将表达式移入nary的m:e中: <m:r><m:t>f(t)</m:t></m:r><m:sSup><m:e><m:r><m:t>e...
+15:36:24.156  [OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: 669 → 680
+15:36:24.156  [XML Utils] 🔧 保护nary结构 1: <m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:grow m:val="1"/><m:subHide m:val="o...
+15:36:24.156  [XML Utils] 🔧 保护了 1 个nary结构中的空m:e标签
+15:36:24.156  [OMML Replacer] 清理后的OMML长度: 594
+15:36:24.157  [OMML Replacer] 🔍 formula_2 空标签清理对比: {清理前: '0个自闭合 + 0个标签对', 清理后: '0个自闭合 + 0个标签对', 是否有改善: false}
+15:36:24.157  [OMML Replacer] 查找包含占位符的段落: true
+15:36:24.157  [OMML Replacer] 🔍 段落是否包含其他文本内容: false
+15:36:24.157  [OMML Replacer] 🔄 处理独立公式，替换整个段落
+15:36:24.157  [OMML Replacer] 替换整个段落: formula_2，生成参考文档格式
+15:36:24.157  [OMML Replacer] 新段落结构: <w:p><m:oMath>...</w:p>
+15:36:24.157  [OMML Replacer] XML长度变化: 6399 → 6911
+15:36:24.157  [OMML Replacer] 长度减少: -512 字节
+15:36:24.157  [OMML Replacer] 处理OMML结果: {id: 'formula_3', success: true, hasOmml: true, latex: '\\sum_{n=1}^{\\infty} \\frac{1}{n', isDisplayMode: true, …}
+15:36:24.157  [OMML Replacer] 查找占位符: &lt;!--OMML_PLACEHOLDER_formula_3--&gt;
+15:36:24.157  [OMML Replacer] XML中包含占位符: true
+15:36:24.157  [OMML Replacer] 🔍 接收到的原始OMML (前800字符): <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>n=1</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:sSup><m:e><m:r><m:t>n</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:den></m:f><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:sSup><m:e><m:r><m:t>π</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:num><m:den><m:r><m:t>6<
+15:36:24.157  [OMML Replacer] 🔍 完整OMML内容: <?xml version="1.0" encoding="UTF-8"?>
+<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mml="http://www.w3.org/1998/Math/MathML"><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>n=1</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:sSup><m:e><m:r><m:t>n</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:den></m:f><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:sSup><m:e><m:r><m:t>π</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:num><m:den><m:r><m:t>6</m:t></m:r></m:den></m:f></m:oMath>
+
+15:36:24.157  [OMML Replacer] 🔍 发现 1 个nary结构:
+15:36:24.157  [OMML Replacer] 🔍 Nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="off"/><m:supHide m:val="off"/></m:naryPr><m:sub><m:r><m:t>n=1</m:t></m:r></m:sub><m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∞</m:t></m:r></m:sup></m:nary>
+15:36:24.157  [OMML Replacer] 🔍 Nary 1 是否包含m:e元素: false
+15:36:24.157  [OMML Replacer] 🔧 开始nary结构重组分析...
+15:36:24.157  [OMML Replacer] 🔍 智能判断nary ∑: 原始有m:e=false, 主体有m:e=false
+15:36:24.157  [OMML Replacer] 🔧 ∑符号需要重组
+15:36:24.157  [OMML Replacer] 🔧 发现 1 个缺少m:e的nary结构
+15:36:24.158  [OMML Replacer] 🔧 分析nary 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:va...
+15:36:24.158  [OMML Replacer] 🔧 nary后内容: <m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:sSup><m:e><...
+15:36:24.158  [OMML Replacer] 🔧 模式2: 求和+分数
+15:36:24.158  [OMML Replacer] 🔧 将表达式移入nary的m:e中: <m:f><m:fPr><m:type m:val="bar"/></m:fPr><m:num><m...
+15:36:24.158  [OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: 836 → 847
+15:36:24.158  [XML Utils] 🔧 保护nary结构 1: <m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:grow m:val="1"/><m:subHide m:val="o...
+15:36:24.158  [XML Utils] 🔧 保护了 1 个nary结构中的空m:e标签
+15:36:24.158  [OMML Replacer] 清理后的OMML长度: 761
+15:36:24.158  [OMML Replacer] 🔍 formula_3 空标签清理对比: {清理前: '0个自闭合 + 0个标签对', 清理后: '0个自闭合 + 0个标签对', 是否有改善: false}
+15:36:24.158  [OMML Replacer] 查找包含占位符的段落: true
+15:36:24.158  [OMML Replacer] 🔍 段落是否包含其他文本内容: false
+15:36:24.158  [OMML Replacer] 🔄 处理独立公式，替换整个段落
+15:36:24.158  [OMML Replacer] 替换整个段落: formula_3，生成参考文档格式
+15:36:24.158  [OMML Replacer] 新段落结构: <w:p><m:oMath>...</w:p>
+15:36:24.158  [OMML Replacer] XML长度变化: 6911 → 7590
+15:36:24.158  [OMML Replacer] 长度减少: -679 字节
+15:36:24.158 ommlReplacer.js:55 [OMML Replacer] 处理完成，剩余占位符: 0 []
+15:36:24.159 orderManager.js:231 [XML Post-Processor] OMML替换验证结果: {isValid: false, originalPlaceholders: 0, remainingPlaceholders: 0, mathElements: 3, expectedReplacements: 3, …}
+15:36:24.159 orderManager.js:236 [XML Post-Processor] OMML替换后文档包含 7 个段落, 0 个表格, 3 个数学公式
+15:36:24.159 orderManager.js:246 [XML Post-Processor] OMML替换后XML中有 7 个段落
+15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 1: 📝 文本 - "测试公式"
+15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 2: 📝 文本 - "1. 拉格朗日插值多项式（原问题）"
+15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 3: 📊 包含OMML公式
+15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 4: 📝 文本 - "2. 拉普拉斯变换（原问题）"
+15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 5: 📊 包含OMML公式
+15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 6: 📝 文本 - "3. 复杂求和公式"
+15:36:24.159 orderManager.js:247 [XML Post-Processor] 段落 7: 📊 包含OMML公式
+15:36:24.159 orderManager.js:247 [XML Post-Processor] 开始字符缩进处理阶段...
+15:36:24.159 xmlPostProcessor.js:85 [XML Post-Processor] 在已替换OMML的XML中找到 3 个OMML需要保护
+15:36:24.159 xmlPostProcessor.js:91 [XML Post-Processor] 保护OMML 1: __OMML_PROTECTED_0__ (长度: 1127)
+15:36:24.159 xmlPostProcessor.js:91 [XML Post-Processor] 保护OMML 2: __OMML_PROTECTED_1__ (长度: 594)
+15:36:24.159 xmlPostProcessor.js:91 [XML Post-Processor] 保护OMML 3: __OMML_PROTECTED_2__ (长度: 761)
+15:36:24.162 orderManager.js:247 [XML Post-Processor] XML解析完成，检查JSON结构
+15:36:24.162 orderManager.js:247 [XML Post-Processor] JSON根键: ?xml, w:document
+15:36:24.162 xmlPostProcessor.js:3 [XML Post-Processor] ✅ 找到w:document
+15:36:24.162 xmlPostProcessor.js:9 [XML Post-Processor] ✅ 找到w:body
+15:36:24.162 xmlPostProcessor.js:11 [XML Post-Processor] 段落类型: object, 是否为数组: true
+15:36:24.162 xmlPostProcessor.js:15 [XML Post-Processor] 找到 7 个段落数组
+15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 1: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading2"},"w:spacing":{"@_w:before":"240","@_w:after":"160","@_w:l...
+15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 2: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading3"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
+15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 3: "__OMML_PROTECTED_0__"...
+15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 4: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading3"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
+15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 5: "__OMML_PROTECTED_1__"...
+15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 6: {"w:pPr":{"w:pStyle":{"@_w:val":"Heading3"},"w:spacing":{"@_w:before":"200","@_w:after":"120","@_w:l...
+15:36:24.162 xmlPostProcessor.js:17 [XML Post-Processor] 段落 7: "__OMML_PROTECTED_2__"...
+15:36:24.162 xmlPostProcessor.js:28 [XML Post-Processor] w:body的所有键: w:p, w:sectPr
+15:36:24.163 xmlPostProcessor.js:31 [XML Post-Processor] 🔍 分析body结构中的所有子元素:
+15:36:24.163 xmlPostProcessor.js:34 [XML Post-Processor] - w:p: 7 个段落
+15:36:24.163 xmlPostProcessor.js:38 [XML Post-Processor] - w:sectPr: object
+15:36:24.163 bundle.js:303523 [Order Manager] 🔧 启动原始元素顺序记录方案...
+15:36:24.163 bundle.js:303560 [Order Manager] 📊 扫描到 8 个body子元素:
+15:36:24.163 bundle.js:303562 [Order Manager] 1. 段落: "测试公式" (类型: w:p, 位置: 0)
+15:36:24.163 bundle.js:303562 [Order Manager] 2. 段落: "1. 拉格朗日插值多项式（原问..." (类型: w:p, 位置: 390)
+15:36:24.163 bundle.js:303562 [Order Manager] 3. 段落: "" (类型: w:p, 位置: 1085)
+15:36:24.163 bundle.js:303562 [Order Manager] 4. 段落: "2. 拉普拉斯变换（原问题）" (类型: w:p, 位置: 2223)
+15:36:24.163 bundle.js:303562 [Order Manager] 5. 段落: "" (类型: w:p, 位置: 2915)
+15:36:24.163 bundle.js:303562 [Order Manager] 6. 段落: "3. 复杂求和公式" (类型: w:p, 位置: 3520)
+15:36:24.163 bundle.js:303562 [Order Manager] 7. 段落: "" (类型: w:p, 位置: 4207)
+15:36:24.163 bundle.js:303562 [Order Manager] 8. 页面设置 (类型: w:sectPr, 位置: 4979)
+15:36:24.163 bundle.js:303572 [Order Manager] ✅ 原始元素顺序信息已保存，共 8 个元素
+15:36:24.163 xmlPostProcessor.js:49 [XML Post-Processor] XMLBuilder构建完成，准备开始恢复阶段
+15:36:24.163 xmlPostProcessor.js:50 [XML Post-Processor] 构建后XML长度: 5713
+15:36:24.163 xmlPostProcessor.js:50 [XML Post-Processor] 保护映射表大小: 3
+15:36:24.164 bundle.js:303585 [Order Manager] 🔧 开始完整的XML元素顺序重建...
+15:36:24.164 bundle.js:303602 [Order Manager] 📊 当前XML中元素统计: 7个段落, 0个表格, 1个sectPr
+15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第1个元素: 段落: "测试公式"
+15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落1: "测试公式"
+15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第2个元素: 段落: "1. 拉格朗日插值多项式（原问..."
+15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落2: "1. 拉格朗日插值多项式（原问题）"
+15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第3个元素: 段落: ""
+15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落3: ""
+15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第4个元素: 段落: "2. 拉普拉斯变换（原问题）"
+15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落4: "2. 拉普拉斯变换（原问题）"
+15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第5个元素: 段落: ""
+15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落5: ""
+15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第6个元素: 段落: "3. 复杂求和公式"
+15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落6: "3. 复杂求和公式"
+15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第7个元素: 段落: ""
+15:36:24.164 bundle.js:303615 [Order Manager] ✅ 添加段落7: ""
+15:36:24.164 bundle.js:303610 [Order Manager] 🔧 处理第8个元素: 页面设置
+15:36:24.164 orderManager.js:23 [Order Manager] ✅ 添加页面设置
+15:36:24.164 orderManager.js:33 [Order Manager] ✅ XML元素顺序重建完成！
+15:36:24.164 orderManager.js:34 [Order Manager] 📊 重建后XML长度: 5713
+15:36:24.164 orderManager.js:36 [Order Manager] 📊 重建后元素顺序: 8个元素按原始顺序排列
+15:36:24.164 xmlPostProcessor.js:58 [XML Post-Processor] XML重建后有 7 个段落, 0 个表格
+15:36:24.164 orderManager.js:45 [Order Manager] 🔍 分析重建XML中所有body子元素的顺序:
+15:36:24.165 orderManager.js:59 [Order Manager] 元素 1: 📝 段落 - "测试公式..." (位置: 2360)
+15:36:24.165 orderManager.js:59 [Order Manager] 元素 2: 📝 段落 - "1.拉格朗日插值多项式（原问题）..." (位置: 2834)
+15:36:24.165 orderManager.js:61 [Order Manager] 元素 3: 📄 空段落 (位置: 3669)
+15:36:24.165 orderManager.js:59 [Order Manager] 元素 4: 📝 段落 - "2.拉普拉斯变换（原问题）..." (位置: 3700)
+15:36:24.165 orderManager.js:61 [Order Manager] 元素 5: 📄 空段落 (位置: 4532)
+15:36:24.165 orderManager.js:59 [Order Manager] 元素 6: 📝 段落 - "3.复杂求和公式..." (位置: 4563)
+15:36:24.165 orderManager.js:61 [Order Manager] 元素 7: 📄 空段落 (位置: 5390)
+15:36:24.165 xmlPostProcessor.js:65 [XML Post-Processor] 元素顺序验证结果: {isValid: true, tableIntact: true, paragraphReasonable: true, originalStats: {…}, reorderedStats: {…}, …}
+15:36:24.165 xmlPostProcessor.js:110 [XML Post-Processor] 开始恢复 3 个被保护的OMML
+15:36:24.165 xmlPostProcessor.js:111 [XML Post-Processor] 恢复前XML长度: 5713
+15:36:24.165 xmlPostProcessor.js:114 [XML Post-Processor] XML中是否包含保护键: true
+15:36:24.165 xmlPostProcessor.js:122 [XML Post-Processor] ✅ 恢复OMML: __OMML_PROTECTED_0__ → OMML内容 (XML长度: 5713 → 6820)
+15:36:24.165 xmlPostProcessor.js:122 [XML Post-Processor] ✅ 恢复OMML: __OMML_PROTECTED_1__ → OMML内容 (XML长度: 6820 → 7394)
+15:36:24.165 xmlPostProcessor.js:122 [XML Post-Processor] ✅ 恢复OMML: __OMML_PROTECTED_2__ → OMML内容 (XML长度: 7394 → 8135)
+15:36:24.165 xmlPostProcessor.js:139 [XML Post-Processor] 恢复后XML长度: 8135
+15:36:24.165 xmlPostProcessor.js:69 [XML Post-Processor] OMML恢复完成，最终XML长度: 8135
+15:36:24.185 orderManager.js:247 [XML Post-Processor] docx后处理完成：已写入 firstLineChars 和 OMML 公式
+15:36:24.185 orderManager.js:106 [Order Manager] 顺序管理状态已清理
+15:36:24.185 index.js:102 [Export Service] 后处理完成，最终大小: 29236 字节
+15:36:24.185 index.js:105 [Export Service] === 阶段6: 文件保存 ===
+15:36:24.185 index.js:107 [Export Service] ✅ Word文档导出成功!

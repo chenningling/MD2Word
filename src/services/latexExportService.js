@@ -297,11 +297,17 @@ class LatexExportService {
         const cacheKey = `${formula.latex}_${formula.type}`;
         if (this.conversionCache.has(cacheKey)) {
           const cachedResult = this.conversionCache.get(cacheKey);
+          // 🔧 重要修复：对缓存的OMML结果也进行预清理
+          let cleanedOmml = cachedResult.omml;
+          if (cachedResult.success && cachedResult.omml) {
+            cleanedOmml = this.preCleanOmmlResult(cachedResult.omml);
+          }
+          
           cachedResults.push({
             id: formula.id,
             success: cachedResult.success,
             latex: cachedResult.latex || formula.latex,
-            omml: cachedResult.omml,
+            omml: cleanedOmml,
             mathml: cachedResult.mathml,
             isDisplayMode: cachedResult.isDisplayMode,
             conversionTime: cachedResult.conversionTime
@@ -347,6 +353,14 @@ class LatexExportService {
         hasResults: !!response.data?.results,
         resultsLength: convertedResults.length,
         firstResult: convertedResults[0] || null
+      });
+      
+      // 🔧 预清理OMML结果，修复空白方块问题
+      convertedResults = convertedResults.map(result => {
+        if (result.success && result.omml) {
+          result.omml = this.preCleanOmmlResult(result.omml);
+        }
+        return result;
       });
       
       // 缓存成功的转换结果
@@ -763,6 +777,119 @@ class LatexExportService {
   }
 
   /**
+   * 预清理OMML结果，修复空白方块问题
+   * @param {string} ommlXml - 原始OMML XML
+   * @returns {string} 清理后的OMML XML
+   */
+  preCleanOmmlResult(ommlXml) {
+    if (!ommlXml) return ommlXml;
+    
+    let cleaned = ommlXml;
+    
+    // 🔧 关键修复：移除后端转换过程中可能产生的问题字符
+    
+    // 1. 移除Unicode私有使用区域字符（常见的空白方块原因）
+    cleaned = cleaned.replace(/[\uE000-\uF8FF]/g, '');
+    cleaned = cleaned.replace(/[\uF000-\uFFFF]/g, '');
+    
+    // 2. 移除零宽字符和不可见字符
+    cleaned = cleaned.replace(/[\u200B-\u200D\uFEFF]/g, '');
+    cleaned = cleaned.replace(/[\u2028\u2029]/g, '');
+    
+    // 3. 修复常见的编码实体问题
+    cleaned = cleaned.replace(/&#xE[0-9A-F]{3};/gi, '');  // 私有区域实体
+    cleaned = cleaned.replace(/&#5734[4-9];/g, '');       // 十进制私有区域实体
+    cleaned = cleaned.replace(/&#575[0-9][0-9];/g, '');   // 扩展私有区域
+    
+    // 4. 特别处理数学符号后的问题字符
+    // 积分号、求和号等大型运算符后的空白问题
+    cleaned = cleaned.replace(/(∫|∑|∏|∮|⋃|⋂|⋁|⋀)[\u200B-\u200D\uFEFF\uE000-\uF8FF]*/g, '$1');
+    
+    // 5. 清理m:t标签内的问题字符
+    cleaned = cleaned.replace(/<m:t>([^<]*)<\/m:t>/g, (match, content) => {
+      const cleanContent = content
+        .replace(/[\u200B-\u200D\uFEFF]/g, '')     // 零宽字符
+        .replace(/[\uE000-\uF8FF]/g, '')           // 私有使用区域
+        .replace(/[\uF000-\uFFFF]/g, '')           // 其他问题字符
+        .replace(/&#xE[0-9A-F]{3};/gi, '')        // 编码实体
+        .replace(/&#5734[4-9];/g, '')             // 十进制实体
+        .replace(/&#575[0-9][0-9];/g, '');        // 扩展实体
+      
+      return `<m:t>${cleanContent}</m:t>`;
+    });
+    
+    // 6. 🔧 关键修复：移除导致空白方块的空元素标签
+    // 这是空白方块的主要根源
+    
+    // 6a. 🔧 特别处理：修复nary结构中的空元素问题
+    // 模式：<m:nary>...<m:e/></m:nary> 会导致空白方块
+    cleaned = cleaned.replace(/<m:nary>(.*?)<m:e\s*\/>(.*?)<\/m:nary>/gs, (match, before, after) => {
+      console.log(`[LaTeX Export] 🔧 修复nary中的空元素:`, { 
+        原始: match.substring(0, 100) + '...',
+        修复策略: '移除空的m:e标签'
+      });
+      return `<m:nary>${before}${after}</m:nary>`;
+    });
+    
+    // 6b. 通用空标签清理
+    cleaned = cleaned.replace(/<m:e\s*\/>/g, '');                    // 空的自闭合m:e标签
+    cleaned = cleaned.replace(/<m:e>\s*<\/m:e>/g, '');               // 空的m:e标签对
+    cleaned = cleaned.replace(/<m:num>\s*<\/m:num>/g, '');           // 空的分子标签
+    cleaned = cleaned.replace(/<m:den>\s*<\/m:den>/g, '');           // 空的分母标签
+    cleaned = cleaned.replace(/<m:sub>\s*<\/m:sub>/g, '');           // 空的下标标签
+    cleaned = cleaned.replace(/<m:sup>\s*<\/m:sup>/g, '');           // 空的上标标签
+    cleaned = cleaned.replace(/<m:lim>\s*<\/m:lim>/g, '');           // 空的极限标签
+    
+    // 7. 清理属性值中的问题字符
+    cleaned = cleaned.replace(/m:val="([^"]*)"/g, (match, value) => {
+      const cleanValue = value
+        .replace(/[\u200B-\u200D\uFEFF\uE000-\uF8FF]/g, '');
+      return `m:val="${cleanValue}"`;
+    });
+    
+    console.log(`[LaTeX Export] OMML预清理完成`, {
+      原始长度: ommlXml.length,
+      清理后长度: cleaned.length,
+      变化: ommlXml.length - cleaned.length
+    });
+    
+    // 🔍 详细调试：无论是否有变化都进行分析
+    console.log(`[LaTeX Export] 🔍 分析OMML内容 (前800字符):`, ommlXml.substring(0, 800));
+    
+    // 检查各种可能的空标签模式
+    const emptyTags = ommlXml.match(/<m:e\s*\/>/g) || [];
+    const emptyTagPairs = ommlXml.match(/<m:e>\s*<\/m:e>/g) || [];
+    const emptyTagsWithSpaces = ommlXml.match(/<m:e\s*>\s*<\/m:e>/g) || [];
+    const allMeTags = ommlXml.match(/<m:e[^>]*>.*?<\/m:e>/gs) || [];
+    const selfClosingMeTags = ommlXml.match(/<m:e[^>]*\/>/g) || [];
+    
+    // 🔍 特别检查nary（求和/积分）中的空元素
+    const naryWithEmptyE = ommlXml.match(/<m:nary>.*?<m:e\s*\/>.*?<\/m:nary>/gs) || [];
+    const naryElements = ommlXml.match(/<m:nary>.*?<\/m:nary>/gs) || [];
+    
+    console.log(`[LaTeX Export] 🔍 标签检测结果:`, {
+      '空的自闭合标签': emptyTags.length,
+      '空的标签对': emptyTagPairs.length,
+      '包含空格的空标签对': emptyTagsWithSpaces.length,
+      '所有m:e标签': allMeTags.length,
+      '所有自闭合m:e': selfClosingMeTags.length,
+      '包含空元素的nary': naryWithEmptyE.length,
+      '所有nary元素': naryElements.length
+    });
+    
+    if (naryWithEmptyE.length > 0) {
+      console.log(`[LaTeX Export] ⚠️ 发现包含空元素的nary结构 (空白方块根源):`, naryWithEmptyE.slice(0, 2));
+    }
+    
+    if (emptyTags.length > 0 || emptyTagPairs.length > 0 || emptyTagsWithSpaces.length > 0) {
+      console.log(`[LaTeX Export] ⚠️ 检测到导致空白方块的空标签!`);
+      console.log(`[LaTeX Export] 空标签详情:`, { emptyTags, emptyTagPairs, emptyTagsWithSpaces });
+    }
+    
+    return cleaned;
+  }
+
+  /**
    * 获取导出统计信息
    * @returns {object} 统计信息
    */
@@ -784,6 +911,40 @@ class LatexExportService {
     const oldSize = this.conversionCache.size;
     this.conversionCache.clear();
     console.log('[LaTeX Export] 缓存已清空', { oldSize });
+  }
+
+  /**
+   * 清空缓存并重置API状态（用于修复更新后的重置）
+   */
+  resetAfterFix() {
+    this.clearCache();
+    this.apiAvailable = null; // 重新检查API
+    this.resetStats();
+    console.log('[LaTeX Export] 🔧 修复后重置完成：缓存已清空，API状态已重置');
+  }
+  
+  /**
+   * 清理现有缓存中的空白方块问题
+   */
+  cleanExistingCache() {
+    console.log('[LaTeX Export] 🔧 开始清理缓存中的问题OMML数据...');
+    let cleanedCount = 0;
+    
+    for (const [key, value] of this.conversionCache.entries()) {
+      if (value.success && value.omml) {
+        const originalOmml = value.omml;
+        const cleanedOmml = this.preCleanOmmlResult(originalOmml);
+        
+        if (originalOmml !== cleanedOmml) {
+          value.omml = cleanedOmml;
+          cleanedCount++;
+          console.log(`[LaTeX Export] 🔧 已清理缓存项: ${key.substring(0, 30)}...`);
+        }
+      }
+    }
+    
+    console.log(`[LaTeX Export] ✅ 缓存清理完成，共清理 ${cleanedCount} 个OMML项`);
+    return cleanedCount;
   }
 
   /**

@@ -166,8 +166,190 @@ const replaceSinglePlaceholder = (xmlString, placeholderInfo, ommlResult) => {
   }
 
   // 清理OMML XML，移除XML声明和多余的命名空间
-  const cleanOmml = cleanOmmlXml(ommlXml);
+  const originalOmml = ommlXml;
+  console.log(`[OMML Replacer] 🔍 接收到的原始OMML (前800字符):`, originalOmml.substring(0, 800));
+  console.log(`[OMML Replacer] 🔍 完整OMML内容:`, originalOmml);
+  
+  // 🔍 专门分析nary结构
+  const naryMatches = originalOmml.match(/<m:nary>[\s\S]*?<\/m:nary>/g) || [];
+  console.log(`[OMML Replacer] 🔍 发现 ${naryMatches.length} 个nary结构:`);
+  naryMatches.forEach((nary, index) => {
+    console.log(`[OMML Replacer] 🔍 Nary ${index + 1}:`, nary);
+    const hasE = nary.includes('<m:e>') || nary.includes('<m:e/>');
+    console.log(`[OMML Replacer] 🔍 Nary ${index + 1} 是否包含m:e元素:`, hasE);
+  });
+  
+  // 🔧 关键修复：重组nary结构，将后续表达式移入nary的m:e元素中
+  let fixedOmml = originalOmml;
+  
+  // 复杂的nary结构重组逻辑
+  console.log(`[OMML Replacer] 🔧 开始nary结构重组分析...`);
+  
+  // 通用nary重组策略：检测所有nary，然后智能判断是否需要重组
+  const allNaryPattern = /<m:nary>[\s\S]*?<\/m:nary>/g;
+  let naryMatchesWithPos = [];
+  let match;
+  
+  // 收集所有nary结构及其位置
+  while ((match = allNaryPattern.exec(fixedOmml)) !== null) {
+    const naryContent = match[0];
+    
+    // 智能判断：检查nary是否有主体层级的m:e（不在sub/sup中的）
+    // 方法：移除所有sub/sup内容，然后检查剩余内容是否有m:e
+    let mainContent = naryContent;
+    mainContent = mainContent.replace(/<m:sub>[\s\S]*?<\/m:sub>/g, ''); // 移除下标
+    mainContent = mainContent.replace(/<m:sup>[\s\S]*?<\/m:sup>/g, ''); // 移除上标
+    
+    const hasMainE = mainContent.includes('<m:e>') && mainContent.includes('</m:e>');
+    const symbol = naryContent.match(/<m:chr m:val="([^"]+)"/)?.[1] || '未知';
+    
+    console.log(`[OMML Replacer] 🔍 智能判断nary ${symbol}: 原始有m:e=${naryContent.includes('<m:e>')}, 主体有m:e=${hasMainE}`);
+    
+    if (!hasMainE) {
+      naryMatchesWithPos.push({
+        nary: naryContent,
+        startIndex: match.index,
+        endIndex: match.index + match[0].length
+      });
+      console.log(`[OMML Replacer] 🔧 ${symbol}符号需要重组`);
+    } else {
+      console.log(`[OMML Replacer] ✅ ${symbol}符号已有主体m:e，跳过重组`);
+    }
+  }
+  
+  console.log(`[OMML Replacer] 🔧 发现 ${naryMatchesWithPos.length} 个缺少m:e的nary结构`);
+  
+  // 为每个nary寻找后续的数学表达式并移入（需要重新计算位置，因为前面的修改会影响后续位置）
+  for (let i = 0; i < naryMatchesWithPos.length; i++) {
+    const naryInfo = naryMatchesWithPos[i];
+    const naryStr = naryInfo.nary;
+    
+    // 重新在当前的fixedOmml中查找这个nary的位置
+    const currentNaryIndex = fixedOmml.indexOf(naryStr);
+    if (currentNaryIndex === -1) {
+      console.log(`[OMML Replacer] ⚠️ 无法找到nary ${i + 1}，可能已被修改`);
+      continue;
+    }
+    
+    const afterNary = fixedOmml.substring(currentNaryIndex + naryStr.length);
+    
+    console.log(`[OMML Replacer] 🔧 分析nary ${i + 1}:`, naryStr.substring(0, 50) + '...');
+    console.log(`[OMML Replacer] 🔧 nary后内容:`, afterNary.substring(0, 100) + '...');
+    
+    let expressionToMove = null;
+    
+    // 模式1: 求和后跟y_j (拉格朗日公式)
+    if (naryStr.includes('m:val="∑"')) {
+      const pattern1 = /^(<m:sSub><m:e><m:r><m:t>y<\/m:t><\/m:r><\/m:e><m:sub><m:r><m:t>j<\/m:t><\/m:r><\/m:sub><\/m:sSub>)/;
+      const match1 = afterNary.match(pattern1);
+      if (match1) {
+        expressionToMove = match1[1];
+        console.log(`[OMML Replacer] 🔧 模式1: 求和+y_j`);
+      }
+      
+      // 模式2: 求和后跟分数 (复杂求和公式)
+      if (!expressionToMove) {
+        const pattern2 = /^(<m:f>[\s\S]*?<\/m:f>)/;
+        const match2 = afterNary.match(pattern2);
+        if (match2) {
+          expressionToMove = match2[1];
+          console.log(`[OMML Replacer] 🔧 模式2: 求和+分数`);
+        }
+      }
+    }
+    
+    // 模式3: 乘积后跟分数
+    if (naryStr.includes('m:val="∏"') && !expressionToMove) {
+      const pattern3 = /^(<m:f>[\s\S]*?<\/m:f>)/;
+      const match3 = afterNary.match(pattern3);
+      if (match3) {
+        expressionToMove = match3[1];
+        console.log(`[OMML Replacer] 🔧 模式3: 乘积+分数`);
+      }
+    }
+    
+    // 模式4: 积分后跟复杂表达式 (拉普拉斯变换)
+    if (naryStr.includes('m:val="∫"') && !expressionToMove) {
+      // 匹配f(t)e^(-st)dt这样的积分表达式
+      const pattern4 = /^(<m:r><m:t>f\(t\)<\/m:t><\/m:r><m:sSup>[\s\S]*?<\/m:sSup><m:r><m:t>dt<\/m:t><\/m:r>)/;
+      const match4 = afterNary.match(pattern4);
+      if (match4) {
+        expressionToMove = match4[1];
+        console.log(`[OMML Replacer] 🔧 模式4: 积分+复杂表达式`);
+      }
+    }
+    
+    // 执行重组
+    if (expressionToMove) {
+      console.log(`[OMML Replacer] 🔧 将表达式移入nary的m:e中:`, expressionToMove.substring(0, 50) + '...');
+      const fixedNary = naryStr.replace('</m:nary>', `<m:e>${expressionToMove}</m:e></m:nary>`);
+      const naryWithExpression = naryStr + expressionToMove;
+      fixedOmml = fixedOmml.replace(naryWithExpression, fixedNary);
+      console.log(`[OMML Replacer] 🔧 nary ${i + 1} 重组成功`);
+    } else {
+      console.log(`[OMML Replacer] ⚠️ nary ${i + 1} 未找到合适的表达式模式`);
+    }
+  }
+  
+  console.log(`[OMML Replacer] 🔧 nary结构重组完成，OMML长度变化: ${originalOmml.length} → ${fixedOmml.length}`);
+  
+  const cleanOmml = cleanOmmlXml(fixedOmml);
   console.log(`[OMML Replacer] 清理后的OMML长度: ${cleanOmml.length}`);
+  
+  // 🔍 详细分析清理前后的空标签
+  const emptyTagsBefore = (originalOmml.match(/<m:e\s*\/>/g) || []).length;
+  const emptyPairsBefore = (originalOmml.match(/<m:e>\s*<\/m:e>/g) || []).length;
+  const emptyTagsAfter = (cleanOmml.match(/<m:e\s*\/>/g) || []).length;
+  const emptyPairsAfter = (cleanOmml.match(/<m:e>\s*<\/m:e>/g) || []).length;
+  
+  console.log(`[OMML Replacer] 🔍 ${ommlResult.id} 空标签清理对比:`, {
+    清理前: `${emptyTagsBefore}个自闭合 + ${emptyPairsBefore}个标签对`,
+    清理后: `${emptyTagsAfter}个自闭合 + ${emptyPairsAfter}个标签对`,
+    是否有改善: (emptyTagsBefore + emptyPairsBefore) > (emptyTagsAfter + emptyPairsAfter)
+  });
+  
+  if (emptyTagsAfter > 0 || emptyPairsAfter > 0) {
+    console.log(`[OMML Replacer] ⚠️ ${ommlResult.id} 清理后仍有空标签残留!`);
+    console.log(`[OMML Replacer] 🔍 清理后OMML前段:`, cleanOmml.substring(0, 500));
+    
+    // 🔧 进行额外的强制清理，但保护nary结构中的空m:e标签
+    let extraCleanOmml = cleanOmml;
+    
+    // 先保护nary结构中的空m:e标签
+    const naryStructures = extraCleanOmml.match(/<m:nary>[\s\S]*?<\/m:nary>/g) || [];
+    const protectedNaryMap = new Map();
+    
+    naryStructures.forEach((nary, index) => {
+      // 保护包含任何m:e元素的nary结构（无论是空的还是有内容的）
+      if (nary.includes('<m:e>') && nary.includes('</m:e>')) {
+        const placeholder = `__NARY_KEEP_${index}__`;
+        protectedNaryMap.set(placeholder, nary);
+        extraCleanOmml = extraCleanOmml.replace(nary, placeholder);
+      }
+    });
+    
+    // 现在安全地清理其他区域的空标签
+    extraCleanOmml = extraCleanOmml.replace(/<m:e\s*\/>/g, '');
+    extraCleanOmml = extraCleanOmml.replace(/<m:e>\s*<\/m:e>/g, '');
+    extraCleanOmml = extraCleanOmml.replace(/<m:e\s*>\s*<\/m:e>/g, '');
+    
+    // 恢复保护的nary结构
+    protectedNaryMap.forEach((nary, placeholder) => {
+      extraCleanOmml = extraCleanOmml.replace(placeholder, nary);
+    });
+    
+    if (protectedNaryMap.size > 0) {
+      console.log(`[OMML Replacer] 🔧 额外清理时保护了 ${protectedNaryMap.size} 个nary结构`);
+    }
+    
+    const finalEmptyTags = (extraCleanOmml.match(/<m:e\s*\/>/g) || []).length;
+    const finalEmptyPairs = (extraCleanOmml.match(/<m:e>\s*<\/m:e>/g) || []).length;
+    
+    if (finalEmptyTags + finalEmptyPairs < emptyTagsAfter + emptyPairsAfter) {
+      console.log(`[OMML Replacer] 🔧 额外清理成功，使用强制清理后的OMML`);
+      return replaceInParagraph(xmlString, actualPlaceholder, extraCleanOmml, ommlResult);
+    }
+  }
 
   // 🔍 检查当前公式是否在表格内
   if (placeholderInfo.inTable) {
