@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Button, Typography, Space, Dropdown, Modal, Tooltip } from 'antd';
+import { Layout, Button, Typography, Space, Dropdown, Modal, Tooltip, message } from 'antd';
 import { 
   SettingOutlined, 
   ExportOutlined, 
@@ -8,7 +8,8 @@ import {
   HeartOutlined,
   MailOutlined,
   LinkOutlined,
-  WechatOutlined
+  WechatOutlined,
+  LoadingOutlined
 } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDocument } from '../../contexts/DocumentContext/DocumentContext';
@@ -176,6 +177,7 @@ const Header = ({ toggleSettings, settingsVisible }) => {
   const [wechatModalVisible, setWechatModalVisible] = useState(false);
   const [xiaohongshuModalVisible, setXiaohongshuModalVisible] = useState(false);
   const [donateModalVisible, setDonateModalVisible] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
 
   // 添加全局样式
   useEffect(() => {
@@ -184,13 +186,35 @@ const Header = ({ toggleSettings, settingsVisible }) => {
 
 
 
-  const handleExport = () => {
-    // 🔧 每次导出前清理LaTeX缓存，确保修复后的代码生效
-    const latexService = getLatexExportService();
-    console.log('[Header] 🧹 清理LaTeX缓存以应用最新修复...');
-    latexService.resetAfterFix(); // 使用专门的修复后重置方法
-    
-    exportToWord(markdown, formatSettings);
+  const handleExport = async () => {
+    try {
+      setExportLoading(true);
+      
+      // 检查是否包含LaTeX公式来显示相应提示
+      const hasLatex = markdown.includes('$') || markdown.includes('\\[') || markdown.includes('\\(');
+      const loadingText = hasLatex 
+        ? '正在导出Word文档，检测到LaTeX公式，正在转换中...' 
+        : '正在导出Word文档...';
+      
+      const hideLoading = message.loading(loadingText, 0);
+      
+      // 🔧 每次导出前清理LaTeX缓存，确保修复后的代码生效
+      const latexService = getLatexExportService();
+      console.log('[Header] 🧹 清理LaTeX缓存以应用最新修复...');
+      latexService.resetAfterFix(); // 使用专门的修复后重置方法
+      
+      await exportToWord(markdown, formatSettings);
+      
+      // 隐藏加载提示并显示成功消息
+      hideLoading();
+      message.success('Word文档导出成功！', 2);
+      
+    } catch (error) {
+      console.error('[Header] 导出失败:', error);
+      message.error('导出失败，请检查文档内容后重试', 3);
+    } finally {
+      setExportLoading(false);
+    }
   };
   
   // GitHub仓库链接
@@ -270,16 +294,17 @@ const Header = ({ toggleSettings, settingsVisible }) => {
           排版格式设置
         </Button>
         <Tooltip 
-          title="智能导出：有LaTeX公式时等待后台处理完成导出，无公式时快速导出"
+          title={exportLoading ? "正在导出中，请耐心等待..." : "智能导出：有LaTeX公式时等待后台处理完成导出，无公式时快速导出"}
           placement="bottomRight"
           mouseEnterDelay={0.3}
         >
           <Button 
             type="primary" 
-            icon={<ExportOutlined />} 
+            icon={exportLoading ? <LoadingOutlined spin /> : <ExportOutlined />} 
             onClick={handleExport}
+            disabled={exportLoading}
           >
-            导出Word文档
+            {exportLoading ? '导出中...' : '导出Word文档'}
           </Button>
         </Tooltip>
       </ButtonGroup>
