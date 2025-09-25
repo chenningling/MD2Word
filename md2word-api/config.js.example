@@ -1,0 +1,12 @@
+// OSS配置信息示例
+// 请复制此文件为 config.js 并填入您的实际配置信息
+const config = {
+  region: 'your-region', // 例如: 'oss-cn-shenzhen'
+  bucket: 'your-bucket-name',
+  accessKeyId: 'your-access-key-id',
+  accessKeySecret: 'your-access-key-secret',
+  corsOrigin: process.env.NODE_ENV === 'production' ? 'https://your-domain.com' : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:8080', 'http://127.0.0.1:8080'],
+  port: 3001
+};
+
+module.exports = config;

@@ -140,3 +140,8 @@ doc/
 
 # OSS configuration (contains sensitive information)
 src/services/ossConfig.js
+md2word-api/config.js
+
+# Build output with sensitive information
+build/
+**/main.*.js
