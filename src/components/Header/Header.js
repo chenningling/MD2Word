@@ -81,6 +81,12 @@ const ButtonGroup = styled(Space)`
   display: flex;
 `;
 
+// 固定宽度的导出按钮样式
+const ExportButton = styled(Button)`
+  width: 140px !important; /* 固定按钮宽度，与排版设置按钮保持一致 */
+  text-align: center;
+`;
+
 const MenuButtonGroup = styled(Space)`
   margin-left: 12px;
   .ant-space-item {
@@ -298,14 +304,14 @@ const Header = ({ toggleSettings, settingsVisible }) => {
           placement="bottomRight"
           mouseEnterDelay={0.3}
         >
-          <Button 
+          <ExportButton 
             type="primary" 
             icon={exportLoading ? <LoadingOutlined spin /> : <ExportOutlined />} 
             onClick={handleExport}
             disabled={exportLoading}
           >
             {exportLoading ? '导出中...' : '导出Word文档'}
-          </Button>
+          </ExportButton>
         </Tooltip>
       </ButtonGroup>
       
