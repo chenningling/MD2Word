@@ -1,62 +1,142 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Production build
+build/
+dist/
 
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
+# Environment variables
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# OSS配置文件（包含敏感信息）
-src/services/ossConfig.js
-.env
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# macOS系统文件
-**/.DS_Store
+# Logs
+logs
+*.log
+record.txt
 
-# 忽略所有自动生成的通信相关文件
-md2word-api/node_modules/
-md2word-api/some-auto-generated-folder/
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# 忽略所有 zip 格式的打包文件
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Project specific files to ignore
+# Test files and directories
+test/
+**/test_*.js
+**/test_*.md
+**/test_*.html
+**/debug_*.js
+**/test_result.xml
+
+# Project planning and verification documents
+COMPREHENSIVE_VERIFICATION.md
+EXPORT_SERVICE_REFACTOR_PLAN.md
+EXPORT_SERVICE_REFACTOR_SUMMARY.md
+FINAL_VERIFICATION_REPORT.md
+FUNCTION_COMPARISON_CHECK.md
+LATEX_FIX_README.md
+latex-support-implementation-plan.md
+project_plan.md
+
+# Deployment packages and backups
+deploy-package/
+md2word-deploy-*/
 *.zip
+*.tar.gz
 
-# 部署产物与打包目录
-/deploy-package/
-/打包文件/
-/md2word-deploy-fixed-20250829_141527/
+# Reference and documentation directories
+refer/
+doc/
 
-# 后端运行时与上传目录（不进版本库）
-md2word-api/uploads/
-uploads/
+# Upload directories (may contain user files)
+**/uploads/
+**/upload/
 
+# Temporary files
+*.tmp
+*.temp
 
-# 临时与检查目录
-tmp-*/
-tmp-check/
-tmp-fixed-*/
-tmp-inspect*/
-tmp-user-file/
-tmp-user-fixed/
-tmp-wps/
-
-# 测试导出目录
-test-export*/
-test-export-full*/
-test-export-full-unzip/
-.playwright-mcp/
+# OSS configuration (contains sensitive information)
+src/services/ossConfig.js

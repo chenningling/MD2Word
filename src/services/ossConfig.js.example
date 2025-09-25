@@ -1,14 +1,27 @@
-// 阿里云OSS配置示例
-// 请复制此文件为ossConfig.js并填入您的实际配置信息
+// 阿里云OSS配置示例文件
+// 请复制此文件为 ossConfig.js 并填入您的实际配置信息
 
 const ossConfig = {
-  region: 'your-oss-region',  // 例如: oss-cn-beijing
-  bucket: 'your-bucket-name',
+  // 阿里云OSS配置
+  region: 'your-region', // 例如: 'oss-cn-hangzhou'
   accessKeyId: 'your-access-key-id',
   accessKeySecret: 'your-access-key-secret',
-  directory: 'uploads/',      // 上传目录
-  secure: true,               // 使用HTTPS
-  timeout: 60000              // 超时时间60秒
+  bucket: 'your-bucket-name',
+  
+  // OSS访问域名（可选，如果不设置将使用默认域名）
+  // customDomain: 'https://your-custom-domain.com',
+  
+  // 上传配置
+  uploadConfig: {
+    // 图片上传路径前缀
+    imagePath: 'md2word/images/',
+    
+    // 允许的图片格式
+    allowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'],
+    
+    // 最大文件大小（字节）
+    maxFileSize: 10 * 1024 * 1024, // 10MB
+  }
 };
 
-export default ossConfig; 
+export default ossConfig;
